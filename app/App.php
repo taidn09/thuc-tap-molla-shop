@@ -97,10 +97,6 @@ class App
     public function loadError()
     {   
         $arr = explode('/', $_SERVER['PATH_INFO']);
-        // echo '<pre>';
-        // print_r($arr);
-        // echo '</pre>';
-        // die;
         if (!empty($arr[1]) && $arr[1] == 'admin') {
             echo header("location: /admin/404");
             die;

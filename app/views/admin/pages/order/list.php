@@ -40,7 +40,7 @@
                                         <?= $order['street'] . '-' . $order['ward'] . '-' . $order['district'] . '-' . $order['province'] ?>
                                     </p>
                                 </td>
-                                <td><?= $order['summary'] ?>đ</td>
+                                <td><?= number_format($order['summary']) ?>đ</td>
                                 <td>
                                     <?php
                                     if ($this->checkRole('order-detail')) :

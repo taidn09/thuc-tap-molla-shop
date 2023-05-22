@@ -1,8 +1,8 @@
 
 <?php 
-    echo '<pre>';
-    print_r($wishlist);
-    echo '</pre>';
+    // echo '<pre>';
+    // print_r($wishlist);
+    // echo '</pre>';
 ?>
 <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <div class="container">
@@ -17,7 +17,6 @@
     <div class="cart">
         <div class="container">
             <div class="row cart-wrapper">
-
                 <?php
                 if (count($wishlist) > 0) :
                 ?>
@@ -69,7 +68,7 @@
 
                         <div class="cart-bottom">
                             <a href="/product" class="btn btn-outline-primary">Tiếp tục mua sắm</a>
-                            <button type="button" class="btn-clear-cart btn btn-outline-dark-2"><span>Xóa tất cả sản phẩm</span><i class="icon-refresh"></i></button>
+                            <button type="button" class="btn btn-outline-dark-2" onclick="deleteWishlistItem()"><span>Xóa tất cả sản phẩm</span><i class="icon-refresh"></i></button>
                         </div><!-- End .cart-bottom -->
                     </form><!-- End .col-lg-9 -->
                 <?php endif; ?>

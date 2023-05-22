@@ -58,7 +58,10 @@ class Checkout extends Controller
                 return;
             }
             echo json_encode([
-                'status' => 1
+                'status' => 1,
+                'cart'=> [],
+                'total'=> 0,
+                'totalQuantity' => 0
             ]);
             return;
         }

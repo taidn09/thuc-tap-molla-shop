@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group m-auto mt-2">
-                                        <label for="title" class="form-label">Phone</label>
+                                        <label for="title" class="form-label">Số điện thoại</label>
                                         <input name="phone" type="text" class="form-control" id="phone" placeholder="" spellcheck="false" autocomplete="off" value="<?= $order['phone'] ?>" />
                                         <div class="err-msg phone-err-msg"></div>
                                     </div>
@@ -46,17 +46,17 @@
 
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <label for="province">Province</label>
+                                    <label for="province">Tỉnh / thành phố</label>
                                     <select class="form-control" name="province" id="province">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="district">District</label>
+                                    <label for="district">Quận / huyện</label>
                                     <select class="form-control" name="district" id="district">
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="ward">Ward</label>
+                                    <label for="ward">Phường / xã</label>
                                     <select class="form-control" name="ward" id="ward">
                                     </select>
                                 </div>
@@ -64,9 +64,37 @@
                                 <input autocomplete="off" type="hidden" name="district-is" id="district-is">
                                 <input autocomplete="off" type="hidden" name="ward-is" id="ward-is">
                             </div>
-                            <label for="street">Street - Apartment number</label>
-                            <input autocomplete="off" type="text" id="street" value="<?= $order['street'] ?>" class="form-control" name="street">
-                            <div class="street-err-msg err-msg"></div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="street">Số nhà - Tên đường</label>
+                                        <input autocomplete="off" type="text" id="street" value="<?= $order['street'] ?>" class="form-control" name="street">
+                                        <div class="street-err-msg err-msg"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="street">Trạng thái đơn hàng</label>
+                                        <select name="code" id="code" class="form-select">
+                                            <?php
+                                            foreach ($statusCodes as  $code) {
+                                            ?>
+                                                <option value="<?= $code['id'] ?>"><?= $code['status_text'] ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                        <div class="street-err-msg code-msg"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="notes">Nội dung ghi chú</label>
+                                    <textarea name="notes" id="notes" cols="30" rows="5" class="form-control"></textarea>
+                                    <div class="err-msg notes-err-msg"></div>
+                                </div>
+                            </div>
                             <div class="form-group mt-3">
                                 <button class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">
                                     Chỉnh sửa

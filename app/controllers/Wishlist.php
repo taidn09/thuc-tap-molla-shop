@@ -21,26 +21,33 @@ class Wishlist extends Controller
     }
     public function add()
     {
-        if (!empty($_POST) && !empty($_SESSION['user'])) {
-            $userId = $_SESSION['user']['userId'];
-            $productId = $_POST['productId'];
-            $existed = $this->model->existed($userId, $productId);
-            if (!empty($existed)) {
-                echo json_encode([
-                    'status' => 0,
-                    'errMsg' => 'Sản phẩm đã tồn tại trong danh sách yêu thích!'
-                ]);
-                return;
-            } else {
-                $res = $this->model->add($userId, $productId);
-                if (!empty($res)) {
+        if (!empty($_SESSION['user'])) {
+            if (!empty($_POST)) {
+                $userId = $_SESSION['user']['userId'];
+                $productId = $_POST['productId'];
+                $existed = $this->model->existed($userId, $productId);
+                if (!empty($existed)) {
                     echo json_encode([
-                        'status' => 1
+                        'status' => 0,
+                        'errMsg' => 'Sản phẩm đã tồn tại trong danh sách yêu thích!'
                     ]);
                     return;
+                } else {
+                    $res = $this->model->add($userId, $productId);
+                    if (!empty($res)) {
+                        echo json_encode([
+                            'status' => 1
+                        ]);
+                        return;
+                    }
                 }
             }
         }
+        echo json_encode([
+            'status' => 0,
+            'errMsg' => 'Bạn chưa đăng nhập'
+        ]);
+        return;
     }
     public function delete()
     {
@@ -48,8 +55,14 @@ class Wishlist extends Controller
             $userId = $_SESSION['user']['userId'];
             $res = $this->model->delete($userId, $_POST['productId']);
             $wishlist = $this->model->show($userId);
-            foreach ($wishlist as $key => $value) {
-                
+            $productModel = new ProductModel();
+            foreach ($wishlist as $key => $item) {
+                $product = $productModel->getProductById($item['productId']);
+                $wishlist[$key]['title'] = $product['title'];
+                $wishlist[$key]['originalPrice'] = $product['originalPrice'];
+                $wishlist[$key]['salePercent'] = $product['salePercent'];
+                $wishlist[$key]['currentPrice'] = $product['currentPrice'];
+                $wishlist[$key]['image'] = $productModel->getProductImage($item['productId'], 1)[0]['image'];
             }
             if (!empty($res)) {
                 echo json_encode([
@@ -59,6 +72,24 @@ class Wishlist extends Controller
                 ]);
                 return;
             }
+        }
+        echo json_encode([
+            'status' => 0
+        ]);
+        return;
+    }
+    public function deleteAll()
+    {
+        $userId = $_SESSION['user']['userId'];
+        $res = $this->model->deleteAll($userId);
+        $wishlist = $this->model->show($userId);
+        if (!empty($res)) {
+            echo json_encode([
+                'status' => 1,
+                'total' => $this->model->total($userId)['total'],
+                'wishlist' => $wishlist
+            ]);
+            return;
         }
         echo json_encode([
             'status' => 0

@@ -2,11 +2,14 @@
 class Account extends Controller
 {
     private $data = [];
-    public function index()
+    public function __construct()
     {
         if (empty($_SESSION['user'])) {
             echo header("location: /");
         }
+    }
+    public function index()
+    {
         $orderModel = new OrderModel();
         $this->data['subcontent']['controller'] = 'account';
         $this->data['subcontent']['orders'] = $orderModel->getUserOrder($_SESSION['user']['userId']);

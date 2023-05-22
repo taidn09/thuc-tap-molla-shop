@@ -68,7 +68,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, xóa!',
+            confirmButtonText: 'Vâng, đồng ý!',
             cancelButtonText: 'Đóng!'
         }
         const successPopup = {
@@ -476,7 +476,6 @@
                 $('.street-err-msg').html('Chưa nhập tên đường và số nhà...')
                 flag = false
             }
-            console.log(flag);
             if (flag) {
                 const formData = $(this).serialize()
                 $.ajax({
@@ -487,7 +486,7 @@
                         if (response && JSON.parse(response).status == 1) {
                             Swal.fire({
                                 ...successPopup,
-                                title: `${action.includes('edit') ? 'Chỉnh sửa' : 'Thêm'} đơn hàng thành công`
+                                title: `Chỉnh sửa đơn hàng thành công`
                             })
                         }
                     },
@@ -1068,7 +1067,7 @@
                     },
                 });
             } else {
-                $('.file-err-msg').html('Please choose a file')
+                $('.file-err-msg').html('Vui lòng chọn hình ảnh')
             }
         })
         $('#product-form').on('submit', function(e) {
@@ -1172,9 +1171,9 @@
                                 -webkit-box-orient: vertical;
                                 -webkit-line-clamp: 2; ">${title}</p>
                                 </td>
-                                <td>${originalPrice.toLocaleString('en-US', priceFormatOption)}đ</td>
+                                <td>${Number(originalPrice).toLocaleString('en-US', priceFormatOption)}đ</td>
                                 <td>${salePercent}</td>
-                                <td>${currentPrice.toLocaleString('en-US', priceFormatOption)}đ</td>
+                                <td>${Number(currentPrice).toLocaleString('en-US', priceFormatOption)}đ</td>
                                 <td>${sold}</td>
                                 <td>
                                 <?php
@@ -1234,6 +1233,41 @@
                     }
                 })
             }
+        }
+
+        function filterProduct(catesFilter) {
+            $('.main-content .child').first().remove()
+            $.ajax({
+                type: 'POST',
+                url: `/admin/product/filter`,
+                data: {
+                    catesFilter: [catesFilter]
+                },
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        $('.main-content').append(`
+                        <table class="ui celled table datatable child">
+                        <thead>
+                            <tr>
+                                <th>Ảnh sản phẩm</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Giá gốc</th>
+                                <th scope="col">Phần trăm giảm</th>
+                                <th scope="col">Giá sau giảm</th>
+                                <th scope="col">Số lượt bán</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="product-table-body">
+                        </tbody>
+                    </table>
+                        `)
+                        updateProductPage(response)
+                    } else {
+                        $('.main-content').append(`<h3 class="text-center child">${JSON.parse(response).errMsg}</h3>`)
+                    }
+                },
+            });
         }
         // ------------end product
         // ------------review 
@@ -1654,6 +1688,52 @@
 
         })
         // --------------------end statistics
+        // ----------------- đổi mật khẩu 
+        $('#changPass-form').on('submit', function(e) {
+            e.preventDefault();
+            let flag = true
+            const password = $('#password').val().trim()
+            const newpass = $('#newpass').val().trim()
+            const cfpass = $('#cfpass').val().trim()
+            const id = $('#id').val().trim()
+            if (id == '') {
+                flag = false
+            }
+            if (password == '') {
+                flag = false
+                $('.password-err-msg').html('Vui lòng nhập mật khẩu...')
+            }
+            if (newpass.length < 6) {
+                flag = false
+                $('.newpass-err-msg').html('Mật khẩu tối thiểu 6 ký tự...')
+            }
+            if (newpass != cfpass) {
+                flag = false
+                $('.cfpass-err-msg').html('Mật khẩu nhập lại không khớp...')
+            }
+            if (flag) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/dashboard/changePassword',
+                    data: {
+                        id,
+                        password,
+                        newpass
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            Swal.fire({
+                                ...successPopup,
+                                title: 'Đổi mật khẩu thành công!'
+                            })
+                        } else {
+                            $('.password-err-msg').html(JSON.parse(response).errMsg)
+                        }
+                    },
+                });
+            }
+        })
+        // ------------------ end đổi mật khẩu
     </script>
 </body>
 

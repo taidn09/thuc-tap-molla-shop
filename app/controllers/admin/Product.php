@@ -12,8 +12,27 @@ class Product extends Controller
         $this->data['title'] = 'Product';
         $this->data['subcontent']['controller'] = 'product';
         $this->data['subcontent']['products'] = $this->model->getProductsList(null, true);
+        $this->data['subcontent']['categories'] = (new CategoryModel())->getCategoriesList();
         $this->data['content'] = 'admin/pages/product/list';
         $this->render('layouts/admin', $this->data);
+    }
+    public function filter()
+    {
+        if (!empty($_POST)) {
+            $products = $this->model->getProductFilter($_POST);
+            if (!empty($products)) {
+                echo json_encode([
+                    'status' => 1,
+                    'products' => $products
+                ]);
+                return;
+            }
+            echo json_encode([
+                'status' => 0,
+                'errMsg' => 'Danh mục chưa có sản phẩm...' 
+            ]);
+            return;
+        }
     }
     public function detail($id)
     {
@@ -118,7 +137,7 @@ class Product extends Controller
                 if (!empty($check)) {
                     echo json_encode([
                         'status' => 0,
-                        'errMsg' => 'Option đã tồn tại'
+                        'errMsg' => 'Thuộc tính đã tồn tại'
                     ]);
                     return;
                 } else {

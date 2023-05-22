@@ -88,4 +88,19 @@ class AdminModel
         $query = "INSERT INTO admin_roles (adminId, roleString) VALUES('$adminId' ,'$role')";
         return $this->db->exec($query);
     }
+    public function checkEnterRightPassword($id, $password)
+    {   
+        $password = md5($password);
+        $select = "SELECT * FROM `admins` WHERE adminId = '$id' AND password = '$password'";
+        if($this->db->getOne($select)){
+            return true;
+        }
+        return false;
+    }
+    public function changePassword($id, $password)
+    {
+        $password = md5($password);
+        $query = "UPDATE `admins` SET `password`='$password' WHERE adminId ='$id'";
+        return $this->db->exec($query);
+    }
 }

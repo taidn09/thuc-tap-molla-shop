@@ -23,7 +23,8 @@ class WishlistModel
     }
     public function deleteAll($userId)
     {
-        $query = "DELETE FROM `wishlist` WHERE userId = '$userId";
+        $query = "DELETE FROM `wishlist` WHERE userId = '$userId'";
+        // echo $query;
         return $this->db->exec($query);
     }
     public function total($userId)

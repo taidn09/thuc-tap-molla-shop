@@ -92,7 +92,7 @@
                                         <?php
                                         $productModel = new ProductModel();
                                         foreach ($_SESSION['cart'] as $product) {
-                                            $quantityLeft = $productModel->getOption($product['id'], $product['colorSelected'], $product['sizeSelected'])['quantity'];
+                                            $quantityLeft = $productModel->getOption($product['id'], $product['sizeSelected'], $product['colorSelected'])['quantity'];
                                             $isValid = $quantityLeft >= $product['quantity'];
                                         ?>
                                             <tr>
@@ -115,7 +115,7 @@
                                                         ?>
                                                     </div>
                                                 </td>
-                                                <td><?= number_format($product['currentPrice'],0,',','.') ?>đ</td>
+                                                <td><?= number_format($product['currentPrice']) ?>đ</td>
                                             </tr>
                                         <?php } ?>
                                         <tr>

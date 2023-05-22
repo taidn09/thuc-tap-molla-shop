@@ -39,11 +39,12 @@
                 $district = $_POST['district-is'];
                 $ward = $_POST['ward-is'];
                 $street = $_POST['street'];
-                $res = $this->model->updateOrder($orderId, $orderDate,$receiver, $email, $phone, $province, $district, $ward, $street);
+                $notes = $_POST['notes'];
+                $code = $_POST['code'];
+                $res = $this->model->updateOrder($orderId, $orderDate,$receiver, $email, $phone, $province, $district, $ward, $street, $notes, $code);
                 if ($res !== false) {
                     echo json_encode([
-                        'status' => 1,
-                        'user'=> $this->model->getOrderById($orderId)
+                        'status' => 1
                     ]);
                     return;
                 }
@@ -59,8 +60,10 @@
                     if (empty($order)) {
                         $this->loadError();
                     }
+
                     echo '<script type="text/javascript">localStorage.setItem("address", JSON.stringify({ province: "' . $order['province'] . '", district: "' . $order['district'] . '", ward: "' . $order['ward'] . '"}))</script>';
                     $this->data['subcontent']['order'] = $order;
+                    $this->data['subcontent']['statusCodes'] = $this->model->getStatusCodes();
                     $this->data['content'] = 'admin/pages/order/form';
                     $this->render('layouts/admin', $this->data);
                 } else {
@@ -74,9 +77,10 @@
                 $id = $_POST['id'];
                 $res = $this->model->deleteOrder($id);
                 if (!empty($res)) {
+                    $orderList = $this->model->getOrderList();
                     echo json_encode([
                         'status' => 1,
-                        'orders' => $this->model->getOrderList()
+                        'orders' => $orderList
                     ]);
                     return;
                 }

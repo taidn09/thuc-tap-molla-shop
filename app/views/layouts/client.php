@@ -911,7 +911,7 @@
             }
             if (flag) {
                 Swal.fire({
-                    title: 'Đang xử lý...!',
+                    title: 'Đang xử lý, vui lòng đợi...!',
                     didOpen: () => {
                         Swal.showLoading()
                     }
@@ -930,6 +930,7 @@
             			<span>BACK TO HOMEPAGE</span>
             			<i class="icon-long-arrow-right"></i>
             		</a>`);
+                            updateCartHeader(response)
                         } else {
                             Swal.fire({
                                 ...successPopup,
@@ -1063,6 +1064,23 @@
             }
 
         })
+        // trả hàng
+        $('.return-form').on('submit', function(e){
+            e.preventDefault()
+            let flag = true
+            const reason = $(this).find('textarea[name="reason"]');
+            const images = $(this).find('input[type="file"]');
+            console.log(images);
+            if(reason.val().trim() == ''){
+                flag =false
+                reason.siblings('.err-msg').html("Bạn chưa nhập lý do trả hàng...")
+            }
+            if(images[0].files.length <= 0){
+                flag =false
+                images.siblings('.err-msg').html("Bạn chưa cung cấp hình ảnh...")
+            }
+        })
+        // hủy đơn
         // show more - search page
         $('#search-show-more').on('click', function() {
             let total = 0
@@ -1243,11 +1261,6 @@
             }
         })
         // wishlist
-        // $('.btn-wishlist').on('click', function(e) {
-        //     e.preventDefault()
-        //     let productId = $(this).data().productid;
-
-        // })
         function addtoWishlist(productId) {
             $.ajax({
                 type: 'POST',
@@ -1256,7 +1269,10 @@
                     productId
                 },
                 success: function(response) {
-                    if (response && JSON.parse(response).status == 1) {
+                    const {
+                        status
+                    } = JSON.parse(response)
+                    if (status == 1) {
                         updateWishlistHeader()
                         Swal.fire({
                             ...successPopup,
@@ -1288,28 +1304,227 @@
         }
 
         function updateWishlistPage(response) {
-            const {wishlist} = JSON.parse(response)
-            wishlist.forEach(item=>{
-                console.log(item);
-            })
+            const {
+                wishlist
+            } = JSON.parse(response)
+            let _html = ''
+            if (wishlist.length > 0) {
+                wishlist.forEach(item => {
+                    _html += `
+                <tr>
+                                            <td class="product-col">
+                                                <input type="hidden" name="id[]" value="${item.productId}">
+                                                <div class="product">
+                                                    <figure class="product-media">
+                                                        <a href="#">
+                                                            <img src="/public/assets/images/products/${item.image}" alt="Product image">
+                                                        </a>
+                                                    </figure>
+
+                                                    <h3 class="product-title">
+                                                        <a href="/product/detail/">${item.title.length > 20 ? item.title.substring(0,20)+'...' : item.title}</a>
+                                                    </h3><!-- End .product-title -->
+                                                </div><!-- End .product -->
+                                            </td>
+                                            <td>${item.originalPrice}đ</td>
+                                            <td>${item.salePercent}%</td>
+                                            <td>${item.currentPrice}đ</td>
+                                            <td class="remove-col"><button type="button" class="btn-remove" onclick="deleteWishlistItem('${item.productId}')"><i class="icon-close"></i></button></td>
+                                        </tr>
+                `
+                })
+                $('.wishlist-tbody').html(_html)
+            } else {
+                $('.cart-wrapper').html(`
+                <div class="m-auto text-center">
+                        <h2 class="">Chưa có sản phẩm nào trong danh sách yêu thích của bạn</h2>
+                        <a href="/product" class="btn btn-outline-primary">Mua sắm ngay</a>
+                    </div>`)
+            }
+
         }
-        function deleteWishlistItem(productId){
-            $.ajax({
+
+        function deleteWishlistItem(productId = null) {
+            let popup = {
+                ...confirmPopup
+            }
+            let option = {
                 type: 'POST',
-                url: '/wishlist/delete',
-                data: {
-                    productId
-                },
                 success: function(response) {
                     if (response && JSON.parse(response).status == 1) {
                         updateWishlistPage(response)
+                        updateWishlistHeader()
+                        // Swal.fire({
+                        //     ...successPopup,
+                        //     title: 'Danh sách yêu thích trống!',
+                        // })
                     }
                 },
-            });
+            }
+            if (productId) {
+                popup.title = 'Bạn muốn xóa sản phẩm này khỏi danh sách yêu thích ?'
+                option.data = {
+                    productId
+                }
+                option.url = '/wishlist/delete'
+            } else {
+                popup.title = 'Bạn muốn xóa tất cả sản phẩm khỏi danh sách yêu thích ?'
+                option.url = '/wishlist/deleteAll'
+            }
+            Swal.fire({
+                ...confirmPopup,
+                title: 'Bạn muốn xóa tất cả sản phẩm khỏi danh sách yêu thích ?'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(option);
+                }
+            })
+
         }
         $(document).ready(function() {
             updateWishlistHeader()
         });
+        // quên mật khẩu
+        function handleSubmitEmail() {
+            $('.err-msg').html('')
+            var currentDate = new Date();
+            currentDate.setMinutes(currentDate.getMinutes() + 5);
+            const y = currentDate.getFullYear()
+            const m = currentDate.getMonth() + 1
+            const d = currentDate.getDate()
+            const h = currentDate.getHours()
+            const i = currentDate.getMinutes()
+            const s = currentDate.getSeconds()
+            const email = $('#email').val();
+            if (checkEmail(email) && email.length < 50) {
+                Swal.fire({
+                    title: 'Đang xử lý, vui lòng đợ...!',
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/generateToken',
+                    data: {
+                        email
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            Swal.close()
+                            $('.inputs').html(`
+                            <p>Mã xác nhận đã được gửi đến email của bạn!</p>
+                            <div class="coming-countdown countdown-separator"></div>
+                                <div class="form-group">
+                        <label for="token" class="form-label mt-2">Nhập mã xác nhận</label>
+                        <input type="hidden" name="email" id="email" class="form-control" value="${email}" readonly>
+                        <input type="text" name="token" id="token" class="form-control">
+                        <div class="err-msg token-err-msg"></div>
+                        <button class="btn btn-outline-primary mt-2" onclick="handleSubmitToken()">Xác nhận đổi mật khẩu</button>
+                    </div>
+                            `)
+                            if ($.fn.countdown) {
+                                $('.coming-countdown').countdown({
+                                    until: new Date(currentDate), // 7th month = August / Months 0 - 11 (January  - December)
+                                    format: 'MS',
+                                    padZeroes: true
+                                });
+                            }
+                        } else {
+                            if (response && JSON.parse(response).errMsg) {
+                                $('.email-err-msg').html(JSON.parse(response).errMsg)
+                            }
+                        }
+                    },
+                });
+            } else {
+                $('.email-err-msg').html('Email không hợp lệ, vui lòng kiểm tra lại...')
+            }
+        }
+
+        function handleSubmitToken() {
+            $('.err-msg').html('')
+            const token = $('#token').val().trim()
+            const email = $('#email').val().trim()
+            if (token == '' || email == '') {
+                $('.email-err-msg').html('Vui lòng nhập mã xác nhận...')
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/checkToken',
+                    data: {
+                        token,
+                        email
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.inputs').html(`
+                            <input type="hidden" name="email" id="email" class="form-control" readonly value="${email}">
+                            <div class="form-group">
+                        <label for="password" class="form-label">Nhập mật khẩu mới</label>
+                        <input type="text" name="password" id="password" class="form-control">
+                        <div class="err-msg password-err-msg"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cfpass" class="form-label">Nhập lại mật khẩu</label>
+                        <input type="text" name="cfpass" id="cfpass" class="form-control">
+                        <div class="err-msg cfpass-err-msg"></div>
+                    </div>
+                    <div class="form-group">
+                    <button class="btn btn-outline-primary mt-2" onclick="handleSubmitPassword()">Gửi mã đến email</button>
+                    </div>
+                            `)
+                        } else {
+                            $('.token-err-msg').html(JSON.parse(response).errMsg)
+                        }
+                    },
+                });
+            }
+        }
+
+        function handleSubmitPassword() {
+            $('.err-msg').html('')
+            let flag = true
+            const password = $('#password').val().trim()
+            const cfpass = $('#cfpass').val().trim()
+            const email = $('#email').val().trim()
+            if (password.length < 6) {
+                flag = false
+                $('.password-err-msg').html('Mật khẩu tối thiểu 6 ký tự')
+            }
+            if (password != cfpass) {
+                flag = false
+                $('.cfpass-err-msg').html('Mật khẩu nhập lại không khớp')
+            }
+            if (flag) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/changePassword',
+                    data: {
+                        password,
+                        email
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.main-content').html(`
+                            <a class="btn btn-outline-primary" href="/auth">Đến trang đăng nhập</a>
+                            <a class="btn btn-outline-primary" href="/">Quay về trang chủ</a>
+                            `)
+                            Swal.fire({
+                                ...successPopup,
+                                title: 'Đổi mật khẩu thành công !'
+                            })
+                        } else {
+                            Swal.fire({
+                                ...successPopup,
+                                icon: 'error',
+                                title: 'Có lỗi xảy ra !'
+                            })
+                        }
+                    },
+                });
+            }
+        }
     </script>
 </body>
 

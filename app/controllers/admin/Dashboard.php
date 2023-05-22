@@ -54,4 +54,32 @@ class Dashboard extends Controller
             echo header("location: /admin/dashboard/login");
         }
     }
+    public function changePassword()
+    {
+        if (!empty($_POST)) {
+            $id = trim($_POST['id']);
+            $password = trim($_POST['password']);
+            $newpass = trim($_POST['newpass']);
+            $adminModel = new AdminModel();
+            $check = $adminModel->checkEnterRightPassword($id, $password);
+            if (!empty($check)) {
+                $res = $adminModel->changePassword($id, $newpass);
+                if ($res == 0 || $res == 1) {
+                    echo json_encode([
+                        'status' => 1
+                    ]);
+                    return;
+                }
+            }
+            echo json_encode([
+                'status' => 0,
+                'errMsg' => 'Mật khẩu không chính xác!'
+            ]);
+            return;
+        } else {
+            $this->data['subcontent']['controller'] = 'change-password';
+            $this->data['content'] = 'admin/pages/change-password';
+            $this->render('layouts/admin', $this->data);
+        }
+    }
 }

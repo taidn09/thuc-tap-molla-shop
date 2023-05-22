@@ -147,7 +147,7 @@ class ProductModel
         $sortBy = '';
         if (!empty($filterArr)) {
             $where = "WHERE ";
-            if (!empty($filterArr['catesFilter'])) {
+            if (!empty($filterArr['catesFilter']) && !in_array('all', $filterArr['catesFilter'])) {
                 $where .= 'categoryId IN(' . implode(',', $filterArr['catesFilter']) . ') ';
             }
             if (!empty($filterArr['sizesFilter'])) {
@@ -218,7 +218,7 @@ class ProductModel
     }
     public function getOption($productId, $size, $color)
     {
-        $select = "SELECT * FROM product_options WHERE productId = $productId AND color ='$color' AND size = '$size'";
+        $select = "SELECT * FROM product_options WHERE productId = '$productId' AND color ='$color' AND size = '$size'";
         return $this->db->getOne($select);
     }
     public function getOptionById($id)

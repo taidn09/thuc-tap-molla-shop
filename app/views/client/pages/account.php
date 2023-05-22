@@ -119,6 +119,7 @@
                                                 <th class="p-2">Mã hóa đơn</th>
                                                 <th class="p-2">Ngày đặt</th>
                                                 <th class="p-2">Tổng tiền</th>
+                                                <th class="p-2">Trạng thái</th>
                                                 <th class="p-2">Thao tác</th>
                                             </tr>
                                         </thead>
@@ -134,9 +135,57 @@
                                                         <?= $order['orderDate'] ?>
                                                     </td>
                                                     <td class="p-2">
-                                                        <?= $order['summary'] ?>đ
+                                                        <?= number_format($order['summary']) ?>đ
                                                     </td>
                                                     <td class="p-2">
+                                                        <?php 
+                                                            $orderModel = new OrderModel();
+                                                            $status = $orderModel->getStatusById($order['status']);
+                                                            echo $status['status_text'];
+                                                        ?>
+                                                    </td>
+                                                    <td class="p-2">
+                                                        <?php
+                                                        if ($order['status'] == 1) :
+                                                        ?>
+                                                            <button class="btn btn-primary">Hủy đơn</button>
+                                                        <?php endif;  ?>
+                                                        <?php
+                                                        if ($order['status'] == 3) :
+                                                        ?>
+                                                            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<?= $order['orderId'] ?>">Trả hàng</button>
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="modal-<?= $order['orderId'] ?>" tabindex="-1" aria-labelledby="model-label-<?= $order['orderId'] ?>" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <form action="/" method="POST" class="modal-content return-form" enctype="multipart/form-data">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="model-label-<?= $order['orderId'] ?>">Trả hàng</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="mx-4">
+                                                                                <div class="form-group">
+                                                                                    <label for="reason-<?=$order['orderId']?>">Lý do trả hàng</label>
+                                                                                    <textarea id="reason-<?=$order['orderId']?>" name="reason" class="form-control" placeholder="Lí do trả hàng (cụ thể)..."></textarea>
+                                                                                    <div class="err-msg reason-err-msg"></div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="image-<?=$order['orderId']?>">Hình ảnh chứng minh(rõ nét)</label>
+                                                                                    <input type="file" name="images" id="image-<?=$order['orderId']?>" class="form-control">
+                                                                                    <div class="err-msg image-err-msg"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                            <button type="submit" class="btn btn-primary">Gửi</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif;  ?>
                                                         <a href="/account/odt/<?= $order['orderId'] ?>" class="btn btn-custom btn-outline-primary">Chi tiết</a>
                                                     </td>
                                                 </tr>

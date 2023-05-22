@@ -21,9 +21,9 @@ class OrderModel
         $query = "INSERT INTO order_details(orderId,productId,optionId,price,quantity,total) VALUES($orderId,$productId,$optionId,$price,$quantity,$total)";
         $this->db->exec($query);
     }
-    public function updateOrder($orderId, $orderDate, $receiver, $email, $phone, $province, $district, $ward, $street)
+    public function updateOrder($orderId, $orderDate, $receiver, $email, $phone, $province, $district, $ward, $street, $notes, $status)
     {
-        $query = "UPDATE `orders` SET `orderDate`='$orderDate',`receiver`='$receiver',`email`='$email',`phone`='$phone',`province`='$province',`district`='$district',`ward`='$ward',`street`='$street' WHERE orderId = $orderId";
+        $query = "UPDATE `orders` SET `orderDate`='$orderDate',`receiver`='$receiver',`email`='$email',`phone`='$phone',`province`='$province',`district`='$district',`ward`='$ward',`street`='$street', `notes` = '$notes',`status` = '$status' WHERE orderId = '$orderId'";
         return $this->db->exec($query);
     }
     public function deleteOrder($orderId)
@@ -35,13 +35,13 @@ class OrderModel
     }
     public function getUserOrder($userId)
     {
-        $select = "SELECT * FROM `orders` WHERE userId = $userId";
+        $select = "SELECT * FROM `orders` WHERE userId = $userId ORDER BY orderId DESC";
 
         return $this->db->getAll($select);
     }
     public function getOrderList()
     {
-        $select = "SELECT * FROM `orders`";
+        $select = "SELECT * FROM `orders` ORDER BY orderId DESC";
         return $this->db->getAll($select);
     }
     public function getOrderById($id)
@@ -53,5 +53,20 @@ class OrderModel
     {
         $select = "SELECT * FROM `order_details` WHERE orderId = $orderId";
         return $this->db->getAll($select);
+    }
+    public function getStatusCodes()
+    {
+        $select = "SELECT * FROM `order_status`";
+        return $this->db->getAll($select);
+    }
+    public function getStatusById($id)
+    {
+        $select = "SELECT * FROM `order_status` WHERE id = '$id'";
+        return $this->db->getOne($select);
+    }
+    public function cancel($orderId, $status)
+    {
+        $query = "UPDATE `orders` SET `status` = '$status' WHERE orderId = '$orderId'";
+        return $this->db->exec($query);
     }
 }
