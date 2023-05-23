@@ -36,7 +36,8 @@ class Blog extends Controller
             $content = $_POST['content'];
             $thumbnail = $_FILES['thumbnail'];
             $shortDesc = $_POST['shortDesc'];
-            $check = $this->uploadImage($thumbnail, 'blog');
+            $time = time();
+            $check = $this->uploadImage($thumbnail, 'blog',$time);
             if ($check) {
                 echo json_encode([
                     'status' => 0,
@@ -45,7 +46,7 @@ class Blog extends Controller
                 return;
             }
             
-            $new_img_name = md5(strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_FILENAME))).'.'.strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_EXTENSION));
+            $new_img_name = md5(strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_FILENAME)).$time).'.'.strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_EXTENSION));
             $res = $this->model->addBlog($title, $authorId, $content, $new_img_name, $shortDesc);
             if ($res !== false) {
                 echo json_encode([
@@ -73,7 +74,8 @@ class Blog extends Controller
             $shortDesc = $_POST['shortDesc'];
             if (!empty($_FILES['thumbnail'])) {
                 $thumbnail = $_FILES['thumbnail'];
-                $check = $this->uploadImage($thumbnail, 'blog');
+                $time = time();
+                $check = $this->uploadImage($thumbnail, 'blog', $time);
                 if ($check) {
                     echo json_encode([
                         'status' => 0,
@@ -81,7 +83,7 @@ class Blog extends Controller
                     ]);
                     return;
                 }
-                $new_img_name = md5(strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_FILENAME))).'.'.strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_EXTENSION));
+                $new_img_name = md5(strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_FILENAME)).$time).'.'.strtolower(pathinfo(basename($thumbnail['name']), PATHINFO_EXTENSION));
                 $res = $this->model->updateBlog($blogId, $title, $createdAt, $authorId, $content, $new_img_name, $shortDesc);
             } else {
                 $thumbnail = null;

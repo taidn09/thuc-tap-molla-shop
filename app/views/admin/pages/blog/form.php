@@ -41,7 +41,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group m-auto mt-2">
-                                                <label for="thumbnail" class="form-label">Thumbnail</label>
+                                                <label for="thumbnail" class="form-label">Hình ảnh</label>
                                                 <input name="thumbnail" type="file" class="form-control" id="thumbnail" />
                                                 <div class="err-msg thumbnail-err-msg"></div>
                                             </div>
@@ -70,15 +70,16 @@
                                     </div>
                                     <div class="row">
                                         <!-- TinyMCE Editor -->
-                                        <label for="content">Content</label>
+                                        <label for="content">Nội dung</label>
                                         <textarea id="content" class="tinymce-editor" name="content"><?= $blog['content'] ?>
                                      </textarea><!-- End TinyMCE Editor -->
                                         <div class="err-msg content-err-msg"></div>
                                     </div>
                                     <div class="form-group mt-3">
-                                        <button class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">
+                                        <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Chỉnh sửa
                                         </button>
+                                        <a href="/admin/blog" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             <?php } ?>
@@ -113,7 +114,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-6">
                                             <div class="form-group m-auto mt-2">
-                                                <label for="thumbnail" class="form-label">Thumbnail</label>
+                                                <label for="thumbnail" class="form-label">Hình ảnh</label>
                                                 <input name="thumbnail" type="file" class="form-control" id="thumbnail" />
                                                 <div class="err-msg thumbnail-err-msg"></div>
                                             </div>
@@ -140,9 +141,10 @@
                                         <div class="err-msg content-err-msg"></div>
                                     </div>
                                     <div class="form-group mt-3">
-                                        <button class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">
+                                        <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Thêm mới
                                         </button>
+                                        <a href="/admin/blog" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>

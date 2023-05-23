@@ -22,7 +22,17 @@ class OrderModel
         $this->db->exec($query);
     }
     public function updateOrder($orderId, $orderDate, $receiver, $email, $phone, $province, $district, $ward, $street, $notes, $status)
-    {
+    {   
+        if($status == 3){
+            $order_details = $this->getOrderDetail($orderId);
+            foreach ($order_details as $key => $item) {
+                $qty = $item['quantity'];
+                $pro_id = $item['productId'];
+                $opt_id = $item['optionId'];
+                $this->db->exec("UPDATE products SET sold = sold + $qty WHERE productId = '$pro_id'");
+                $this->db->exec("UPDATE product_options SET quantity = quantity - $qty WHERE optionId = '$opt_id'");
+            }
+        }
         $query = "UPDATE `orders` SET `orderDate`='$orderDate',`receiver`='$receiver',`email`='$email',`phone`='$phone',`province`='$province',`district`='$district',`ward`='$ward',`street`='$street', `notes` = '$notes',`status` = '$status' WHERE orderId = '$orderId'";
         return $this->db->exec($query);
     }
@@ -64,9 +74,19 @@ class OrderModel
         $select = "SELECT * FROM `order_status` WHERE id = '$id'";
         return $this->db->getOne($select);
     }
-    public function cancel($orderId, $status)
+    public function cancel($orderId)
     {
-        $query = "UPDATE `orders` SET `status` = '$status' WHERE orderId = '$orderId'";
+        $query = "UPDATE `orders` SET `status` = 4 WHERE orderId = '$orderId'";
         return $this->db->exec($query);
+    }
+    public function updateOrderStatus($orderId, $status)
+    {
+        $query = "UPDATE `orders` SET `status` = $status WHERE orderId = '$orderId'";
+        return $this->db->exec($query); 
+    }
+    public function updateOrderDetailStatus($orderId, $optionId, $returned, $reason, $image)
+    {
+        $query = "UPDATE `order_details` SET `returned` = $returned, `return_reason` ='$reason', `return_image` = '$image'  WHERE orderId = '$orderId' AND optionId = '$optionId'";
+        return $this->db->exec($query); 
     }
 }

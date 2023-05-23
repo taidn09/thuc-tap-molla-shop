@@ -79,7 +79,7 @@
                                             <?php
                                             foreach ($statusCodes as  $code) {
                                             ?>
-                                                <option value="<?= $code['id'] ?>"><?= $code['status_text'] ?></option>
+                                                <option value="<?= $code['id'] ?>" <?php if($code['id'] == $order['status']) echo 'selected'?>><?= $code['status_text'] ?></option>
                                             <?php
                                             }
                                             ?>
@@ -96,14 +96,15 @@
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                <button class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">
+                                
+                                <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                     Chỉnh sửa
                                 </button>
+                                <a href="/admin/order" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                             </div>
                         </form>
 
                     </div>
-
                 </div>
             </div>
         </div>

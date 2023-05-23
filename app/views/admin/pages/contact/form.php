@@ -9,6 +9,8 @@
                 <div class="row">
 
                     <div class="col-lg-12">
+                        <p>Người gửi : <?=$contact['name']?></p>
+                        <p>Nội dung : <?=$contact['message']?></p>
                         <form id="contact-form" action="/admin/contact/edit" method="post" class="mx-auto">
                             <input type="text" name="id" hidden value="<?= $contact['id'] ?>">
                             <input type="text" name="email" hidden value="<?= $contact['email'] ?>">
@@ -21,7 +23,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <button class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">
-                                    Chỉnh sửa
+                                    Gửi phản hồi
                                 </button>
                             </div>
                         </form>

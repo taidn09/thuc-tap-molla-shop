@@ -29,7 +29,7 @@ class Product extends Controller
             }
             echo json_encode([
                 'status' => 0,
-                'errMsg' => 'Danh mục chưa có sản phẩm...' 
+                'errMsg' => 'Danh mục chưa có sản phẩm...'
             ]);
             return;
         }
@@ -41,7 +41,7 @@ class Product extends Controller
         $product = $this->model->getProductById($id, true);
         if (!empty($product)) {
             $this->data['subcontent']['product'] = $product;
-            $this->data['subcontent']['productOptions'] = $this->model->getProductOptions($id);
+            $this->data['subcontent']['productOptions'] = $this->model->getProductOptions($id, false);
             $this->data['subcontent']['imagesGallery'] = $this->model->getProductImage($id);
             $categoryModel = new CategoryModel();
             $this->data['subcontent']['category'] = $categoryModel->getCategoryById($product['categoryId']);
@@ -100,11 +100,22 @@ class Product extends Controller
                 $quantity = $_POST['quantity'];
                 $check = $this->model->checkOptionExisted($id, $color, $size);
                 if (!empty($check)) {
-                    echo json_encode([
-                        'status' => 0,
-                        'errMsg' => 'Thuộc tính này đã tồn tại!'
-                    ]);
-                    return;
+                    if ($check['deleted'] == 0) {
+                        echo json_encode([
+                            'status' => 0,
+                            'errMsg' => 'Thuộc tính này đã tồn tại!'
+                        ]);
+                        return;
+                    }
+                    if ($check['deleted'] == 1) {
+                        $res = $this->model->restoreOption($check['optionId'], $quantity);
+                        if (!empty($res)) {
+                            echo json_encode([
+                                'status' => 1,
+                            ]);
+                            return;
+                        }
+                    }
                 } else {
                     $res = $this->model->addOption($id, $color, $size, $quantity);
                     if (!empty($res)) {
@@ -153,7 +164,7 @@ class Product extends Controller
                 $this->data['subcontent']['editMode'] = true;
                 $this->data['subcontent']['productId'] = $id;
                 $this->data['subcontent']['colors'] = (new ColorModel())->getAllColors();
-                $option = $this->model->getOptionById($optionId);
+                $option = $this->model->getOptionById($optionId, false);
                 if (!empty($option)) {
                     $this->data['subcontent']['option'] = $option;
                 } else {
@@ -175,7 +186,7 @@ class Product extends Controller
             if (!empty($res)) {
                 echo json_encode([
                     'status' => 1,
-                    'options' => $this->model->getProductOptions($productId)
+                    'options' => $this->model->getProductOptions($productId,false)
                 ]);
                 return;
             }

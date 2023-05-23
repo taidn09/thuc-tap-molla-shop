@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2023 at 12:07 PM
+-- Generation Time: May 23, 2023 at 02:07 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -122,7 +122,8 @@ CREATE TABLE `blogs` (
 
 INSERT INTO `blogs` (`blogId`, `title`, `createdAt`, `authorId`, `commentsCount`, `shortDesc`, `content`, `thumbnail`, `isShown`) VALUES
 (21, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '2023-05-17', 21, 0, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '<h1>MỞ B&Aacute;N RANDOM BOX CHỈ VỚI GI&Aacute; 299.000Đ</h1>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://staging-toto-cms.mltechsoft.com/uploads/RANDOM_BOX_MT_810dbff991.jpg\" alt=\"\" width=\"590\" height=\"835\"></p>\r\n<p>Ai mà chả thích thử độ may mắn của m&igrave;nh đ&uacute;ng kh&ocirc;ng n&agrave;o? Trong tháng 5 này tụi m&igrave;nh đang có&nbsp;<strong>chương trình ưu đãi cực lớn</strong>&nbsp;đ&oacute; ch&iacute;nh l&agrave;&nbsp;<strong>mở b&aacute;n Random Box trị gi&aacute; l&ecirc;n đến 700.000đ</strong>&nbsp;chỉ với giá&nbsp;<strong>299.000đ</strong>&nbsp;với nhiều&nbsp;<strong>sản phẩm ngẫu nhi&ecirc;n hấp dẫn</strong>&nbsp;đang chờ đợi các FRIEND&rsquo;s tới rinh về. Th&ocirc;ng tin ưu đãi như sau:</p>\r\n<p>Đặc biệt d&agrave;nh cho chương trình l&acirc;̀n này l&agrave;&nbsp;<strong>mở bán giới hạn s&ocirc;́ lượng</strong>&nbsp;chỉ với&nbsp;<strong>100 Random Box</strong>&nbsp;cho 100 bạn may mắn nh&acirc;́t:</p>\r\n<ul>\r\n<li style=\"list-style-type: disc;\">Random Box : bao gồm&nbsp;<strong>2 mẫu Tee Totoday</strong>&nbsp;ngẫu nhi&ecirc;n&nbsp;<strong>trị gi&aacute; 590.000 - 700.000đ</strong>&nbsp;&amp;&nbsp;<strong>1 voucher mua h&agrave;ng trị gi&aacute; 50.000đ.</strong>&nbsp;</li>\r\n<li style=\"list-style-type: disc;\">Với hơn&nbsp;<strong>30 mẫu &aacute;o thun</strong>&nbsp;cực k&igrave; chất lượng v&agrave; thời thượng với mức gi&aacute; nhẹ t&ecirc;nh chờ bạn rinh về.</li>\r\n</ul>\r\n<p>*Lưu ý:</p>\r\n<p>- Khi mua&nbsp;<strong>Random Box</strong>&nbsp;bạn sẽ&nbsp;<strong>được chọn đ&uacute;ng size &aacute;o</strong>&nbsp;v&igrave; ch&uacute;ng tớ đ&atilde; ph&acirc;n size r&otilde; r&agrave;ng cho từng Box n&ecirc;n sẽ kh&ocirc;ng phải lo vấn đề về size &aacute;o nhé.</p>\r\n<p>- Thời gian mở b&aacute;n: 00:00 ngày 12.05.2023 cho đ&ecirc;́n 28.05.2023.</p>\r\n<p>- K&ecirc;nh b&aacute;n: To&agrave;n hệ thống cửa h&agrave;ng v&agrave; online.</p>\r\n<p>- Sản phẩm c&oacute; mặt to&agrave;n bộ tr&ecirc;n hệ thống Website v&agrave; c&aacute;c k&ecirc;nh thương mại điện tử của tụi m&igrave;nh, nhanh tay mua h&agrave;ng để kh&ocirc;ng bỏ lỡ nh&eacute;</p>\r\n<p>- Chương tr&igrave;nh kh&ocirc;ng &aacute;p dụng với c&aacute;c CTKM kh&aacute;c.</p>\r\n<p>- Kh&ocirc;ng áp dụng chung với chi&ecirc;́t kh&acirc;́u VIP.</p>', 'f46dbb1d9cf47830768f1c1f1e16d5ce.png', 1),
-(29, 'ngon', '2023-05-21', 21, 0, 'ngon', '<p>ngon</p>\r\n<p><img src=\"https://tse1.mm.bing.net/th?id=OIP.PRSdIhk7842lQCMSBKTOzQHaEO&amp;pid=Api&amp;P=0&amp;h=180\" alt=\"\" width=\"316\" height=\"180\"></p>', '4d3a21d8c684c09c19b93be911827fd5.png', 1);
+(29, 'ngon', '2023-05-21', 21, 0, 'ngon', '<p>ngon</p>\r\n<p><img src=\"https://tse1.mm.bing.net/th?id=OIP.PRSdIhk7842lQCMSBKTOzQHaEO&amp;pid=Api&amp;P=0&amp;h=180\" alt=\"\" width=\"316\" height=\"180\"></p>', '4d3a21d8c684c09c19b93be911827fd5.png', 1),
+(30, 'Hello', '2023-05-23', 21, 0, 'Hello', '<p>Ngon</p>', '31a9bb9593c56d14ffd87b872068dbe3.png', 1);
 
 -- --------------------------------------------------------
 
@@ -286,8 +287,9 @@ INSERT INTO `orders` (`orderId`, `userId`, `orderDate`, `receiver`, `email`, `ph
 (52, 36, '2023-05-17', 'tai taitai', 'tainguyen@gmail.com', '0134567888', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '123', 800, '', 0),
 (53, 33, '2023-05-20', 'tai tai', 'test2@test.com', '0934567549', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT 2', 3135, '', 0),
 (54, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 200000, '', 3),
-(55, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 1),
-(56, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 1);
+(55, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 3),
+(56, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 4),
+(57, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 3);
 
 --
 -- Triggers `orders`
@@ -309,41 +311,32 @@ CREATE TABLE `order_details` (
   `orderId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
   `optionId` int(11) NOT NULL,
-  `color` varchar(50) DEFAULT NULL,
-  `size` varchar(50) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `total` float DEFAULT NULL
+  `total` float DEFAULT NULL,
+  `returned` tinyint(4) DEFAULT 0,
+  `return_reason` text DEFAULT NULL,
+  `return_image` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `order_details`
 --
 
-INSERT INTO `order_details` (`orderId`, `productId`, `optionId`, `color`, `size`, `price`, `quantity`, `total`) VALUES
-(49, 3, 9, NULL, NULL, 80, 1, 80),
-(49, 3, 10, NULL, NULL, 80, 1, 80),
-(49, 3, 11, NULL, NULL, 80, 1, 80),
-(49, 3, 12, NULL, NULL, 80, 1, 80),
-(50, 5, 17, NULL, NULL, 80, 1, 80),
-(51, 3, 9, NULL, NULL, 80, 1, 80),
-(51, 5, 17, NULL, NULL, 80, 43, 3440),
-(52, 2, 6, NULL, NULL, 80, 10, 800),
-(53, 21, 27, NULL, NULL, 285, 11, 3135),
-(54, 2, 6, NULL, NULL, 200000, 1, 200000),
-(55, 1, 34, NULL, NULL, 90, 1, 90),
-(56, 1, 34, NULL, NULL, 90, 1, 90);
-
---
--- Triggers `order_details`
---
-DELIMITER $$
-CREATE TRIGGER `autoUpdateSold` AFTER INSERT ON `order_details` FOR EACH ROW BEGIN
-	Update products SET sold = sold + new.quantity WHERE productId = new.productId;
-    UPDATE product_options SET quantity = quantity -new.quantity WHERE optionId = new.optionId;
-END
-$$
-DELIMITER ;
+INSERT INTO `order_details` (`orderId`, `productId`, `optionId`, `price`, `quantity`, `total`, `returned`, `return_reason`, `return_image`) VALUES
+(49, 3, 9, 80, 1, 80, 0, NULL, NULL),
+(49, 3, 10, 80, 1, 80, 0, NULL, NULL),
+(49, 3, 11, 80, 1, 80, 0, NULL, NULL),
+(49, 3, 12, 80, 1, 80, 0, NULL, NULL),
+(50, 5, 17, 80, 1, 80, 0, NULL, NULL),
+(51, 3, 9, 80, 1, 80, 0, NULL, NULL),
+(51, 5, 17, 80, 43, 3440, 0, NULL, NULL),
+(52, 2, 6, 80, 10, 800, 0, NULL, NULL),
+(53, 21, 27, 285, 11, 3135, 0, NULL, NULL),
+(54, 2, 6, 200000, 1, 200000, 1, 'Hello', '7cdf8e1c9262b356be7536cdfb626fe6.png'),
+(55, 1, 34, 90, 1, 90, 1, 'Hello', '5e67ec95e637c46ae1b2a66c0acc7839.png'),
+(56, 1, 34, 90, 1, 90, 0, NULL, NULL),
+(57, 1, 36, 90, 1, 90, 0, 'Hello', '7b53f0224142541d9149b94fea455682.png');
 
 -- --------------------------------------------------------
 
@@ -393,7 +386,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`productId`, `title`, `originalPrice`, `currentPrice`, `description`, `salePercent`, `reviewCount`, `rating`, `categoryId`, `sold`, `isShown`, `deleted`) VALUES
-(1, 'product 1', 100, 90, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 0, 3, 1, 2, 1, 0),
+(1, 'product 1', 100, 90, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 2, 4, 1, 6, 1, 0),
 (2, 'product 2', 250000, 200000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 5, 1, 25, 1, 0),
 (3, 'product 3', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 3, 4.7, 4, 13, 1, 0),
 (5, 'product 5', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 3.3, 1, 45, 1, 0),
@@ -430,34 +423,35 @@ CREATE TABLE `product_options` (
   `productId` int(11) NOT NULL,
   `size` varchar(10) NOT NULL,
   `color` varchar(10) NOT NULL,
-  `quantity` int(11) DEFAULT NULL
+  `quantity` int(11) DEFAULT NULL,
+  `deleted` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_options`
 --
 
-INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quantity`) VALUES
-(6, 2, 'S', '#097a27', 28),
-(8, 2, 'XL', '#FFFF00', 47),
-(10, 3, 'M', '#FFFF00', 49),
-(11, 3, 'S', '#097a27', 49),
-(12, 3, 'S', '#FFFF00', 49),
-(17, 5, 'M', '#097a27', 5),
-(18, 5, 'M', '#FFFF00', 50),
-(19, 5, 'S', '#097a27', 50),
-(20, 5, 'S', '#FFFF00', 50),
-(32, 23, 'S', '#ff0000', 9),
-(33, 23, 'M', '#000000', 7),
-(34, 1, 'S', 'red', 6),
-(35, 1, 'M', 'green', 9),
-(36, 1, 'S', 'green', 19),
-(37, 1, 'L', 'green', 0),
-(38, 1, 'S', 'black', 8),
-(39, 1, 'S', 'white', 10),
-(40, 1, 'S', 'purple', 0),
-(41, 21, 'S', 'blue', 20),
-(42, 21, 'S', 'red', 20);
+INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quantity`, `deleted`) VALUES
+(6, 2, 'S', '#097a27', 28, 0),
+(8, 2, 'XL', '#FFFF00', 47, 0),
+(10, 3, 'M', '#FFFF00', 49, 0),
+(11, 3, 'S', '#097a27', 49, 0),
+(12, 3, 'S', '#FFFF00', 49, 0),
+(17, 5, 'M', '#097a27', 5, 0),
+(18, 5, 'M', '#FFFF00', 50, 0),
+(19, 5, 'S', '#097a27', 50, 0),
+(20, 5, 'S', '#FFFF00', 50, 0),
+(32, 23, 'S', '#ff0000', 9, 0),
+(33, 23, 'M', '#000000', 7, 0),
+(34, 1, 'S', 'red', 29, 0),
+(35, 1, 'M', 'green', 9, 0),
+(36, 1, 'S', 'green', 16, 0),
+(37, 1, 'L', 'green', 0, 0),
+(38, 1, 'S', 'black', 8, 0),
+(39, 1, 'S', 'white', 10, 0),
+(40, 1, 'S', 'purple', 0, 0),
+(41, 21, 'S', 'blue', 20, 0),
+(42, 21, 'S', 'red', 20, 0);
 
 -- --------------------------------------------------------
 
@@ -490,7 +484,8 @@ INSERT INTO `product_reviews` (`reviewId`, `userId`, `productId`, `star`, `title
 (26, 39, 3, 5, 'hello', 'abc', '2023-05-18 10:40:45', 0, 0),
 (27, 33, 21, 4, 'Hello', 'abc', '2023-05-18 11:01:45', 0, 0),
 (28, 39, 1, 3, 'Ngon', 'ngon', '2023-05-20 11:35:53', 0, 0),
-(30, 39, 5, 4, 'tốt', 'tốt', '2023-05-20 14:42:39', 0, 0);
+(30, 39, 5, 4, 'tốt', 'tốt', '2023-05-20 14:42:39', 0, 0),
+(31, 39, 1, 5, 'Ngon', 'Ngon', '2023-05-23 09:41:48', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -562,7 +557,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userId`, `fname`, `lname`, `email`, `phone`, `password`, `role`, `province`, `district`, `ward`, `street`) VALUES
 (38, NULL, NULL, 'phagame@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL),
-(39, 'Nguyễn', 'Tài', 'wow@gmail.com', '0986512466', 'fcea920f7412b5da7be0cf42b8c93759', 0, 'Thành phố Hà Nội', 'Huyện Phúc Thọ', 'Thị trấn Phúc Thọ', '28 TDT'),
+(39, 'Nguyễn', 'Tài', 'wow@gmail.com', '0986512466', 'fcea920f7412b5da7be0cf42b8c93759', 0, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT'),
 (41, NULL, NULL, 'new@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL),
 (42, NULL, NULL, 'nguyentantai12b1@gmail.com', NULL, 'fcea920f7412b5da7be0cf42b8c93759', 0, NULL, NULL, NULL, NULL);
 
@@ -717,7 +712,7 @@ ALTER TABLE `admin_roles`
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -753,7 +748,7 @@ ALTER TABLE `images_gallery`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -777,7 +772,7 @@ ALTER TABLE `product_options`
 -- AUTO_INCREMENT for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `reviewId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `reviewId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `services`

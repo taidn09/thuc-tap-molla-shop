@@ -34,6 +34,8 @@
                 </div>
                 <div class="col-12">
                     <h5>Danh sách sản phẩm</h5>
+                    <p>Bạn có thể trả hàng và được hoàn tiền 100% trong vòng 3 ngày nếu như hàng bị lỗi...</p>
+                    
                     <table class="table table-bordered">
                         <tr>
                             <th class="p-2">Tên sản phẩm</th>
@@ -42,9 +44,11 @@
                             <th class="p-2">Số lượng</th>
                             <th class="p-2">Giá tiền</th>
                             <th class="p-2">Thành tiền</th>
+                            <th class="p-2">Thao tác</th>
                         </tr>
 
                         <?php
+
                         $productModel = new ProductModel();
                         foreach ($detail as $item) {
                             $product = $productModel->getProductById($item['productId']);
@@ -55,8 +59,57 @@
                                 <td class="p-2"><?= $option['color'] ?></td>
                                 <td class="p-2"><?= $option['size'] ?></td>
                                 <td class="p-2"><?= $item['quantity'] ?></td>
-                                <td class="p-2"><?= $item['price'] ?>đ</td>
-                                <td class="p-2"><?= $item['total'] ?>đ</td>
+                                <td class="p-2"><?= number_format($item['price']) ?>đ</td>
+                                <td class="p-2"><?= number_format($item['total']) ?>đ</td>
+                                <td class="p-2">
+                                    <?php
+                                    $startDate = new DateTime($order['orderDate']);
+                                    $today = new DateTime();
+                                    $interval = $today->diff($startDate);
+                                    $numberOfDays = $interval->format('%a');
+                                    if ($order['status'] == 3 && $numberOfDays <= 3 && $item['returned'] == 0) :
+                                    ?>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<?= $order['orderId'] ?>">Trả hàng</button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-<?= $order['orderId'] ?>" tabindex="-1" aria-labelledby="model-label-<?= $order['orderId'] ?>" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <form action="/" method="POST" class="modal-content return-form" enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="model-label-<?= $order['orderId'] ?>">Trả hàng</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mx-4">
+                                                            <input type="hidden" name="orderId" readonly value="<?=$item['orderId']?>">
+                                                            <input type="hidden" name="optionId" readonly value="<?=$item['optionId']?>">
+                                                            <div class="form-group">
+                                                                <label for="reason-<?= $order['orderId'] ?>">Lý do trả hàng</label>
+                                                                <textarea id="reason-<?= $order['orderId'] ?>" name="reason" class="form-control" placeholder="Lí do trả hàng (cụ thể)..."></textarea>
+                                                                <div class="err-msg reason-err-msg"></div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="image-<?= $order['orderId'] ?>">Hình ảnh chứng minh(rõ nét)</label>
+                                                                <input type="file" name="image" id="image-<?= $order['orderId'] ?>" class="form-control">
+                                                                <div class="err-msg image-err-msg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-primary">Gửi</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <?php endif;  ?>
+                                    <?php 
+                                        if($item['returned'] == 1){
+                                            echo "Trả hàng";
+                                        }
+                                    ?>
+                                </td>
                             </tr>
                         <?php
                         }

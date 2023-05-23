@@ -161,7 +161,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Vâng, xóa!',
+            confirmButtonText: 'Vâng, đồng ý!',
             cancelButtonText: 'Đóng!'
         }
         const priceFormatOption = {
@@ -1065,22 +1065,123 @@
 
         })
         // trả hàng
-        $('.return-form').on('submit', function(e){
+        $('.return-form').on('submit', handleReturn)
+
+        function handleReturn(e) {
             e.preventDefault()
             let flag = true
+            const _this = $(this)
             const reason = $(this).find('textarea[name="reason"]');
             const images = $(this).find('input[type="file"]');
-            console.log(images);
-            if(reason.val().trim() == ''){
-                flag =false
+            if (reason.val().trim() == '') {
+                flag = false
                 reason.siblings('.err-msg').html("Bạn chưa nhập lý do trả hàng...")
             }
-            if(images[0].files.length <= 0){
-                flag =false
+            if (images[0].files.length <= 0) {
+                flag = false
                 images.siblings('.err-msg').html("Bạn chưa cung cấp hình ảnh...")
             }
-        })
+            const formData = new FormData()
+            formData.append('orderId', _this.find('input[name="orderId"]').val());
+            formData.append('optionId', _this.find('input[name="optionId"]').val());
+            formData.append('image', _this.find('input[name="image"]')[0].files[0]);
+            formData.append('reason', _this.find('textarea[name="reason"]').val());
+            if (flag) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/account/returns',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            Swal.fire({
+                                ...successPopup,
+                                timer : false,
+                                showConfirmButton: true,
+                                title: 'Yêu cầu đã được xử lý...'
+                            }).then(result=>{
+                                if(result.isConfirmed){
+                                    $('button.close').click()
+                                }
+                            })
+                        }
+                    },
+                });
+            }
+        }
         // hủy đơn
+        function cancelOrder(orderId) {
+            if (orderId) {
+                Swal.fire({
+                    ...confirmPopup,
+                    title: 'Hủy đơn hàng này ?'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: `/account/cancelOrder`,
+                            data: {
+                                orderId
+                            },
+                            success: function(response) {
+                                if (response) {
+                                    updateAccountOrderList(response)
+                                    Swal.fire({
+                                        ...successPopup,
+                                        title: 'Đã hủy đơn hàng thành công!',
+                                    })
+                                }
+                            },
+                        });
+                    }
+                })
+            }
+        }
+
+        function updateAccountOrderList(response) {
+            const {
+                orders
+            } = JSON.parse(response)
+            let _html = ''
+            if (orders) {
+                for (const key in orders) {
+                    let _btn = ''
+                    const {
+                        orderId,
+                        orderDate,
+                        summary,
+                        status,
+                        statusText
+                    } = orders[key]
+                    if (status == 1) {
+                        _btn += `<button class="btn btn-primary" onclick="cancelOrder('${orderId}')">Hủy đơn</button>`
+                    }
+                    _html += `
+                    <tr>
+                                                    <td class="p-2">#
+                                                        ${orderId}
+                                                    </td>
+                                                    <td class="p-2">
+                                                        ${orderDate}
+                                                    </td>
+                                                    <td class="p-2">
+                                                        ${summary.toLocaleString('en-US', priceFormatOption)}đ
+                                                    </td>
+                                                    <td class="p-2">
+                                                       ${statusText}
+                                                    </td>
+                                                    <td class="p-2">
+                                                        ${_btn}
+                                                        <a href="/account/odt/${orderId}" class="btn btn-custom btn-outline-primary">Chi tiết</a>
+                                                    </td>
+                                                </tr>
+                    `
+                }
+            }
+            $('.order-list').html(_html)
+            $(document).on('submit', '.return-form', handleReturn);
+        }
         // show more - search page
         $('#search-show-more').on('click', function() {
             let total = 0

@@ -49,11 +49,15 @@ class Controller
     {
         return isset($_SESSION['user']);
     }
-    public function uploadImage($image, $folder)
+    public function uploadImage($image, $folder, $time = null)
     {
         $target_dir = "public/assets/images/$folder/";
         $targetFileType = strtolower(pathinfo(basename($image['name']), PATHINFO_EXTENSION));
-        $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME))).'.'.$targetFileType;
+        if($time){
+            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME)).$time).'.'.$targetFileType;
+        }else{
+            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME))).'.'.$targetFileType;
+        }
         if (file_exists($target_file)) {
             return 'Ảnh đã tồn tại';
         }
@@ -71,12 +75,16 @@ class Controller
         }
         return null;
     }
-    public function uploadMultiImage($image, $folder)
+    public function uploadMultiImage($image, $folder,$time = null)
     {
         $target_dir = "public/assets/images/$folder/";
         for ($i = 0; $i < count($image['name']); $i++) {
             $targetFileType = strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_EXTENSION));
-            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME))).'.'.$targetFileType;
+            if($time){
+                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME)).$time).'.'.$targetFileType;
+            }else{
+                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME))).'.'.$targetFileType;
+            }
             if (file_exists($target_file)) {
                 return 'Ảnh đã tồn tại';
             }

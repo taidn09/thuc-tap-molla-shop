@@ -20,10 +20,10 @@
                                         <div class="err-msg title-err-msg"></div>
                                     </div>
                                     <div class="form-group mt-3">
-                                    <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Sửa danh mục
                                         </button>
+                                        <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             <?php } ?>
@@ -39,10 +39,10 @@
                                         <div class="err-msg title-err-msg"></div>
                                     </div>
                                     <div class="form-group mt-2 m-auto">
-                                        <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Thêm danh mục
                                         </button>
+                                        <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>

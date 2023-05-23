@@ -71,9 +71,12 @@ class ProductModel
         }
         return $this->db->getOne($select);
     }
-    public function getProductOptions($id)
+    public function getProductOptions($id , $getDeleted = true)
     {
         $select = "SELECT * FROM product_options WHERE productId = '$id'";
+        if($getDeleted == false){
+            $select.= " AND deleted = 0";
+        }
         return $this->db->getAll($select);
     }
     public function getRelatedProducts($categoryId, $productId, $quantity = null)
@@ -221,9 +224,12 @@ class ProductModel
         $select = "SELECT * FROM product_options WHERE productId = '$productId' AND color ='$color' AND size = '$size'";
         return $this->db->getOne($select);
     }
-    public function getOptionById($id)
+    public function getOptionById($id, $getDeleted = true)
     {
-        $select = "SELECT * FROM product_options WHERE optionId = $id";
+        $select = "SELECT * FROM product_options WHERE optionId = '$id'";
+        if($getDeleted == false){
+            $select.=" AND deleted = 0";
+        }
         return $this->db->getOne($select);
     }
     public function checkOptionExisted($productId, $color, $size, $optionId = null)
@@ -236,9 +242,14 @@ class ProductModel
         // echo $select;
         return $this->db->getOne($select);
     }
+    public function restoreOption($id, $quantity)
+    {
+        $query = "UPDATE product_options SET deleted = 0, quantity = $quantity WHERE optionId = '$id'";
+        return $this->db->exec($query);
+    }
     public function deleteOption($id)
     {
-        $query = "DELETE FROM product_options WHERE optionId = $id";
+        $query = "UPDATE product_options SET deleted = 1 WHERE optionId = $id";
         return $this->db->exec($query);
     }
     public function addOption($productId, $color, $size, $quantity)

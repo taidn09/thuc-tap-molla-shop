@@ -9,17 +9,7 @@
                     ?>
                 </div>
                 <div>
-                    <?php
-                    if ($this->checkRole('blog-delete')) :
-                    ?>
-                        <a class="btn btn-danger btn-custom" onclick="deleteBlog('<?= $blog['blogId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
-                    <?php endif; ?>
-                    <?php
-                    if ($this->checkRole('blog-edit')) :
-                    ?>
-                    <a href="/admin/blog/edit/<?= $blog['blogId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                    </a>
-                    <?php endif; ?>
+                <a href="/admin/blog" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                 </div>
             </div>
         </div>

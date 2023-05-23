@@ -19,6 +19,8 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>Tên sản phẩm</th>
+                            <th>Màu sắc</th>
+                            <th>Kích thước</th>
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
                             <th>Thành tiền</th>
@@ -27,9 +29,12 @@
                         $productModel = new ProductModel();
                         foreach ($orderDetail as $item) {
                             $product = $productModel->getProductById($item['productId']);
+                            $option = $productModel->getOptionById($item['optionId']);
                         ?>
                             <tr>
                                 <td><?= $product['title'] ?></td>
+                                <td><?=$option['color'] ?></td>
+                                <td><?=$option['size'] ?></td>
                                 <td><?= $item['quantity'] ?></td>
                                 <td>$<?= $item['price'] ?></td>
                                 <td>$<?= $item['total'] ?></td>
@@ -38,17 +43,7 @@
                         }
                         ?>
                     </table>
-                    <?php
-                    if ($this->checkRole('order-delete')) :
-                    ?>
-                        <a class="btn btn-danger btn-custom" onclick="deleteOrder('<?= $order['orderId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
-                    <?php endif; ?>
-                    <?php
-                    if ($this->checkRole('order-edit')) :
-                    ?>
-                        <a href="/admin/order/edit/<?= $order['orderId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                        </a>
-                    <?php endif; ?>
+                    <a href="/admin/order" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                 </div>
             </div>
         </div>
