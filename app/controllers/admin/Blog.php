@@ -122,11 +122,11 @@ class Blog extends Controller
             $id = $_POST['id'];
             $res = $this->model->deleteBlog($id);
             if (!empty($res)) {
-                $userModel = new UserModel();
+               $adminModel = new AdminModel();
                 $blogs = $this->model->getAllBlogs();
                 foreach ($blogs as $key => $value) {
-                    $user = $userModel->getUserById($value['authorId']);
-                    $blogs[$key]['author'] = $user['fname'] . ' ' . $user['lname'];
+                    $admin =$adminModel->getAdminById($value['authorId']);
+                    $blogs[$key]['author'] = $admin['name'];
                 }
                 echo json_encode([
                     'status' => 1,

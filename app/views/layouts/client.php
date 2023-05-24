@@ -678,8 +678,8 @@
                 totalPage,
                 totalProductFound
             } = JSON.parse(response)
-            console.log(totalProductFound);
             let productsHTML = ''
+            console.log(totalProductFound);
             if (totalProductFound > 0) {
                 if (productsList) {
                     for (const key in productsList) {
@@ -697,7 +697,6 @@
                             size,
                             sold
                         } = productsList[key]
-                        console.log(Number(currentPrice).toLocaleString('en-US', priceFormatOption));
                         let label = salePercent > 0 ? 'sale' : '';
                         productsHTML += `
                     <div class="col-6 col-md-4 col-lg-4 col-xl-3">
@@ -737,39 +736,40 @@
                     }
                 }
 
-                let paginateHTML = ` <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+
+                $('.products-list-container').html(productsHTML)
+                $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
+            } else {
+                $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
+                $('.products-list-container').html('<h3 class="text-center">Hiện chưa có sản phẩm nào</h3>')
+            }
+            let paginateHTML = ` <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                                 <a class="page-link page-link-prev" href="#${currentPage - 1}" aria-label="Previous" tabindex="-1" aria-disabled="true">
                                     <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Trang trước
                                 </a>
                             </li>`
-                for (let index = 0; index < totalPage; index++) {
-                    let isAcitve = index + 1 == currentPage ? 'active' : ''
-                    paginateHTML += `
+            for (let index = 0; index < totalPage; index++) {
+                let isAcitve = index + 1 == currentPage ? 'active' : ''
+                paginateHTML += `
                     <li class="page-item ${isAcitve}" aria-current="page"><a class="page-link" href="#${index+1}">${index+1}</a></li>
                 `
-                }
-                paginateHTML += `
+            }
+            paginateHTML += `
             <li class="page-item-total">of ${totalPage}</li>
             <li class="page-item ${currentPage >= totalPage ? 'disabled' : ''}">
                                 <a class="page-link page-link-next" href="#${Number(currentPage) + 1}" aria-label="Next">
                                     Trang sau <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                 </a>
                             </li>`
-                $('.products-list-container').html(productsHTML)
-                $('.paginate-shop').html(paginateHTML)
-                $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
-                $(document).on("click", ".page-item", function(e) {
-                    e.preventDefault()
-                    if (!$(e.target).parent().hasClass('active')) {
-                        $(e.target).parent().siblings().removeClass('active')
-                        $(e.target).parent().addClass('active')
-                        callFilterProducts()
-                    }
-                });
-            } else {
-                $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
-                $('.products-nav-wrapper').html('<h3 class="text-center">Hiện chưa có sản phẩm nào</h3>')
-            }
+            $('.paginate-shop').html(paginateHTML)
+            $(document).on("click", ".page-item", function(e) {
+                e.preventDefault()
+                if (!$(e.target).parent().hasClass('active')) {
+                    $(e.target).parent().siblings().removeClass('active')
+                    $(e.target).parent().addClass('active')
+                    callFilterProducts()
+                }
+            });
         }
 
         $('.page-item a').on('click', function(e) {
@@ -927,7 +927,7 @@
                                 title: 'Thanh toán thành công!',
                             })
                             $('.checkout .container').html(`<a href="/" class="btn btn-outline-primary-2 btn-minwidth-lg">
-            			<span>BACK TO HOMEPAGE</span>
+            			<span>Quay về trang chủ</span>
             			<i class="icon-long-arrow-right"></i>
             		</a>`);
                             updateCartHeader(response)
@@ -1071,6 +1071,7 @@
             e.preventDefault()
             let flag = true
             const _this = $(this)
+            const td = _this.parents('td')
             const reason = $(this).find('textarea[name="reason"]');
             const images = $(this).find('input[type="file"]');
             if (reason.val().trim() == '') {
@@ -1097,12 +1098,12 @@
                         if (response && JSON.parse(response).status == 1) {
                             Swal.fire({
                                 ...successPopup,
-                                timer : false,
+                                timer: false,
                                 showConfirmButton: true,
                                 title: 'Yêu cầu đã được xử lý...'
-                            }).then(result=>{
-                                if(result.isConfirmed){
-                                    $('button.close').click()
+                            }).then(result => {
+                                if (result.isConfirmed) {
+                                    location.reload()
                                 }
                             })
                         }

@@ -54,10 +54,10 @@
 
                                     </div>
                                     <div class="form-group mt-2 m-auto">
-                                        <a class="btn btn-custom btn-primary" href="javascript:void(0)" onclick="window.history.back()" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Chỉnh sửa thuộc tính
                                         </button>
+                                        <a class="btn btn-custom btn-primary" href="javascript:void(0)" onclick="window.history.back()" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>

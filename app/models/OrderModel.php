@@ -85,7 +85,8 @@ class OrderModel
         return $this->db->exec($query); 
     }
     public function updateOrderDetailStatus($orderId, $optionId, $returned, $reason, $image)
-    {
+    {   
+        $this->updateOrderStatus($orderId,5);
         $query = "UPDATE `order_details` SET `returned` = $returned, `return_reason` ='$reason', `return_image` = '$image'  WHERE orderId = '$orderId' AND optionId = '$optionId'";
         return $this->db->exec($query); 
     }

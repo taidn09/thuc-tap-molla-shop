@@ -28,7 +28,7 @@
                                                 <select name="author" class="form-select" id="select-box">
                                                     <?php
                                                     $adminModel = new AdminModel();
-                                                    $authors = $adminModel->getAdminList();
+                                                    $authors = $adminModel->getAdminList(true);
                                                     foreach ($authors as $author) :
                                                     ?>
                                                         <option value="<?= $author['adminId'] ?>" <?= $author['adminId'] == $blog['authorId'] ? 'selected' : '' ?>><?= $author['name']?></option>
@@ -101,7 +101,7 @@
                                                 <select name="author" class="form-select" id="select-box">
                                                     <?php
                                                     $adminModel = new AdminModel();
-                                                    $authors = $adminModel->getAdminList();
+                                                    $authors = $adminModel->getAdminList(true);
                                                     foreach ($authors as $author) :
                                                     ?>
                                                         <option value="<?= $author['adminId'] ?>"><?= $author['name']?></option>

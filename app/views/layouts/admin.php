@@ -980,7 +980,8 @@
             e.preventDefault();
             $('err-msg').html('')
             let flag = true
-            if ($(this).find('#quantity').val() == '' || isNaN($(this).find('#quantity').val())) {
+            let qty = $(this).find('#quantity').val().trim()
+            if (qty == '' || isNaN(qty) || qty < 0) {
                 flag = false
                 $('.quantity-err-msg').html('Số lượng không hợp lệ...')
             }
@@ -1073,18 +1074,18 @@
         $('#product-form').on('submit', function(e) {
             e.preventDefault()
             let flag = true
-            let salePercent = $('#salePercent').val()
-            let originalPrice = $('#originalPrice').val()
+            let salePercent = $('#salePercent').val().trim()
+            let originalPrice = $('#originalPrice').val().trim()
             $('err-msg').html('')
             if ($('#title').val().trim() == '') {
                 $('.title-err-msg').html('Chưa nhập tên sản phẩm')
                 flag = false
             }
-            if (originalPrice.trim() == '' || isNaN(originalPrice)) {
+            if (originalPrice.trim() == '' || isNaN(originalPrice) || originalPrice < 0) {
                 $('.originalPrice-err-msg').html('Chưa nhập giá hoặc nhập không hợp lệ')
                 flag = false
             }
-            if (salePercent.trim() == '' || isNaN(salePercent)) {
+            if (salePercent.trim() == '' || isNaN(salePercent) || salePercent < 0) {
                 $('.salePercent-err-msg').html('Chưa nhập giảm giá hoặc nhập không hợp lệ')
                 flag = false
             }
@@ -1126,6 +1127,7 @@
                             success: function(response) {
                                 if (response && JSON.parse(response).status == 1) {
                                     if (window.location.pathname == '/admin/product') {
+                                        $('#catesFilter')[0].selectedIndex = 0
                                         updateProductPage(response)
                                         Swal.fire({
                                             ...successPopup,
@@ -1222,6 +1224,7 @@
                             },
                             success: function(response) {
                                 if (response && JSON.parse(response).status == 1) {
+                                    $('#catesFilter')[0].selectedIndex = 0
                                     updateProductPage(response)
                                     Swal.fire({
                                         ...successPopup,
@@ -1268,6 +1271,35 @@
                     }
                 },
             });
+        }
+
+        function importProducts() {
+            $('.err-msg').html('')
+            if ($('#import')[0].files.length <= 0) {
+                $('.import-err-msg').html('Chưa chọn file...')
+            } else {
+                const formData = new FormData();
+                formData.append('import', $('#import')[0].files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/product/import',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            updateProductPage(response)
+                            Swal.fire({
+                                ...successPopup,
+                                title: 'Nhập dữ liệu từ file thành công!'
+                            })
+                        }else{
+                            $('.import-err-msg').html(JSON.parse(response).errMsg)
+                        }
+                    },
+                });
+            }
+
         }
         // ------------end product
         // ------------review 
@@ -1677,7 +1709,7 @@
                                     <tbody>
                                     ${_html}
                                     <tr>
-                                    <td colspan='2' class="text-center">Tổng ${typeReport == 1 ? "số lượng: " : 'doanh thu: '}<b>${summary}đ</b></td></tr>
+                                    <td colspan='2' class="text-center">Tổng ${typeReport == 1 ? "số lượng: "+ summary.toLocaleString('en-US', priceFormatOption) : 'doanh thu: ' + summary.toLocaleString('en-US', priceFormatOption)+'đ'}</td></tr>
                                     </tbody>
                                 `)
                             }

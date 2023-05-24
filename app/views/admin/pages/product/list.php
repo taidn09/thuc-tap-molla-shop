@@ -4,12 +4,22 @@
         <?php
         if ($this->checkRole('product-add')) :
         ?>
-            <a href="/admin/product/add" class="text-white btn btn-custom btn-success ms-auto d-inline-block py-2 px-5 mb-4">Thêm sản phẩm mới</a>
+            <a href="/admin/product/add" class="text-white btn btn-custom btn-success d-inline-block py-2 px-5 mb-4">Thêm sản phẩm mới</a>
         <?php endif; ?>
+        <a href="a" class="text-white btn btn-custom btn-primary ms-auto d-inline-block py-2 px-5 mb-4">Xuất dữ liệu</a>
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
                 <h5 class="card-title text-uppercase">Danh sách sản phẩm</h5>
-                <div class="d-flex justify-content-center">
+                
+                <div class="d-flex justify-content-around">
+                    <div class="form-group">
+                        <label for="import">Nhập liệu từ file</label>
+                        <div>
+                            <input type="file" name="import" id="import" class="form-control">
+                            <div class="err-msg import-err-msg"></div>
+                            <button class="btn btn-custom btn-primary mt-1" onclick="importProducts()">Nhập dữ liệu từ file</button>
+                        </div>
+                    </div>
                     <div class=" form-group">
                         <label for="catesFilter">Phân loại theo danh mục:</label>
                         <select name="catesFilter[]" id="catesFilter" class="form-select" onchange="filterProduct(this.value)">

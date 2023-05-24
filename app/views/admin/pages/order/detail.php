@@ -24,20 +24,49 @@
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
                             <th>Thành tiền</th>
+                            <th>Trạng thái</th>
                         </tr>
                         <?php
                         $productModel = new ProductModel();
                         foreach ($orderDetail as $item) {
-                            $product = $productModel->getProductById($item['productId']);
+                            $product = $productModel->getProductById($item['productId'], true);
                             $option = $productModel->getOptionById($item['optionId']);
                         ?>
                             <tr>
                                 <td><?= $product['title'] ?></td>
-                                <td><?=$option['color'] ?></td>
-                                <td><?=$option['size'] ?></td>
+                                <td><?= $option['color'] ?></td>
+                                <td><?= $option['size'] ?></td>
                                 <td><?= $item['quantity'] ?></td>
-                                <td>$<?= $item['price'] ?></td>
-                                <td>$<?= $item['total'] ?></td>
+                                <td>$<?= number_format($item['price']) ?></td>
+                                <td>$<?= number_format($item['total']) ?></td>
+                                <?php if ($item['returned'] == 0) : ?>
+                                    <td>Bình thường</td>
+                                <?php else : ?>
+                                    <td><button data-bs-toggle="modal" data-bs-target="#modal-<?=$item['optionId']?>" class="btn btn-custom btn-primary">Trả hàng</button></td>
+                                    <div class="modal fade" id="modal-<?=$item['optionId']?>" tabindex="-1" aria-labelledby="example-label-<?=$item['optionId']?>" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="example-label-<?=$item['optionId']?>">Thông tin trả hàng</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div>
+                                                        <b>Lý do:</b>
+                                                        <p><?=$item['return_reason']?></p>
+                                                    </div>
+                                                    <div>
+                                                        <b>Hình ảnh:</b>
+                                                        <p><img src="/public/assets/images/returns/<?=$item['return_image']?>" alt="" style="width: 200px;"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-custom btn-danger" data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </tr>
                         <?php
                         }

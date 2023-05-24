@@ -19,9 +19,12 @@ class AdminModel
         }
         return false;
     }
-    public function getAdminList()
+    public function getAdminList($all = false)
     {
         $select = "SELECT * FROM `admins` WHERE email != 'taidn@gmail.com'";
+        if($all == true){
+            $select = "SELECT * FROM `admins`";
+        }
         return $this->db->getAll($select);
     }
     public function login($email, $password)

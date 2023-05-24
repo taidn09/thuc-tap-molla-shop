@@ -51,7 +51,7 @@
 
                         $productModel = new ProductModel();
                         foreach ($detail as $item) {
-                            $product = $productModel->getProductById($item['productId']);
+                            $product = $productModel->getProductById($item['productId'],true);
                             $option = $productModel->getOptionById($item['optionId']);
                         ?>
                             <tr>
@@ -67,15 +67,15 @@
                                     $today = new DateTime();
                                     $interval = $today->diff($startDate);
                                     $numberOfDays = $interval->format('%a');
-                                    if ($order['status'] == 3 && $numberOfDays <= 3 && $item['returned'] == 0) :
+                                    if ($numberOfDays <= 3 && $item['returned'] == 0) :
                                     ?>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<?= $order['orderId'] ?>">Trả hàng</button>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<?= $item['optionId'] ?>">Trả hàng</button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="modal-<?= $order['orderId'] ?>" tabindex="-1" aria-labelledby="model-label-<?= $order['orderId'] ?>" aria-hidden="true">
+                                        <div class="modal fade" id="modal-<?= $item['optionId'] ?>" tabindex="-1" aria-labelledby="model-label-<?= $item['optionId'] ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <form action="/" method="POST" class="modal-content return-form" enctype="multipart/form-data">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="model-label-<?= $order['orderId'] ?>">Trả hàng</h5>
+                                                        <h5 class="modal-title" id="model-label-<?= $item['optionId'] ?>">Trả hàng</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -85,12 +85,12 @@
                                                             <input type="hidden" name="orderId" readonly value="<?=$item['orderId']?>">
                                                             <input type="hidden" name="optionId" readonly value="<?=$item['optionId']?>">
                                                             <div class="form-group">
-                                                                <label for="reason-<?= $order['orderId'] ?>">Lý do trả hàng</label>
+                                                                <label>Lý do trả hàng</label>
                                                                 <textarea id="reason-<?= $order['orderId'] ?>" name="reason" class="form-control" placeholder="Lí do trả hàng (cụ thể)..."></textarea>
                                                                 <div class="err-msg reason-err-msg"></div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="image-<?= $order['orderId'] ?>">Hình ảnh chứng minh(rõ nét)</label>
+                                                                <label>Hình ảnh chứng minh(rõ nét)</label>
                                                                 <input type="file" name="image" id="image-<?= $order['orderId'] ?>" class="form-control">
                                                                 <div class="err-msg image-err-msg"></div>
                                                             </div>
@@ -106,7 +106,7 @@
                                     <?php endif;  ?>
                                     <?php 
                                         if($item['returned'] == 1){
-                                            echo "Trả hàng";
+                                            echo "Đã trả hàng";
                                         }
                                     ?>
                                 </td>

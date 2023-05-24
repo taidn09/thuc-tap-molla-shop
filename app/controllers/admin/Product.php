@@ -1,4 +1,10 @@
 <?php
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class Product extends Controller
 {
     public $model = null;
@@ -186,7 +192,7 @@ class Product extends Controller
             if (!empty($res)) {
                 echo json_encode([
                     'status' => 1,
-                    'options' => $this->model->getProductOptions($productId,false)
+                    'options' => $this->model->getProductOptions($productId, false)
                 ]);
                 return;
             }
@@ -288,5 +294,78 @@ class Product extends Controller
             ]);
             return;
         }
+    }
+    public function import()
+    {
+        if (!empty($_FILES)) {
+            // echo '<pre>';
+            // print_r($_FILES);
+            // echo '</pre>';
+            $ext = strtolower(pathinfo($_FILES['import']['name'], PATHINFO_EXTENSION));
+            // echo $ext;
+            if ($ext != 'xlsx') {
+                echo json_encode([
+                    'status' => 0,
+                    'errMsg' => 'Vui lòng chọn file có đuôi xlsx'
+                ]);
+                return;
+            }
+            $spreadsheet = IOFactory::load($_FILES['import']['tmp_name']);
+            $worksheet = $spreadsheet->getActiveSheet();
+            $highestRow = $worksheet->getHighestRow();
+            $highestColumn = $worksheet->getHighestColumn();
+            for ($row = 2; $row <= $highestRow; $row++) {
+                $rowData = array();
+                for ($column = 'A'; $column <= $highestColumn; $column++) {
+                    // Get the cell value
+                    $cellValue = $worksheet->getCell($column . $row)->getValue();
+                    $rowData[] = $cellValue;
+                }
+                $res = $this->model->addProduct($rowData[0], $rowData[1], $rowData[2], $rowData[3], $rowData[4]);
+                if (empty($res)) {
+                    echo json_encode([
+                        'status' => 0,
+                        'errMsg' => 'Có lỗi xảy ra trong quá trình nhập dữ liệu'
+                    ]);
+                    return;
+                }
+            }
+            echo json_encode([
+                'status' => 1,
+                'products' => $this->model->getProductsList(null, true)
+            ]);
+            return;
+        }
+    }
+    public function export()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Tên sản phẩm');
+        $sheet->setCellValue('B1', 'Giá gốc');
+        $sheet->setCellValue('C1', 'Giảm giá(%)');
+        $sheet->setCellValue('D1', 'Giá sau giảm');
+        $sheet->setCellValue('E1', 'Mô tả');
+        $sheet->setCellValue('F1', 'Số lượt đánh giá');
+        $sheet->setCellValue('G1', 'Số sao trung bình');
+        $sheet->setCellValue('H1', 'Số lượng đã bán');
+        $products = $this->model->getProductsList(null, true);
+        $current_index = 2;
+        foreach ($products as $product) {
+            $sheet->setCellValue('A'.$current_index, $product['title']);
+            $sheet->setCellValue('B'.$current_index, $product['originalPrice']);
+            $sheet->setCellValue('C'.$current_index, $product['salePercent']);
+            $sheet->setCellValue('D'.$current_index, $product['currentPrice']);
+            $sheet->setCellValue('E'.$current_index, $product['description']);
+            $sheet->setCellValue('F'.$current_index, $product['reviewCount']);
+            $sheet->setCellValue('G'.$current_index, $product['rating']);
+            $sheet->setCellValue('H'.$current_index, $product['sold']);
+            $current_index++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $filePath = 'export/danh_sach_san_pham_' . date("Y_m_d_H_i_s") . '.xlsx';
+        $writer->save($filePath);
+        echo '<script>window.open("' . _WEB_ROOT . '/' . $filePath . '")</script>';
+        echo '<script>window.location = "/admin/product"</script>';
     }
 }
