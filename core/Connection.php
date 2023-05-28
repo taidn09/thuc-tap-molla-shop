@@ -26,4 +26,8 @@
         {
             return $this->db->exec($query);
         }
+        public function quote($str)
+        {
+            return $this->db->quote($str);
+        }
     }

@@ -165,7 +165,7 @@ class Cart extends Controller
             $total = array_reduce($_SESSION['cart'], function ($accumulator, $item) {
                 return $accumulator + $item['currentPrice'] * $item['quantity'];
             }, 0);
-            $_SESSION['cart-total-amount'] = $total;
+            $_SESSION['cart-total-amount'] = $total;    
             return $total;
         }
         $_SESSION['cart-total-amount'] = 0;

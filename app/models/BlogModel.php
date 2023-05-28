@@ -18,6 +18,7 @@ class BlogModel
         if (!$isAdmin) {
             $select .= ' WHERE isShown = 1';
         }
+        $select.=" ORDER BY createdAt DESC";
         $select = $this->formatQuery($select, $quantity);
         return $this->db->getAll($select);
     }

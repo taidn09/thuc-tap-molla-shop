@@ -41,7 +41,7 @@
                                 <?php
                                 foreach ($productList as $key => $product) {
                                 ?>
-                                    <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-4">
                                         <div class="product product-7 text-center">
                                             <figure class="product-media">
                                                 <span class="product-label label-<?php
@@ -88,8 +88,6 @@
                                 ?>
                             </div><!-- End .row -->
                         </div><!-- End .products -->
-
-
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center paginate-shop">
                                 <li class="page-item <?= $currentPage == 1 ? 'disabled' : '' ?>">

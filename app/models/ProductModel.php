@@ -26,20 +26,18 @@ class ProductModel
             $select .= ' AND p.isShown = 1';
         }
         $select = $this->formatQuery($select, $quantity);
-        // echo $select;
-        // die;
         return $this->db->getAll($select);
     }
     public function getTrendingProducts($quantity = null)
     {
         $select = "SELECT p.*, ig.image, po.size , po.color
         FROM products p 
-        LEFT JOIN (SELECT productId, color, MIN(size) AS size FROM product_options GROUP BY productId) AS po ON p.productId = po.productId 
+        LEFT JOIN (SELECT productId, color, MIN(size) AS size, quantity FROM product_options GROUP BY productId) AS po ON p.productId = po.productId
         LEFT JOIN (
                    SELECT productId, MIN(imgId) as imgId ,image 
                    FROM images_gallery 
                    GROUP BY productId
-                ) ig ON p.productId = ig.productId WHERE p.isShown = 1 AND p.deleted = 0 ORDER BY p.sold";
+                ) ig ON p.productId = ig.productId WHERE p.isShown = 1 AND p.deleted = 0 AND po.quantity > 0 ORDER BY p.sold";
         $select = $this->formatQuery($select, $quantity);
         return $this->db->getAll($select);
     }
@@ -52,8 +50,8 @@ class ProductModel
                    FROM images_gallery 
                    GROUP BY productId
                 ) ig ON p.productId = ig.productId
-        LEFT JOIN (SELECT productId,color, MIN(size) AS size FROM product_options GROUP BY productId) AS po ON p.productId = po.productId 
-        WHERE p.isShown = 1 AND p.deleted = 0 ORDER BY p.productId";
+        LEFT JOIN (SELECT productId,color, MIN(size) AS size, quantity FROM product_options GROUP BY productId) AS po ON p.productId = po.productId 
+        WHERE p.isShown = 1 AND p.deleted = 0 AND po.quantity > 0 ORDER BY p.productId";
         $select = $this->formatQuery($select, $quantity);
         return $this->db->getAll($select);
     }
@@ -112,11 +110,6 @@ class ProductModel
             ) ig ON p.productId = ig.productId WHERE p.productId = $id AND isShown = 1 AND deleted = 0";
         return $this->db->getOne($select);
     }
-    // public function getOptionQuantity($productId, $color, $size)
-    // {
-    //     $select = "SELECT quantity from product_options WHERE productId = $productId AND color = '$color' AND size = '$size'";
-    //     return $this->db->getOne($select);
-    // }
     public function getProductColors($id)
     {
         $select = "SELECT distinct(color) from product_options WHERE productId = $id AND quantity > 0";
@@ -190,7 +183,7 @@ class ProductModel
         return $this->db->getAll($select);
     }
     public function getDataBySearchTerms($table, $searchTerm, $quantity)
-    {
+    {   
         if ($table == 'products') {
             $select = "SELECT p.*, ig.image, po.size , po.color
         FROM products p 
@@ -263,31 +256,26 @@ class ProductModel
         return $this->db->exec($query);
     }
     public function checkProductExisted($title, $productId = null)
-    {
+    {   
+        $title = $this->db->quote($title);
         if ($productId) {
-            $select = "SELECT * FROM `products` WHERE title = '$title' AND productId != $productId AND deleted != 1";
+            $select = "SELECT * FROM `products` WHERE title = $title AND productId != $productId AND deleted != 1";
         } else {
-            $select = "SELECT * FROM `products` WHERE title = '$title' AND deleted != 1";
+            $select = "SELECT * FROM `products` WHERE title = $title AND deleted != 1";
         }
         return $this->db->getOne($select);
     }
     public function deleteProduct($id)
     {
         $query = "UPDATE products set deleted = 1 WHERE productId = $id";
-        // $query1 = "DELETE FROM product_options WHERE productId = $id";
-        // $images = $this->getProductImage($id);
-        // foreach ($images as $item) {
-        //     unlink('public/assets/images/products/' . $item['image']);
-        // }
-        // $query2 = "DELETE FROM images_gallery WHERE productId = $id";
-        // $this->db->exec($query1);
-        // $this->db->exec($query2);
         return $this->db->exec($query);
     }
     public function addProduct($title, $originalPrice, $salePercent, $desc, $categoryId)
     {
-        $currentPrice = number_format($originalPrice - $originalPrice * $salePercent / 100, 2);
-        $query = "INSERT INTO `products`(`title`, `originalPrice`, `currentPrice`, `description`, `salePercent`,`categoryId`) VALUES ('$title','$originalPrice','$currentPrice','$desc','$salePercent','$categoryId')";
+        $currentPrice = round($originalPrice - $originalPrice * $salePercent / 100, 2);
+        $titleEscaped = $this->db->quote($title);
+        $descEscaped = $this->db->quote($desc);
+        $query = "INSERT INTO `products`(`title`, `originalPrice`, `currentPrice`, `description`, `salePercent`,`categoryId`) VALUES ($titleEscaped,'$originalPrice','$currentPrice',$descEscaped,'$salePercent','$categoryId')";
         return $this->db->exec($query);
     }
     public function editProduct($productId, $title, $originalPrice, $salePercent, $desc, $categoryId)

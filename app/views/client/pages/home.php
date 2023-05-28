@@ -127,7 +127,7 @@
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>Xem nhanh</span></a> -->
                                 </div><!-- End .product-action-vertical -->
 
@@ -193,7 +193,7 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
                                             <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>quick view</span></a> -->
                                         </div><!-- End .product-action-vertical -->
 
@@ -340,7 +340,7 @@
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="javascipt:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                    <a href="javascipt:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>quick view</span></a> -->
                                 </div><!-- End .product-action-vertical -->
 
@@ -474,71 +474,41 @@
                                 }
                             }
                         }'>
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="/blog/detail/1">
-                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/demos/demo-6/blog/post-1.jpg" alt="image desc">
-                        </a>
-                    </figure><!-- End .entry-media -->
+                <?php
+                $adminModel = new AdminModel();
+                foreach ($blogs as $blog) {
+                    $author = $adminModel->getAdminById($blog['authorId']);
+                ?>
+                    <article class="entry blog">
+                        <figure class="entry-media">
+                            <a href="/blog/detail/<?= $blog['blogId'] ?>">
+                                <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/<?= $blog['thumbnail'] ?>" alt="image desc">
+                            </a>
+                        </figure><!-- End .entry-media -->
 
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">Nov 22, 2018</a>, 1 bình luận
-                        </div><!-- End .entry-meta -->
+                        <div class="entry-body text-center">
+                            <div class="entry-meta">
+                                <span class="entry-author">
+                                    by <a href="#"><?= $author['name'] ?></a>
+                                </span>
+                                <span class="meta-separator">|</span>
+                                <a href="#"><?= $blog['createdAt'] ?></a>
+                                <span class="meta-separator">|</span>
+                                <a href="#"><?= $blog['commentsCount'] ?> bình luận</a>
+                            </div><!-- End .entry-meta -->
 
-                        <h3 class="entry-title">
-                            <a href="/blog/detail/1">Sed adipiscing ornare.</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <a href="/blog/detail/1" class="read-more">Chi tiết</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="/blog/detail/1">
-                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/demos/demo-6/blog/post-2.jpg" alt="image desc">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">Dec 12, 2018</a>, 0 Comments
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title">
-                            <a href="/blog/detail/1">Fusce lacinia arcuet nulla.</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <a href="/blog/detail/1" class="read-more">Xem chi tiết</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="/blog/detail/1">
-                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/demos/demo-6/blog/post-3.jpg" alt="image desc">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">Dec 19, 2018</a>, 2 Comments
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title">
-                            <a href="/blog/detail/1">Quisque volutpat mattis eros.</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <a href="/blog/detail/1" class="read-more">Xem chi tiết</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
+                            <h2 class="entry-title">
+                                <a href="/blog/detail/<?= $blog['blogId'] ?>"><?= $blog['title'] ?></a>
+                            </h2><!-- End .entry-title -->
+                            <div class="entry-content">
+                                <p><?= $blog['shortDesc'] ?></p>
+                                <a href="/blog/detail/<?= $blog['blogId'] ?>" class="read-more">Xem chi tiết</a>
+                            </div><!-- End .entry-content -->
+                        </div><!-- End .entry-body -->
+                    </article><!-- End .entry -->
+                <?php
+                }
+                ?>
             </div><!-- End .owl-carousel -->
         </div><!-- End .container -->
     </div><!-- End .blog-posts -->

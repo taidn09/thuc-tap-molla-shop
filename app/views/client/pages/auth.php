@@ -41,24 +41,26 @@
                                         <i class="icon-long-arrow-right"></i>
                                     </button>
 
-                                    <a href="#" class="forgot-link">Quên mật khẩu?</a>
+                                    <a href="/auth/forgotPassword" class="forgot-link">Quên mật khẩu?</a>
                                 </div><!-- End .form-footer -->
                             </form>
                             <div class="form-choice">
-                                <p class="text-center">Hoặc bạn có thể</p>
+                                <p class="text-center">Hoặc bạn có thể đăng nhập bằng</p>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login btn-g">
+                                        <a href="<?= $googleLoginLink ?>" class="btn btn-login btn-g">
                                             <i class="icon-google"></i>
-                                            Đăng nhập bằng Goggle
+                                            Goggle
                                         </a>
                                     </div><!-- End .col-6 -->
                                     <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login btn-f">
+                                        <a href="<?= $fbLoginLink ?>" class="btn btn-login btn-f">
                                             <i class="icon-facebook-f"></i>
-                                            Đăng nhập bằng Facebook
+                                            Facebook
                                         </a>
                                     </div><!-- End .col-6 -->
+                                    <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                                    </fb:login-button> -->
                                 </div><!-- End .row -->
                             </div><!-- End .form-choice -->
                         </div><!-- .End .tab-pane -->
@@ -88,20 +90,22 @@
                                 </div><!-- End .form-footer -->
                             </form>
                             <div class="form-choice">
-                                <p class="text-center">or bạn có thẻ thể</p>
+                                <p class="text-center">Hoặc bạn có thẻ thể đăng nhập bằng</p>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login btn-g">
+                                        <a href="<?= $googleLoginLink ?>" class="btn btn-login btn-g">
                                             <i class="icon-google"></i>
-                                            Đăng nhập bằng Goggle
+                                            Goggle
                                         </a>
                                     </div><!-- End .col-6 -->
                                     <div class="col-sm-6">
-                                        <a href="#" class="btn btn-login  btn-f">
+                                        <a href="<?= $fbLoginLink ?>" class="btn btn-login btn-f">
                                             <i class="icon-facebook-f"></i>
-                                            Đăng nhập bằng Facebook
+                                            Facebook
                                         </a>
                                     </div><!-- End .col-6 -->
+                                    <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                                    </fb:login-button> -->
                                 </div><!-- End .row -->
                             </div><!-- End .form-choice -->
                         </div><!-- .End .tab-pane -->

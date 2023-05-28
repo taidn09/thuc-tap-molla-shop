@@ -1,3 +1,9 @@
+<a href="tel:08591824444" class="float btn-1">
+    <i class="bi bi-telephone"></i>
+</a>
+<a href="https://www.facebook.com/messages/t/100024726033799" target="_blank" class="float btn-2">
+<i class="bi bi-messenger"></i>
+</a>
 <footer class="footer">
     <div class="footer-middle">
         <div class="container">

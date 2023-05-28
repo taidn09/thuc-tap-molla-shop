@@ -27,7 +27,7 @@
                                 <?php if (!empty($_SESSION['user'])) { ?>
                                     <li><a href="/auth/logout"><i class="icon-user"></i>Đăng xuất</a></li>
                                 <?php } else { ?>
-                                    <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Đăng nhập</a></li>
+                                    <li><a href="/auth"><i class="icon-user"></i>Đăng nhập</a></li>
                                 <?php } ?>
                             </ul>
                         <?php endif; ?>
@@ -48,14 +48,13 @@
                             <div class="from-group mr-2">
                                 <!-- <label for="table">Tìm kiếm</label> -->
                                 <select name="table" id="table" class="from-control form-select">
-                                    <option  value="products" <?php if (!empty($_POST['table']) && $_POST['table'] == 'products') echo 'selected' ?>>Sản phẩm</option>
-                                    <option  value="blogs" <?php if (!empty($_POST['table']) && $_POST['table'] == 'blogs') echo 'selected' ?>>Tin tức</option>
+                                    <option value="products" <?php if (!empty($_POST['table']) && $_POST['table'] == 'products') echo 'selected' ?>>Sản phẩm</option>
+                                    <option value="blogs" <?php if (!empty($_POST['table']) && $_POST['table'] == 'blogs') echo 'selected' ?>>Tin tức</option>
                                 </select>
                             </div>
-                            <div class="header-search-wrapper search-wrapper-wide">
+                            <div class="search-wrapper-wide">
                                 <label for="q" class="sr-only">Tìm kiếm</label>
-                                <input type="search" class="form-control" name="searchTerm" id="q" placeholder="Nhập từ khóa để tìm kiếm..." value="<?= !empty($searchTerm) ? $searchTerm : '' ?>">
-                                <button class="btn btn-outline-primary" type="submit"><i class="icon-search"></i></button>
+                                <input type="text" class="form-control" name="searchTerm" id="q" placeholder="Nhập từ khóa để tìm kiếm..." value="<?= !empty($searchTerm) ? $searchTerm : '' ?>">
                             </div><!-- End .header-search-wrapper -->
                         </div>
                     </form>

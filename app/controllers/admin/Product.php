@@ -321,7 +321,7 @@ class Product extends Controller
                     $cellValue = $worksheet->getCell($column . $row)->getValue();
                     $rowData[] = $cellValue;
                 }
-                $res = $this->model->addProduct($rowData[0], $rowData[1], $rowData[2], $rowData[3], $rowData[4]);
+                $res = $this->model->addProduct($rowData[0], $rowData[1], $rowData[2], $rowData[4], $rowData[3]);
                 if (empty($res)) {
                     echo json_encode([
                         'status' => 0,

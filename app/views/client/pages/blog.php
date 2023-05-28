@@ -1,4 +1,3 @@
-
 <main class="main">
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
@@ -16,23 +15,23 @@
                     <?php
                     if (count($blogList) > 0) {
                     ?>
-                        <div class="entry-container max-col-2" data-layout="fitRows">
+                        <div class="entry-container max-col-2 blogs-container" data-layout="fitRows">
                             <?php
                             $adminModel = new AdminModel();
                             foreach ($blogList as $blog) {
                                 $author = $adminModel->getAdminById($blog['authorId']);
                             ?>
-                                <div class="blog entry-item col-sm-6">
+                                <div class="blog entry-item col-sm-4">
                                     <article class="entry entry-grid">
                                         <figure class="entry-media">
-                                            <a href="/blog/detail/<?=$blog['blogId']?>">
-                                                <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/<?=$blog['thumbnail']?>" alt="image desc">
+                                            <a href="/blog/detail/<?= $blog['blogId'] ?>">
+                                                <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/<?= $blog['thumbnail'] ?>" alt="image desc">
                                             </a>
                                         </figure><!-- End .entry-media -->
                                         <div class="entry-body">
                                             <div class="entry-meta">
                                                 <span class="entry-author">
-                                                    by <a href="#"><?= $author['name']?></a>
+                                                    by <a href="#"><?= $author['name'] ?></a>
                                                 </span>
                                                 <span class="meta-separator">|</span>
                                                 <a href="#"><?= $blog['createdAt'] ?></a>
@@ -55,24 +54,30 @@
                             ?>
                         </div><!-- End .entry-container -->
                         <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                            <ul class="pagination paginate-shop">
+                                <li class="page-item <?= $currentPage == 1 ? 'disabled' : '' ?>">
+                                    <a class="page-link page-link-prev" href="#<?= $currentPage - 1 ?>" aria-label="Previous" tabindex="-1" aria-disabled="true">
                                         <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Quay lại
                                     </a>
                                 </li>
-                                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item">
-                                    <a class="page-link page-link-next" href="#" aria-label="Next">
+                                <?php
+                                for ($i = 0; $i < $totalPage; $i++) {
+                                ?>
+                                    <li class="page-item <?= $i + 1 == $currentPage ? 'active' : '' ?>" aria-current="page"><a class="page-link" href="#<?= $i + 1 ?>"><?= $i + 1 ?></a></li>
+                                <?php
+                                }
+                                ?>
+                                <li class="page-item-total">of <?= $totalPage ?></li>
+                                <li class="page-item <?= $currentPage >= $totalPage ? 'disabled' : '' ?>">
+                                    <a class="page-link page-link-next" href="#<?= $currentPage + 1 ?>" aria-label="Next">
                                         Kế tiếp <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                     </a>
                                 </li>
                             </ul>
                         </nav>
-                    <?php } else{?>
+                    <?php } else { ?>
                         <h1 class="text-center">Không tìm thấy tin tức nào</h1>
-                        <?php }?>
+                    <?php } ?>
 
                 </div><!-- End .col-lg-9 -->
 
@@ -88,71 +93,34 @@
                                 <button type="submit" class="btn"><i class="icon-search"></i><span class="sr-only">Tìm</span></button>
                             </form>
                         </div><!-- End .widget -->
-
-                        <div class="widget widget-cats">
-                            <h3 class="widget-title">Danh mục</h3><!-- End .widget-title -->
-
-                            <ul>
-                                <li><a href="#">Lifestyle<span>3</span></a></li>
-                                <li><a href="#">Shopping<span>3</span></a></li>
-                                <li><a href="#">Fashion<span>1</span></a></li>
-                                <li><a href="#">Travel<span>3</span></a></li>
-                                <li><a href="#">Hobbies<span>2</span></a></li>
-                            </ul>
-                        </div><!-- End .widget -->
-
                         <div class="widget">
-                            <h3 class="widget-title">Tin tức nổi bật</h3><!-- End .widget-title -->
+                            <h3 class="widget-title">Tin tức mới nhất</h3><!-- End .widget-title -->
 
                             <ul class="posts-list">
-                                <li>
-                                    <figure>
-                                        <a href="#">
-                                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/sidebar/post-1.jpg" alt="post">
-                                        </a>
-                                    </figure>
+                                <?php
+                                foreach ($blogListFull as $key => $item) {
+                                ?>
+                                    <li>
+                                        <figure>
+                                            <a href="/blog/detail/<?= $item['blogId'] ?>">
+                                                <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/<?= $item['thumbnail'] ?>" alt="post">
+                                            </a>
+                                        </figure>
 
-                                    <div>
-                                        <span>Nov 22, 2018</span>
-                                        <h4><a href="#">Aliquam tincidunt mauris eurisus.</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure>
-                                        <a href="#">
-                                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/sidebar/post-2.jpg" alt="post">
-                                        </a>
-                                    </figure>
-
-                                    <div>
-                                        <span>Nov 19, 2018</span>
-                                        <h4><a href="#">Cras ornare tristique elit.</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure>
-                                        <a href="#">
-                                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/sidebar/post-3.jpg" alt="post">
-                                        </a>
-                                    </figure>
-
-                                    <div>
-                                        <span>Nov 12, 2018</span>
-                                        <h4><a href="#">Vivamus vestibulum ntulla nec ante.</a></h4>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure>
-                                        <a href="#">
-                                            <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/sidebar/post-4.jpg" alt="post">
-                                        </a>
-                                    </figure>
-
-                                    <div>
-                                        <span>Nov 25, 2018</span>
-                                        <h4><a href="#">Donec quis dui at dolor tempor interdum.</a></h4>
-                                    </div>
-                                </li>
+                                        <div>
+                                            <span><?= $item['createdAt'] ?></span>
+                                            <h4 style=" word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;"><a href="/blog/detail/<?= $item['blogId'] ?>"><?= $item['shortDesc'] ?></a></h4>
+                                        </div>
+                                    </li>
+                                <?php
+                                }
+                                ?>
                             </ul><!-- End .posts-list -->
                         </div><!-- End .widget -->
                     </div><!-- End .sidebar -->

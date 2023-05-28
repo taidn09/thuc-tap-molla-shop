@@ -74,7 +74,7 @@ class UserModel
         $query = "UPDATE users SET password = '$newPassword' WHERE email = '$email'";
         return $this->db->exec($query);
     }
-    public function updateUser($userId, $fname, $lname, $email, $phone, $province, $district, $ward, $street)
+    public function updateUser($userId, $fname ='', $lname ='', $email ='', $phone ='', $province ='', $district ='', $ward ='', $street ='')
     {
         if (!empty($this->db->getOne("SELECT * FROM users WHERE (email = '$email' OR phone = '$phone')AND userId != '$userId'"))) {
             return false;

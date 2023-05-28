@@ -54,9 +54,65 @@
             min-height: 600px;
         }
 
-        .blog .entry-media img {
-            width: 100%;
-            height: 300px;
+        .float {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            text-decoration: none;
+            color: #fff;
+
+        }
+
+        .btn-1 {
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            box-shadow: 0 0 0 3px rgba(0, 211, 102, 0.5), 0 0 0 10px rgba(0, 211, 102, 0.2);
+            animation: ani1 infinite 1s linear;
+        }
+
+        .btn-2 {
+            bottom: 120px;
+            right: 40px;
+            background-color: rgba(58, 134, 255, 1);
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.5), 0 0 0 10px rgba(58, 134, 255, 0.5);
+            animation: ani2 infinite 1s linear;
+        }
+
+        @keyframes ani1 {
+            0% {
+                box-shadow: 0 0 0 3px rgba(0, 211, 102, 0.5), 0 0 0 10px rgba(0, 211, 102, 0.2);
+            }
+
+            100% {
+                box-shadow: 0 0 0 10px rgba(0, 211, 102, 0.5), 0 0 0 0px rgba(0, 211, 102, 0.2);
+            }
+        }
+
+        @keyframes ani2 {
+            0% {
+                box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.5), 0 0 0 10px rgba(58, 134, 255, 0.5);
+            }
+
+            100% {
+                box-shadow: 0 0 0 10px rgba(58, 134, 255, 0.5), 0 0 0 0px rgba(58, 134, 255, 0.5);
+            }
+        }
+
+        .float:hover,
+        .float:active .float:visited {
+            color: #fff;
+        }
+
+        .my-float {
+            margin-top: 16px;
         }
     </style>
 </head>
@@ -94,6 +150,36 @@
     <script src="<?php echo _WEB_ROOT; ?>/public/assets/client/js/main.js"></script>
     <script src="<?php echo _WEB_ROOT; ?>/public/assets/client/js/demos/demo-6.js"></script>
     <script>
+        // window.fbAsyncInit = function() {
+        //     FB.init({
+        //         appId: '990858165418969',
+        //         cookie: true,
+        //         xfbml: true,
+        //         version: 'v17.0'
+        //     });
+
+        //     FB.AppEvents.logPageView();
+
+        // };
+
+        // (function(d, s, id) {
+        //     var js, fjs = d.getElementsByTagName(s)[0];
+        //     if (d.getElementById(id)) {
+        //         return;
+        //     }
+        //     js = d.createElement(s);
+        //     js.id = id;
+        //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+        //     fjs.parentNode.insertBefore(js, fjs);
+        // }(document, 'script', 'facebook-jssdk'));
+
+        // function checkLoginState() {
+        //     FB.getLoginStatus(function(response) {
+        //         console.log(response);
+        //         // statusChangeCallback(response);
+        //     });
+        // }
+
         $(".nav-link[role=tab]").on('click', function() {
             $('.err-msg').html('')
         })
@@ -554,7 +640,7 @@
         });
         $('.size-select').on('change', function() {
             const quantity = $('.size-select option:selected').data('quantity')
-            $('.left-quantity').html(`Sảm phẩm còn lại: ${quantity}`)
+            $('.left-quantity').html(`Sản phẩm còn lại: ${quantity}`)
             $('#qty').attr('max', quantity)
         })
         $('.star').on('click', function() {
@@ -679,7 +765,6 @@
                 totalProductFound
             } = JSON.parse(response)
             let productsHTML = ''
-            console.log(totalProductFound);
             if (totalProductFound > 0) {
                 if (productsList) {
                     for (const key in productsList) {
@@ -699,7 +784,7 @@
                         } = productsList[key]
                         let label = salePercent > 0 ? 'sale' : '';
                         productsHTML += `
-                    <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-4">
                                     <div class="product product-7 text-center">
                                         <figure class="product-media">
                                             <span class="product-label label-${label}">${salePercent > 0 ? 'Giảm giá '+salePercent+'%' : ''}</span>
@@ -777,7 +862,11 @@
             if (!$(this).parent().hasClass('active')) {
                 $(this).parent().siblings().removeClass('active')
                 $(this).parent().addClass('active')
-                callFilterProducts()
+                if (window.location.pathname == '/blog') {
+                    paginateBlogs()
+                } else {
+                    callFilterProducts()
+                }
             }
 
         })
@@ -943,6 +1032,95 @@
             }
 
         })
+        const defaultNumbers = ' hai ba bốn năm sáu bảy tám chín';
+        const chuHangDonVi = ('1 một' + defaultNumbers).split(' ');
+        const chuHangChuc = ('lẻ mười' + defaultNumbers).split(' ');
+        const chuHangTram = ('không một' + defaultNumbers).split(' ');
+
+        function convert_block_three(number) {
+            if (number == '000') return '';
+            var _a = number + ''; //Convert biến 'number' thành kiểu string
+
+            //Kiểm tra độ dài của khối
+            switch (_a.length) {
+                case 0:
+                    return '';
+                case 1:
+                    return chuHangDonVi[_a];
+                case 2:
+                    return convert_block_two(_a);
+                case 3:
+                    var chuc_dv = '';
+                    if (_a.slice(1, 3) != '00') {
+                        chuc_dv = convert_block_two(_a.slice(1, 3));
+                    }
+                    var tram = chuHangTram[_a[0]] + ' trăm';
+                    return tram + ' ' + chuc_dv;
+            }
+        }
+
+        function convert_block_two(number) {
+            var dv = chuHangDonVi[number[1]];
+            var chuc = chuHangChuc[number[0]];
+            var append = '';
+
+            // Nếu chữ số hàng đơn vị là 5
+            if (number[0] > 0 && number[1] == 5) {
+                dv = 'lăm'
+            }
+
+            // Nếu số hàng chục lớn hơn 1
+            if (number[0] > 1) {
+                append = ' mươi';
+                if (number[1] == 1) {
+                    dv = ' mốt';
+                }
+            }
+
+            return chuc + '' + append + ' ' + dv;
+        }
+        const dvBlock = '1 nghìn triệu tỷ'.split(' ');
+
+        function to_vietnamese(number) {
+            var str = parseInt(number) + '';
+            var i = 0;
+            var arr = [];
+            var index = str.length;
+            var result = [];
+            var rsString = '';
+
+            if (index == 0 || str == 'NaN') {
+                return '';
+            }
+
+            // Chia chuỗi số thành một mảng từng khối có 3 chữ số
+            while (index >= 0) {
+                arr.push(str.substring(index, Math.max(index - 3, 0)));
+                index -= 3;
+            }
+
+            // Lặp từng khối trong mảng trên và convert từng khối đấy ra chữ Việt Nam
+            for (i = arr.length - 1; i >= 0; i--) {
+                if (arr[i] != '' && arr[i] != '000') {
+                    result.push(convert_block_three(arr[i]));
+
+                    // Thêm đuôi của mỗi khối
+                    if (dvBlock[i]) {
+                        result.push(dvBlock[i]);
+                    }
+                }
+            }
+
+            // Join mảng kết quả lại thành chuỗi string
+            rsString = result.join(' ');
+
+            // Trả về kết quả kèm xóa những ký tự thừa
+            return rsString.replace(/[0-9]/g, '').replace(/ /g, ' ').replace(/ $/, '');
+        }
+        $(document).ready(function() {
+            let totalPrice = $('.total-price').text().split('đ')[0].replace(',', '');
+            $('.price-to-words').html('Bằng chữ: <b class="text-uppercase">' + to_vietnamese(totalPrice) + ' đồng</b>');
+        });
         // các hàm validate form
         function checkIsEmpty(value) {
             return value.trim() == ''
@@ -1280,8 +1458,8 @@
                             thumbnail
                         } = result[key]
                         resultHTML += `
-                        <div class="blog entry-item col-sm-6">
-                                    <article class="entry entry-grid">
+                        <div class="blog entry-item col-sm-4">
+                                    <article class="entry entry-grid blog">
                                         <figure class="entry-media">
                                             <a href="/blog/detail/${blogId}">
                                                 <img src="/public/assets/images/blog/${thumbnail}" alt="image desc">
@@ -1311,7 +1489,6 @@
                     `
                     }
                 }
-                console.log(resultHTML);
                 $('.search-product-container').html(resultHTML)
             }
             if (totalShow > Object.keys(result)) {
@@ -1626,6 +1803,104 @@
                     },
                 });
             }
+        }
+        // phân trang tin tức
+
+        function paginateBlogs(page = null) {
+            if (page == null) {
+                page = $('.page-item.active a').attr('href').split('')[1];
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/blog/paginate',
+                data: {
+                    page
+                },
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        updateBlogPage(response)
+                    }
+                },
+            });
+        }
+
+        function updateBlogPage(response) {
+            const {
+                totalBlogsFound,
+                blogs,
+                totalPage,
+                currentPage
+            } = JSON.parse(response)
+            let _html = ''
+            for (const key in blogs) {
+                const {
+                    blogId,
+                    author,
+                    createdAt,
+                    commentsCount,
+                    title,
+                    shortDesc,
+                    thumbnail
+                } = blogs[key]
+                _html += `
+                        <div class="blog entry-item col-sm-4">
+                                    <article class="entry entry-grid blog">
+                                        <figure class="entry-media">
+                                            <a href="/blog/detail/${blogId}">
+                                                <img src="/public/assets/images/blog/${thumbnail}" alt="image desc">
+                                            </a>
+                                        </figure><!-- End .entry-media -->
+                                        <div class="entry-body">
+                                            <div class="entry-meta">
+                                                <span class="entry-author">
+                                                    by <a href="#">${author}</a>
+                                                </span>
+                                                <span class="meta-separator">|</span>
+                                                <a href="#">${createdAt}</a>
+                                                <span class="meta-separator">|</span>
+                                                <a href="#">${commentsCount} bình luận</a>
+                                            </div><!-- End .entry-meta -->
+
+                                            <h2 class="entry-title">
+                                                <a href="/blog/detail/${blogId}">${title}</a>
+                                            </h2><!-- End .entry-title -->
+                                            <div class="entry-content">
+                                                <p>${shortDesc}</p>
+                                                <a href="/blog/detail/${blogId}" class="read-more">Xem chi tiết</a>
+                                            </div><!-- End .entry-content -->
+                                        </div><!-- End .entry-body -->
+                                    </article><!-- End .entry -->
+                                </div><!-- End .entry-item -->
+                    `
+            }
+            $('.blogs-container').html(_html)
+            let paginateHTML = ` <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link page-link-prev" href="#${currentPage - 1}" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Trang trước
+                                </a>
+                            </li>`
+            for (let index = 0; index < totalPage; index++) {
+                let isAcitve = index + 1 == currentPage ? 'active' : ''
+                paginateHTML += `
+                    <li class="page-item ${isAcitve}" aria-current="page"><a class="page-link" href="#${index+1}">${index+1}</a></li>
+                `
+            }
+            paginateHTML += `
+            <li class="page-item-total">of ${totalPage}</li>
+            <li class="page-item ${currentPage >= totalPage ? 'disabled' : ''}">
+                                <a class="page-link page-link-next" href="#${Number(currentPage) + 1}" aria-label="Next">
+                                    Trang sau <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>`
+            $('.paginate-shop').html(paginateHTML)
+            $(document).on("click", ".page-item", function(e) {
+                e.preventDefault()
+                if (!$(e.target).parent().hasClass('active')) {
+                    $(e.target).parent().siblings().removeClass('active')
+                    $(e.target).parent().addClass('active')
+                    paginateBlogs()
+                }
+            });
         }
     </script>
 </body>

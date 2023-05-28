@@ -16,6 +16,7 @@
                         <li>Số lượt đánh giá: <?= $product['reviewCount'] ?></li>
                         <li>Số lượt bán: <?= $product['sold'] ?></li>
                         <li>Thuộc danh mục: <?= $category['title'] ?></li>
+                        <li>Mô tả: <?=$product['description']?></li>
                     </ul>
                     <h3>Danh mục hình ảnh</h3>
                     <div>

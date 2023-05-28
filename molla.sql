@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2023 at 02:07 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 7.4.30
+-- Generation Time: May 25, 2023 at 03:16 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,7 +34,7 @@ CREATE TABLE `admins` (
   `password` varchar(50) DEFAULT NULL,
   `image` varchar(50) DEFAULT NULL,
   `role` tinyint(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admins`
@@ -42,11 +42,7 @@ CREATE TABLE `admins` (
 
 INSERT INTO `admins` (`adminId`, `name`, `email`, `password`, `image`, `role`) VALUES
 (1, 'Admin', 'taidn@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'shipper.jpg', 0),
-(21, 'abc', 'abc@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '44379f2b1a5611f625592bbf6e596a47.png', 0),
-(22, 'abcaaca', 'absacsa@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '74ce2e1a498f2fa27b5542040be774dc.png', 0),
-(23, 'abdas', 'asdsad@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '2161df7a31143a6367acb146378f151e.png', 0),
-(24, 'test', 'test@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'e53125275854402400f74fd6ab3f7659.png', 0),
-(25, 'test2', 'test2@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '96d6f2e7e1f705ab5e59c84a6dc009b2.png', 0);
+(21, 'Admin 1', 'abc@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '44379f2b1a5611f625592bbf6e596a47.png', 0);
 
 -- --------------------------------------------------------
 
@@ -58,7 +54,7 @@ CREATE TABLE `admin_roles` (
   `roleId` int(11) NOT NULL,
   `adminId` int(11) DEFAULT NULL,
   `roleString` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin_roles`
@@ -106,24 +102,26 @@ INSERT INTO `admin_roles` (`roleId`, `adminId`, `roleString`) VALUES
 
 CREATE TABLE `blogs` (
   `blogId` int(11) NOT NULL,
-  `title` varchar(50) DEFAULT NULL,
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `createdAt` date DEFAULT NULL,
   `authorId` int(11) DEFAULT NULL,
   `commentsCount` int(11) DEFAULT 0,
-  `shortDesc` text DEFAULT NULL,
-  `content` text DEFAULT NULL,
-  `thumbnail` varchar(100) DEFAULT NULL,
+  `shortDesc` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `thumbnail` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `isShown` tinyint(4) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `blogs`
 --
 
 INSERT INTO `blogs` (`blogId`, `title`, `createdAt`, `authorId`, `commentsCount`, `shortDesc`, `content`, `thumbnail`, `isShown`) VALUES
-(21, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '2023-05-17', 21, 0, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '<h1>MỞ B&Aacute;N RANDOM BOX CHỈ VỚI GI&Aacute; 299.000Đ</h1>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://staging-toto-cms.mltechsoft.com/uploads/RANDOM_BOX_MT_810dbff991.jpg\" alt=\"\" width=\"590\" height=\"835\"></p>\r\n<p>Ai mà chả thích thử độ may mắn của m&igrave;nh đ&uacute;ng kh&ocirc;ng n&agrave;o? Trong tháng 5 này tụi m&igrave;nh đang có&nbsp;<strong>chương trình ưu đãi cực lớn</strong>&nbsp;đ&oacute; ch&iacute;nh l&agrave;&nbsp;<strong>mở b&aacute;n Random Box trị gi&aacute; l&ecirc;n đến 700.000đ</strong>&nbsp;chỉ với giá&nbsp;<strong>299.000đ</strong>&nbsp;với nhiều&nbsp;<strong>sản phẩm ngẫu nhi&ecirc;n hấp dẫn</strong>&nbsp;đang chờ đợi các FRIEND&rsquo;s tới rinh về. Th&ocirc;ng tin ưu đãi như sau:</p>\r\n<p>Đặc biệt d&agrave;nh cho chương trình l&acirc;̀n này l&agrave;&nbsp;<strong>mở bán giới hạn s&ocirc;́ lượng</strong>&nbsp;chỉ với&nbsp;<strong>100 Random Box</strong>&nbsp;cho 100 bạn may mắn nh&acirc;́t:</p>\r\n<ul>\r\n<li style=\"list-style-type: disc;\">Random Box : bao gồm&nbsp;<strong>2 mẫu Tee Totoday</strong>&nbsp;ngẫu nhi&ecirc;n&nbsp;<strong>trị gi&aacute; 590.000 - 700.000đ</strong>&nbsp;&amp;&nbsp;<strong>1 voucher mua h&agrave;ng trị gi&aacute; 50.000đ.</strong>&nbsp;</li>\r\n<li style=\"list-style-type: disc;\">Với hơn&nbsp;<strong>30 mẫu &aacute;o thun</strong>&nbsp;cực k&igrave; chất lượng v&agrave; thời thượng với mức gi&aacute; nhẹ t&ecirc;nh chờ bạn rinh về.</li>\r\n</ul>\r\n<p>*Lưu ý:</p>\r\n<p>- Khi mua&nbsp;<strong>Random Box</strong>&nbsp;bạn sẽ&nbsp;<strong>được chọn đ&uacute;ng size &aacute;o</strong>&nbsp;v&igrave; ch&uacute;ng tớ đ&atilde; ph&acirc;n size r&otilde; r&agrave;ng cho từng Box n&ecirc;n sẽ kh&ocirc;ng phải lo vấn đề về size &aacute;o nhé.</p>\r\n<p>- Thời gian mở b&aacute;n: 00:00 ngày 12.05.2023 cho đ&ecirc;́n 28.05.2023.</p>\r\n<p>- K&ecirc;nh b&aacute;n: To&agrave;n hệ thống cửa h&agrave;ng v&agrave; online.</p>\r\n<p>- Sản phẩm c&oacute; mặt to&agrave;n bộ tr&ecirc;n hệ thống Website v&agrave; c&aacute;c k&ecirc;nh thương mại điện tử của tụi m&igrave;nh, nhanh tay mua h&agrave;ng để kh&ocirc;ng bỏ lỡ nh&eacute;</p>\r\n<p>- Chương tr&igrave;nh kh&ocirc;ng &aacute;p dụng với c&aacute;c CTKM kh&aacute;c.</p>\r\n<p>- Kh&ocirc;ng áp dụng chung với chi&ecirc;́t kh&acirc;́u VIP.</p>', 'f46dbb1d9cf47830768f1c1f1e16d5ce.png', 1),
-(29, 'ngon', '2023-05-21', 21, 0, 'ngon', '<p>ngon</p>\r\n<p><img src=\"https://tse1.mm.bing.net/th?id=OIP.PRSdIhk7842lQCMSBKTOzQHaEO&amp;pid=Api&amp;P=0&amp;h=180\" alt=\"\" width=\"316\" height=\"180\"></p>', '4d3a21d8c684c09c19b93be911827fd5.png', 1),
-(30, 'Hello', '2023-05-23', 21, 0, 'Hello', '<p>Ngon</p>', '31a9bb9593c56d14ffd87b872068dbe3.png', 1);
+(21, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '2023-05-17', 21, 0, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '<h1>MỞ B&Aacute;N RANDOM BOX CHỈ VỚI GI&Aacute; 299.000Đ</h1>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://staging-toto-cms.mltechsoft.com/uploads/RANDOM_BOX_MT_810dbff991.jpg\" alt=\"\" width=\"590\" height=\"835\"></p>\r\n<p>Ai mà chả thích thử độ may mắn của m&igrave;nh đ&uacute;ng kh&ocirc;ng n&agrave;o? Trong tháng 5 này tụi m&igrave;nh đang có&nbsp;<strong>chương trình ưu đãi cực lớn</strong>&nbsp;đ&oacute; ch&iacute;nh l&agrave;&nbsp;<strong>mở b&aacute;n Random Box trị gi&aacute; l&ecirc;n đến 700.000đ</strong>&nbsp;chỉ với giá&nbsp;<strong>299.000đ</strong>&nbsp;với nhiều&nbsp;<strong>sản phẩm ngẫu nhi&ecirc;n hấp dẫn</strong>&nbsp;đang chờ đợi các FRIEND&rsquo;s tới rinh về. Th&ocirc;ng tin ưu đãi như sau:</p>\r\n<p>Đặc biệt d&agrave;nh cho chương trình l&acirc;̀n này l&agrave;&nbsp;<strong>mở bán giới hạn s&ocirc;́ lượng</strong>&nbsp;chỉ với&nbsp;<strong>100 Random Box</strong>&nbsp;cho 100 bạn may mắn nh&acirc;́t:</p>\r\n<ul>\r\n<li style=\"list-style-type: disc;\">Random Box : bao gồm&nbsp;<strong>2 mẫu Tee Totoday</strong>&nbsp;ngẫu nhi&ecirc;n&nbsp;<strong>trị gi&aacute; 590.000 - 700.000đ</strong>&nbsp;&amp;&nbsp;<strong>1 voucher mua h&agrave;ng trị gi&aacute; 50.000đ.</strong>&nbsp;</li>\r\n<li style=\"list-style-type: disc;\">Với hơn&nbsp;<strong>30 mẫu &aacute;o thun</strong>&nbsp;cực k&igrave; chất lượng v&agrave; thời thượng với mức gi&aacute; nhẹ t&ecirc;nh chờ bạn rinh về.</li>\r\n</ul>\r\n<p>*Lưu ý:</p>\r\n<p>- Khi mua&nbsp;<strong>Random Box</strong>&nbsp;bạn sẽ&nbsp;<strong>được chọn đ&uacute;ng size &aacute;o</strong>&nbsp;v&igrave; ch&uacute;ng tớ đ&atilde; ph&acirc;n size r&otilde; r&agrave;ng cho từng Box n&ecirc;n sẽ kh&ocirc;ng phải lo vấn đề về size &aacute;o nhé.</p>\r\n<p>- Thời gian mở b&aacute;n: 00:00 ngày 12.05.2023 cho đ&ecirc;́n 28.05.2023.</p>\r\n<p>- K&ecirc;nh b&aacute;n: To&agrave;n hệ thống cửa h&agrave;ng v&agrave; online.</p>\r\n<p>- Sản phẩm c&oacute; mặt to&agrave;n bộ tr&ecirc;n hệ thống Website v&agrave; c&aacute;c k&ecirc;nh thương mại điện tử của tụi m&igrave;nh, nhanh tay mua h&agrave;ng để kh&ocirc;ng bỏ lỡ nh&eacute;</p>\r\n<p>- Chương tr&igrave;nh kh&ocirc;ng &aacute;p dụng với c&aacute;c CTKM kh&aacute;c.</p>\r\n<p>- Kh&ocirc;ng áp dụng chung với chi&ecirc;́t kh&acirc;́u VIP.</p>', '2bf48fc3eaa4a859a5ce131a92c18e7b.jpg', 1),
+(31, 'Sản phẩm mới', '2023-05-24', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới đến từ h&agrave;ng của ch&uacute;ng t&ocirc;i</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"293\" height=\"293\"></p>', '8851fbb486073073194150d7eae36b3d.jpg', 1),
+(32, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới đến từ cửa h&agrave;ng của ch&uacute;ng t&ocirc;i</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"314\" height=\"314\"></p>', 'f150af00f20b2a21371fc119f7372560.jpg', 1),
+(33, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"317\" height=\"317\"></p>', 'e4b28989af8083fe704664d42b13616f.jpg', 1),
+(34, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"353\" height=\"353\"></p>', 'c4655d36d0fc81f5d23044430447f592.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -135,7 +133,7 @@ CREATE TABLE `brands` (
   `branId` int(11) NOT NULL,
   `brandName` varchar(50) DEFAULT NULL,
   `logo` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `brands`
@@ -161,7 +159,7 @@ INSERT INTO `brands` (`branId`, `brandName`, `logo`) VALUES
 CREATE TABLE `categories` (
   `categoryId` int(11) NOT NULL,
   `title` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `categories`
@@ -171,8 +169,9 @@ INSERT INTO `categories` (`categoryId`, `title`) VALUES
 (4, 'Áo khoác'),
 (2, 'Áo thun'),
 (1, 'Chưa phân loại'),
-(3, 'Túi xách'),
-(5, 'Váy');
+(3, 'Unisex'),
+(5, 'Đồ nam'),
+(40, 'Đồ nữ');
 
 -- --------------------------------------------------------
 
@@ -184,7 +183,7 @@ CREATE TABLE `colors` (
   `id` int(11) NOT NULL,
   `color` varchar(10) DEFAULT NULL,
   `text` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `colors`
@@ -215,7 +214,7 @@ CREATE TABLE `contact` (
   `message` text DEFAULT NULL,
   `reply` text DEFAULT NULL,
   `createdAt` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `contact`
@@ -234,7 +233,7 @@ CREATE TABLE `images_gallery` (
   `imgId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
   `image` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `images_gallery`
@@ -251,8 +250,35 @@ INSERT INTO `images_gallery` (`imgId`, `productId`, `image`) VALUES
 (17, 21, 'c0605a959a1ddd9d77ebf47b4faa7f81.jpg'),
 (18, 21, '33fb6436f096217fd811c2bf6be2a44e.jpg'),
 (22, 23, 'aaca0f5eb4d2d98a6ce6dffa99f8254b.png'),
-(23, 1, '74ce2e1a498f2fa27b5542040be774dc.png'),
-(24, 24, 'e53125275854402400f74fd6ab3f7659.png');
+(25, 55, '523684c5115318d563aef2009a4fdbd6.jpg'),
+(26, 55, 'a586bd9d7ebb00e69524dd2656c3e6dd.jpg'),
+(27, 55, '6513d0f4c312b1d4e2c3fffeef04752f.jpg'),
+(28, 55, '754b955002b2598377175baf264dd5f4.jpg'),
+(29, 55, '9fc974c5da68f2c06cba551dd0326acc.jpg'),
+(30, 56, 'f8c47e17164739bdf7ceabcb1372a8d3.jpg'),
+(31, 56, '740cd3b8f0c6ee1c9fa8fc85b93bcf21.jpg'),
+(32, 56, '76cb4156590df5eebdfde5c65733107c.jpg'),
+(33, 56, 'c49d72287babcce56eafa9168807c25f.jpg'),
+(34, 57, '18d3594ccf7e45e850c18e43ebf10c4f.jpg'),
+(35, 57, '9aa25605e3d5a223dde734855c34f3ca.jpg'),
+(36, 57, '864294fa2e9c536ae6ab60e2172923d6.jpg'),
+(40, 1, '21bb22123b04c8f5ec46725ddb0159ac.jpg'),
+(41, 1, 'cb0e192bfb946d2668f9074b75462eaf.jpg'),
+(43, 58, 'ebc2307b7393f8b1dd9fd34fb5c7cc39.jpg'),
+(44, 58, 'e82c08bbcdae051000563a60a6172310.jpg'),
+(45, 58, '12bf78a740af6d82d511b9ae7bd7bd52.jpg'),
+(46, 59, 'b705706dcca98477c638262fa8ed481d.jpg'),
+(47, 59, '4a5741d2db6cdb34b70eb5253c8df7d2.jpg'),
+(48, 59, '4200e9e66c8c60b9f249e615fd9e0ac1.jpg'),
+(49, 60, '04dec4d7226bf00827e6a12c6d5ea413.jpg'),
+(50, 60, '40723627e0e7b8bbfad7556758effc9b.jpg'),
+(51, 60, '5914020f59be095640bf7211257a68cd.jpg'),
+(52, 61, '0df63ad5c6bda06150c3771c10026f99.jpg'),
+(53, 61, '2ba89f32091d1dc02b09e1d28ecac542.jpg'),
+(54, 61, '5d571851a670a5c0a963ee1caba61a2d.jpg'),
+(55, 24, '1e31e4a9933f98d80d6b0b3ee70faf46.jpg'),
+(56, 24, '1524cc608d581a634057c328b2f56a35.jpg'),
+(57, 24, '52bf53a1825af657b8088a30a8970b70.jpg');
 
 -- --------------------------------------------------------
 
@@ -274,7 +300,7 @@ CREATE TABLE `orders` (
   `summary` float DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `status` tinyint(4) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
@@ -289,7 +315,8 @@ INSERT INTO `orders` (`orderId`, `userId`, `orderDate`, `receiver`, `email`, `ph
 (54, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 200000, '', 3),
 (55, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 3),
 (56, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 4),
-(57, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 3);
+(57, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 5),
+(58, 39, '2023-05-17', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 365, '', 5);
 
 --
 -- Triggers `orders`
@@ -317,7 +344,7 @@ CREATE TABLE `order_details` (
   `returned` tinyint(4) DEFAULT 0,
   `return_reason` text DEFAULT NULL,
   `return_image` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_details`
@@ -336,7 +363,9 @@ INSERT INTO `order_details` (`orderId`, `productId`, `optionId`, `price`, `quant
 (54, 2, 6, 200000, 1, 200000, 1, 'Hello', '7cdf8e1c9262b356be7536cdfb626fe6.png'),
 (55, 1, 34, 90, 1, 90, 1, 'Hello', '5e67ec95e637c46ae1b2a66c0acc7839.png'),
 (56, 1, 34, 90, 1, 90, 0, NULL, NULL),
-(57, 1, 36, 90, 1, 90, 0, 'Hello', '7b53f0224142541d9149b94fea455682.png');
+(57, 1, 36, 90, 1, 90, 1, 'Hello', 'ede496438ff30f3e5e51c904578e3945.jpg'),
+(58, 3, 10, 80, 1, 80, 0, 'Hàng lỗi', 'd12b052f0647c161fc270440a246e59d.jpg'),
+(58, 21, 41, 285, 1, 285, 1, 'Hàng hỏng', 'd7291970c8b8f26b0d4e105f61cfc9d2.jpg');
 
 -- --------------------------------------------------------
 
@@ -347,7 +376,7 @@ INSERT INTO `order_details` (`orderId`, `productId`, `optionId`, `price`, `quant
 CREATE TABLE `order_status` (
   `id` int(11) NOT NULL,
   `status_text` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_status`
@@ -368,10 +397,10 @@ INSERT INTO `order_status` (`id`, `status_text`) VALUES
 
 CREATE TABLE `products` (
   `productId` int(11) NOT NULL,
-  `title` varchar(100) DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `originalPrice` float DEFAULT NULL,
   `currentPrice` float DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `salePercent` float DEFAULT NULL,
   `reviewCount` int(11) DEFAULT 0,
   `rating` float DEFAULT 5,
@@ -379,22 +408,36 @@ CREATE TABLE `products` (
   `sold` int(11) DEFAULT 0,
   `isShown` tinyint(4) DEFAULT 1,
   `deleted` tinyint(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`productId`, `title`, `originalPrice`, `currentPrice`, `description`, `salePercent`, `reviewCount`, `rating`, `categoryId`, `sold`, `isShown`, `deleted`) VALUES
-(1, 'product 1', 100, 90, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 2, 4, 1, 6, 1, 0),
-(2, 'product 2', 250000, 200000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 5, 1, 25, 1, 0),
-(3, 'product 3', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 3, 4.7, 4, 13, 1, 0),
-(5, 'product 5', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 3.3, 1, 45, 1, 0),
-(21, 'ÁO THUN UNISEX - TOTODAY - ALWAYS BE YOUR SIDE', 300, 285, 'Good', 5, 0, 4, 1, 19, 1, 0),
+(1, 'Ngày đầu tuần', 280000, 252000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 2, 4, 1, 6, 1, 0),
+(2, 'Đêm cuối', 250000, 200000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 5, 4, 25, 1, 0),
+(3, 'Hàng về', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 3, 4.7, 4, 14, 1, 0),
+(5, 'Its gradient', 200000, 160000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 3.3, 1, 45, 1, 0),
+(21, 'Be your side', 300000, 285000, 'Good', 5, 0, 4, 1, 20, 1, 0),
 (23, '2345t6yuirftgh', 3000000, 2850000, '34567', 5, 0, 5, 4, 0, 0, 1),
-(24, 'abcc', 100000, 90, 'Good for you', 10, 0, 5, 1, 0, 1, 0),
+(24, 'Colaborate', 250000, 225000, 'Good for you', 10, 0, 5, 1, 0, 1, 0),
 (25, 'test2', 9000, 9, 'Hello', 0, 0, 5, 4, 0, 1, 1),
-(26, 'test2', 10000, 10, 'Ngon', 0, 0, 5, 4, 0, 1, 1);
+(26, 'test2', 10000, 10, 'Ngon', 0, 0, 5, 4, 0, 1, 1),
+(55, 'Perfection', 200000, 194000, 'Mô tả', 3, 0, 5, 1, 0, 1, 0),
+(56, 'Punch needle', 300000, 288000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 4, 0, 5, 1, 0, 1, 0),
+(57, 'Simplicity', 400000, 380000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 5, 0, 5, 1, 0, 1, 0),
+(58, 'Signature today', 500000, 470000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 6, 0, 5, 1, 0, 1, 0),
+(59, 'Today up', 600000, 558000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 7, 0, 5, 1, 0, 1, 0),
+(60, 'Neosist', 700000, 644000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 8, 0, 5, 1, 0, 1, 0),
+(61, 'Continue', 800000, 728000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 9, 0, 5, 1, 0, 1, 0),
+(62, 'Funnylove', 900000, 810000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 10, 0, 5, 1, 0, 1, 0),
+(63, 'Longsleeve 1', 1000000, 890000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 11, 0, 5, 1, 0, 1, 0),
+(64, 'Longsleeve 2', 1100000, 968000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 12, 0, 5, 1, 0, 1, 0),
+(65, 'Longsleeve 3', 1200000, 1044000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 13, 0, 5, 1, 0, 1, 0),
+(66, 'Longsleeve 4', 1300000, 1118000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 14, 0, 5, 1, 0, 1, 0),
+(67, 'Longsleeve 5', 1400000, 1190000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 15, 0, 5, 1, 0, 1, 0),
+(68, 'Longsleeve 6', 1500000, 1260000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 16, 0, 5, 1, 0, 1, 0);
 
 --
 -- Triggers `products`
@@ -425,7 +468,7 @@ CREATE TABLE `product_options` (
   `color` varchar(10) NOT NULL,
   `quantity` int(11) DEFAULT NULL,
   `deleted` tinyint(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product_options`
@@ -434,7 +477,7 @@ CREATE TABLE `product_options` (
 INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quantity`, `deleted`) VALUES
 (6, 2, 'S', '#097a27', 28, 0),
 (8, 2, 'XL', '#FFFF00', 47, 0),
-(10, 3, 'M', '#FFFF00', 49, 0),
+(10, 3, 'M', '#FFFF00', 48, 0),
 (11, 3, 'S', '#097a27', 49, 0),
 (12, 3, 'S', '#FFFF00', 49, 0),
 (17, 5, 'M', '#097a27', 5, 0),
@@ -450,8 +493,26 @@ INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quanti
 (38, 1, 'S', 'black', 8, 0),
 (39, 1, 'S', 'white', 10, 0),
 (40, 1, 'S', 'purple', 0, 0),
-(41, 21, 'S', 'blue', 20, 0),
-(42, 21, 'S', 'red', 20, 0);
+(41, 21, 'S', 'blue', 19, 0),
+(42, 21, 'S', 'red', 20, 0),
+(43, 55, 'S', 'red', 0, 0),
+(44, 55, 'S', 'yellow', 0, 0),
+(45, 55, 'S', 'black', 0, 0),
+(46, 56, 'M', 'white', 0, 0),
+(47, 56, 'XL', 'white', 20, 0),
+(48, 57, 'M', 'white', 20, 0),
+(49, 57, 'M', 'black', 20, 0),
+(50, 57, 'L', 'black', 20, 0),
+(51, 24, 'M', 'white', 20, 0),
+(52, 24, 'L', 'white', 20, 0),
+(53, 59, 'M', 'purple', 23, 0),
+(54, 59, 'L', 'purple', 23, 0),
+(55, 59, 'L', 'black', 23, 0),
+(56, 60, 'S', 'yellow', 300, 0),
+(57, 60, 'M', 'yellow', 300, 0),
+(58, 61, 'S', 'black', 30, 0),
+(59, 61, 'L', 'black', 30, 0),
+(60, 61, 'L', 'white', 30, 0);
 
 -- --------------------------------------------------------
 
@@ -469,7 +530,7 @@ CREATE TABLE `product_reviews` (
   `reviewTime` datetime DEFAULT NULL,
   `helpful` int(11) DEFAULT 0,
   `unhelpful` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product_reviews`
@@ -498,7 +559,7 @@ CREATE TABLE `services` (
   `icon` varchar(50) DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
   `content` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `services`
@@ -521,7 +582,7 @@ CREATE TABLE `tokens` (
   `email` varchar(50) DEFAULT NULL,
   `token` varchar(50) DEFAULT NULL,
   `expired_time` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tokens`
@@ -549,7 +610,7 @@ CREATE TABLE `users` (
   `district` text DEFAULT NULL,
   `ward` text DEFAULT NULL,
   `street` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -570,7 +631,7 @@ INSERT INTO `users` (`userId`, `fname`, `lname`, `email`, `phone`, `password`, `
 CREATE TABLE `wishlist` (
   `userId` int(11) NOT NULL,
   `productId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `wishlist`
@@ -712,7 +773,7 @@ ALTER TABLE `admin_roles`
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -724,7 +785,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `colors`
@@ -742,13 +803,13 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT for table `images_gallery`
 --
 ALTER TABLE `images_gallery`
-  MODIFY `imgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `imgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -760,13 +821,13 @@ ALTER TABLE `order_status`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `product_options`
 --
 ALTER TABLE `product_options`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `product_reviews`

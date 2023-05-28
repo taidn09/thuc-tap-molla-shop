@@ -72,8 +72,8 @@ echo '</pre>';
                             foreach ($result as $key => $blog) {
                                 $author = $adminModel->getAdminById($blog['authorId']);
                             ?>
-                                <div class="entry-item col-sm-6">
-                                    <article class="entry entry-grid">
+                                <div class="entry-item col-sm-4">
+                                    <article class="entry entry-grid blog">
                                         <figure class="entry-media">
                                             <a href="/blog/detail/<?= $blog['blogId'] ?>">
                                                 <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/blog/<?= $blog['thumbnail'] ?>" alt="image desc">

@@ -14,7 +14,7 @@ class Product extends Controller
 
     public function list()
     {
-        $perPage = 2;
+        $perPage = 6;
         $currentPage = 1;
         $start = ($currentPage - 1) * $perPage;
         $productsList = $this->model->getProductFilter([]);
@@ -57,10 +57,10 @@ class Product extends Controller
     {
         if (!empty($_POST)) {
             $currentPage = 1;
-            if (!empty($_POST['page'])) {
+            if (!empty($_POST['page']) && is_numeric($_POST['page'])) {
                 $currentPage  = $_POST['page'];
             }
-            $perPage = 2;
+            $perPage = 6;
             $start = ($currentPage - 1) * $perPage;
             $productsList = $this->model->getProductFilter($_POST);
             $totalPage = ceil(count($productsList) / $perPage);
@@ -94,7 +94,7 @@ class Product extends Controller
                 $this->data['subcontent']['controller'] = '';
                 $this->data['title'] = 'Tìm kiếm';
                 $this->data['subcontent']['searchTerm'] = $_POST['searchTerm'];
-                $result = $this->model->getDataBySearchTerms($_POST['table'], htmlspecialchars($_POST['searchTerm']), 4);
+                $result = $this->model->getDataBySearchTerms($_POST['table'], htmlspecialchars($_POST['searchTerm']), 2);
                 $this->data['subcontent']['result'] = $result;
                 $this->data['content'] = 'client/pages/search';
                 $this->render('layouts/client', $this->data);

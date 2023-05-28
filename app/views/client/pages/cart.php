@@ -1,7 +1,7 @@
 
 <?php 
     echo '<pre>';
-    print_r($_SESSION['cart']);
+    // print_r($_SESSION['cart']);
     echo '</pre>';
 ?>
 <nav aria-label="breadcrumb" class="breadcrumb-nav">

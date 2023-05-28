@@ -43,16 +43,10 @@
                                 <div class="form-choice">
                                     <p class="text-center">hoặc bạn có thể</p>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <a href="#" class="btn btn-login btn-g">
                                                 <i class="icon-google"></i>
                                                 Đăng nhập bằng Goggle
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Đăng nhập bằng Facebook
                                             </a>
                                         </div><!-- End .col-6 -->
                                     </div><!-- End .row -->
@@ -86,16 +80,10 @@
                                 <div class="form-choice">
                                     <p class="text-center">hoặc bạn có thể</p>
                                     <div class="row">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <a href="#" class="btn btn-login btn-g">
                                                 <i class="icon-google"></i>
                                                 Đăng nhập bằng Goggle
-                                            </a>
-                                        </div><!-- End .col-6 -->
-                                        <div class="col-sm-6">
-                                            <a href="#" class="btn btn-login  btn-f">
-                                                <i class="icon-facebook-f"></i>
-                                                Đăng nhập bằng Facebook
                                             </a>
                                         </div><!-- End .col-6 -->
                                     </div><!-- End .row -->

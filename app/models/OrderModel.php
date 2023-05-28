@@ -12,7 +12,7 @@ class OrderModel
         $orderDate = date('Y-m-d H:i:s');
         $query = "INSERT INTO orders(userId,orderDate, receiver, email,phone, province, district, ward, street, summary, notes) VALUES($userId,'$orderDate','$receiver','$email','$phone','$province','$district','$ward','$street','$summary','$notes')";
         $this->db->exec($query);
-        $select = "SELECT orderId FROM orders WHERE userId = $userId ORDER BY orderId DESC LIMIT 1";
+        $select = "SELECT orderId FROM orders WHERE userId = '$userId' ORDER BY orderId DESC LIMIT 1";
         $int = $this->db->getOne($select);
         return $int[0];
     }
@@ -22,8 +22,8 @@ class OrderModel
         $this->db->exec($query);
     }
     public function updateOrder($orderId, $orderDate, $receiver, $email, $phone, $province, $district, $ward, $street, $notes, $status)
-    {   
-        if($status == 3){
+    {
+        if ($status == 3) {
             $order_details = $this->getOrderDetail($orderId);
             foreach ($order_details as $key => $item) {
                 $qty = $item['quantity'];
@@ -82,12 +82,12 @@ class OrderModel
     public function updateOrderStatus($orderId, $status)
     {
         $query = "UPDATE `orders` SET `status` = $status WHERE orderId = '$orderId'";
-        return $this->db->exec($query); 
+        return $this->db->exec($query);
     }
     public function updateOrderDetailStatus($orderId, $optionId, $returned, $reason, $image)
-    {   
-        $this->updateOrderStatus($orderId,5);
+    {
+        $this->updateOrderStatus($orderId, 5);
         $query = "UPDATE `order_details` SET `returned` = $returned, `return_reason` ='$reason', `return_image` = '$image'  WHERE orderId = '$orderId' AND optionId = '$optionId'";
-        return $this->db->exec($query); 
+        return $this->db->exec($query);
     }
 }

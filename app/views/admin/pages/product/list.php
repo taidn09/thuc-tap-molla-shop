@@ -6,7 +6,7 @@
         ?>
             <a href="/admin/product/add" class="text-white btn btn-custom btn-success d-inline-block py-2 px-5 mb-4">Thêm sản phẩm mới</a>
         <?php endif; ?>
-        <a href="a" class="text-white btn btn-custom btn-primary ms-auto d-inline-block py-2 px-5 mb-4">Xuất dữ liệu</a>
+        <a href="/admin/product/export" class="text-white btn btn-custom btn-primary ms-auto d-inline-block py-2 px-5 mb-4">Xuất dữ liệu</a>
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
                 <h5 class="card-title text-uppercase">Danh sách sản phẩm</h5>

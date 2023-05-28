@@ -21,7 +21,7 @@
                 <!-- End .checkout-discount -->
                 <form action="/checkout/complete" id="checkout-form" method="POST">
                     <div class="row">
-                        <div class="col-lg-9">
+                        <div class="col-lg-7">
                             <h2 class="checkout-title">Thông tin giao hàng</h2><!-- End .checkout-title -->
                             <div class="row">
                                 <div class="col-sm-6">
@@ -76,7 +76,7 @@
                             <label>Ghi chú (Không bắt buộc)</label>
                             <textarea name="notes" class="form-control" cols="30" rows="4" placeholder="Bạn có thể để lại ghi chú thêm cho chúng tôi..."></textarea>
                         </div><!-- End .col-lg-9 -->
-                        <aside class="col-lg-3">
+                        <aside class="col-lg-5">
                             <div class="summary">
                                 <h3 class="summary-title">Đơn hàng của bạn</h3><!-- End .summary-title -->
                                 <a href="/cart" class="text-right d-block mb-3">Quay lại giỏ hàng</a>
@@ -123,8 +123,11 @@
                                             <td>Miễn phí</td>
                                         </tr>
                                         <tr class="summary-total">
-                                            <td>Tổng thành tiền:</td>
-                                            <td><?= !empty($_SESSION['cart-total-amount']) ? number_format($_SESSION['cart-total-amount'], 0, '.', '.') : 0 ?>đ</td>
+                                            <td >Tổng thành tiền:</td>
+                                            <td class="total-price"><?= !empty($_SESSION['cart-total-amount']) ? number_format($_SESSION['cart-total-amount']) : 0 ?>Đ</td>
+                                        </tr><!-- End .summary-total -->
+                                        <tr>
+                                            <td colspan="2" style="height: fit-content" class="price-to-words text-left">Bằng chữ:</td>
                                         </tr><!-- End .summary-total -->
                                     </tbody>
                                 </table><!-- End .table table-summary -->
