@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/blog" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -31,7 +32,7 @@
                                                     $authors = $adminModel->getAdminList(true);
                                                     foreach ($authors as $author) :
                                                     ?>
-                                                        <option value="<?= $author['adminId'] ?>" <?= $author['adminId'] == $blog['authorId'] ? 'selected' : '' ?>><?= $author['name']?></option>
+                                                        <option value="<?= $author['adminId'] ?>" <?= $author['adminId'] == $blog['authorId'] ? 'selected' : '' ?>><?= $author['name'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                                 <div class="err-msg author-err-msg"></div>
@@ -47,7 +48,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-6">
-                                            <p>Xem trước hình ảnh</p>
+                                            <p class="mt-2">Xem trước hình ảnh</p>
                                             <img src="<?php echo _WEB_ROOT ?>/public/assets/images/blog/<?= $blog['thumbnail'] ?>" alt="" style="max-width: 200px" class="img-preview">
                                         </div>
 
@@ -70,7 +71,7 @@
                                     </div>
                                     <div class="row">
                                         <!-- TinyMCE Editor -->
-                                        <label for="content">Nội dung</label>
+                                        <label for="content" class="mb-3">Nội dung</label>
                                         <textarea id="content" class="tinymce-editor" name="content"><?= $blog['content'] ?>
                                      </textarea><!-- End TinyMCE Editor -->
                                         <div class="err-msg content-err-msg"></div>
@@ -79,7 +80,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Chỉnh sửa
                                         </button>
-                                        <a href="/admin/blog" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             <?php } ?>
@@ -104,7 +104,7 @@
                                                     $authors = $adminModel->getAdminList(true);
                                                     foreach ($authors as $author) :
                                                     ?>
-                                                        <option value="<?= $author['adminId'] ?>"><?= $author['name']?></option>
+                                                        <option value="<?= $author['adminId'] ?>"><?= $author['name'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                                 <div class="err-msg author-err-msg"></div>
@@ -120,7 +120,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-6">
-                                            <p>Xem trước hình ảnh</p>
+                                            <p class="mt-2">Xem trước hình ảnh</p>
                                             <img src="" alt="" style="display: none; width: 70%; max-width: 200px" class="img-preview">
                                         </div>
                                     </div>
@@ -144,7 +144,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Thêm mới
                                         </button>
-                                        <a href="/admin/blog" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>
@@ -159,7 +158,6 @@
 </main>
 <script>
     var selectBoxElement = document.querySelector('#select-box');
-
     dselect(selectBoxElement, {
         search: true,
         maxHeight: '200px'
@@ -173,6 +171,64 @@
         fileReader.onloadend = function(e) {
             img.src = e.target.result
             img.style.display = 'block'
+        }
+    })
+    $('#blog-form').on('submit', function(e) {
+        e.preventDefault()
+        const action = $(this).attr('action')
+        let min = 2
+        let max = 50
+        let flag = true
+        $(".err-msg").html('')
+        const name = $(this).find('#title').val().trim()
+        const createdAt = $(this).find('#createdAt').val()
+
+        if (!name) {
+            $('.title-err-msg').html(`Chưa nhập tiêu đề...`)
+            flag = false
+        }
+        if (tinymce.activeEditor.getContent().trim() === '') {
+            $('.content-err-msg').html(`Chưa nhập nội dung tin tức...`)
+            flag = false
+        }
+        if ($('#shortDesc').val().trim() == '') {
+            $('.shortDesc-err-msg').html(`Chưa nhập mô tả nhắn cho tin tức...`)
+            flag = false
+        }
+        if (action.includes('edit')) {
+            if (!createdAt) {
+                $('.createAt-err-msg').html(`Chưa chọn ngày tạo tin tức...`)
+                flag = false
+            }
+        }
+        if (flag) {
+            var formData = new FormData();
+            formData.append('title', name);
+            formData.append('thumbnail', $('#thumbnail')[0].files[0]);
+            formData.append('author', $('#select-box').val());
+            formData.append('content', tinymce.activeEditor.getContent());
+            formData.append('shortDesc', $('#shortDesc').val().trim());
+            if ($(this).find('#createdAt').length > 0) {
+                formData.append('createdAt', $(this).find('#createdAt').val());
+            }
+            if ($(this).find('#id').length > 0) {
+                formData.append('id', $(this).find('#id').val());
+            }
+            const action = $(this).attr('action')
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = "/admin/blog"
+                    } else {
+                        $('.thumbnail-err-msg').html(JSON.parse(response).uploadErr)
+                    }
+                },
+            });
         }
     })
 </script>

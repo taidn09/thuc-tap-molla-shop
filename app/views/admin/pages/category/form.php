@@ -55,3 +55,28 @@
     </div>
     <!-- End Recent Sales -->
 </main>
+<script>
+    // category
+    $('#category-form').on('submit', function(e) {
+        e.preventDefault()
+        $(".title-err-msg").html('')
+        if ($(this).find("#title").val() == '') {
+            $(".title-err-msg").html('Chưa nhập tên danh mục...')
+        } else {
+            const formData = $(this).serialize()
+            const action = $(this).attr('action')
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: formData,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = "/admin/category"
+                    } else {
+                        $(".title-err-msg").html('Danh mục đã tồn tại...')
+                    }
+                },
+            });
+        }
+    })
+</script>

@@ -38,12 +38,6 @@
                                             Đăng nhập
                                         </button>
                                     </div>
-                                    <div class="col-12">
-                                        <p class="small mb-0">
-                                            Quên mật khẩu?
-                                            <a href="/">Lấy lại mật khẩu</a>
-                                        </p>
-                                    </div>
                                 </form>
                             </div>
                         </div>

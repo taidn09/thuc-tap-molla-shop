@@ -1,10 +1,10 @@
 <?php
 
 class Home extends Controller
-{   
-    public $data= [];
+{
+    public $data = [];
     public function index()
-    {   
+    {
         $productModel = new ProductModel();
         $brandModel = new BrandModel();
         $serviceModel = new ServiceModel();
@@ -18,6 +18,6 @@ class Home extends Controller
         $this->data['subcontent']['servicesList'] =  $serviceModel->getServicesList();
         $this->data['subcontent']['blogs'] =  $blogModel->getAllBlogs();
         $this->data['content'] = 'client/pages/home';
-        $this->render('layouts/client',$this->data);
+        $this->render('layouts/client', $this->data);
     }
 }

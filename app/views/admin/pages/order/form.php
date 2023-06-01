@@ -79,7 +79,7 @@
                                             <?php
                                             foreach ($statusCodes as  $code) {
                                             ?>
-                                                <option value="<?= $code['id'] ?>" <?php if($code['id'] == $order['status']) echo 'selected'?>><?= $code['status_text'] ?></option>
+                                                <option value="<?= $code['id'] ?>" <?php if ($code['id'] == $order['status']) echo 'selected' ?>><?= $code['status_text'] ?></option>
                                             <?php
                                             }
                                             ?>
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                
+
                                 <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                     Chỉnh sửa
                                 </button>
@@ -110,3 +110,53 @@
         </div>
         <!-- End Recent Sales -->
 </main>
+<script>
+    $('#order-form').on('submit', function(e) {
+        e.preventDefault()
+        let min = 2
+        let max = 50
+        let flag = true
+        $(".receiver-err-msg").html('')
+        $(".email-err-msg").html('')
+        $(".phone-err-msg").html('')
+        $(".street-err-msg").html('')
+        const receiver = $(this).find('#receiver').val()
+        const orderDate = $(this).find('#orderDate').val()
+        if (validateIsEmpty(orderDate)) {
+            $('.orderDate-err-msg').html('Vui lòng chọn ngày đặt hàng...')
+            flag = false
+        }
+        if (validateIsEmpty(receiver)) {
+            $('.receiver-err-msg').html('Chưa nhập họ...')
+            flag = false
+        } else if (!validateName(receiver, min, max)) {
+            $('.receiver-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+        if (!validateEmailAdress($(this).find('#email').val())) {
+            $('.email-err-msg').html('Email không hợp lệ...')
+            flag = false
+        }
+        if (!validatePhoneNumber($(this).find('#phone').val())) {
+            $('.phone-err-msg').html('Số điện thoại không hợp lệ...')
+            flag = false
+        }
+        if (validateIsEmpty($(this).find('#street').val())) {
+            $('.street-err-msg').html('Chưa nhập tên đường và số nhà...')
+            flag = false
+        }
+        if (flag) {
+            const formData = $(this).serialize()
+            $.ajax({
+                type: 'POST',
+                url: '/admin/order/edit',
+                data: formData,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = "/admin/order"
+                    }
+                },
+            });
+        }
+    })
+</script>

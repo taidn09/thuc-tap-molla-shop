@@ -88,7 +88,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody style="height: 300px">
                                         <?php
                                         $productModel = new ProductModel();
                                         foreach ($_SESSION['cart'] as $product) {
@@ -123,7 +123,7 @@
                                             <td>Miễn phí</td>
                                         </tr>
                                         <tr class="summary-total">
-                                            <td >Tổng thành tiền:</td>
+                                            <td>Tổng thành tiền:</td>
                                             <td class="total-price"><?= !empty($_SESSION['cart-total-amount']) ? number_format($_SESSION['cart-total-amount']) : 0 ?>Đ</td>
                                         </tr><!-- End .summary-total -->
                                         <tr>

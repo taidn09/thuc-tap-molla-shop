@@ -45,18 +45,24 @@
                                     <?php
                                     if ($this->checkRole('order-detail')) :
                                     ?>
-                                        <a class="btn btn-success btn-custom" href="/admin/order/detail/<?= $order['orderId'] ?>"><i class="bi bi-list-task"></i></a>
+                                        <div>
+                                            <a class="btn btn-success btn-custom" href="/admin/order/detail/<?= $order['orderId'] ?>">Chi tiết</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('order-delete')) :
                                     ?>
-                                        <a class="btn btn-danger btn-custom" onclick="deleteOrder('<?= $order['orderId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
+                                        <div>
+                                            <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $order['orderId'] ?>" href="javascript:void(0)">Xóa</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('order-edit')) :
                                     ?>
-                                        <a href="/admin/order/edit/<?= $order['orderId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                                        </a>
+                                        <div>
+                                            <a href="/admin/order/edit/<?= $order['orderId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa</i>
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -70,4 +76,27 @@
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa đơn hàng này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/order/delete`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

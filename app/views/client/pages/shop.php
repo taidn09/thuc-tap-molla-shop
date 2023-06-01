@@ -105,7 +105,7 @@
                                 <li class="page-item-total">of <?= $totalPage ?></li>
                                 <li class="page-item <?= $currentPage >= $totalPage ? 'disabled' : '' ?>">
                                     <a class="page-link page-link-next" href="#<?= $currentPage + 1 ?>" aria-label="Next">
-                                        Trang kế <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                        Trang sau <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                     </a>
                                 </li>
                             </ul>

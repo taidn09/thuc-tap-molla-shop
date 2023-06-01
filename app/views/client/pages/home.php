@@ -139,7 +139,7 @@
                             <div class="product-body">
                                 <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                 <div class="product-price">
-                                    <?= $product['currentPrice'] ?>đ
+                                    <?= number_format($product['currentPrice']) ?>đ
                                 </div><!-- End .product-price -->
                                 <div class="ratings-container">
                                     <div class="ratings">
@@ -205,7 +205,7 @@
                                     <div class="product-body">
                                         <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                            $<?= $product['currentPrice'] ?>
+                                            <?= number_format($product['currentPrice']) ?>đ
                                         </div><!-- End .product-price -->
                                         <div class="ratings-container">
                                             <div class="ratings">
@@ -352,7 +352,7 @@
                             <div class="product-body">
                                 <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                 <div class="product-price">
-                                    <?= $product['currentPrice'] ?>đ
+                                    <?= number_format($product['currentPrice']) ?>đ
                                 </div><!-- End .product-price -->
                                 <div class="ratings-container">
                                     <div class="ratings">

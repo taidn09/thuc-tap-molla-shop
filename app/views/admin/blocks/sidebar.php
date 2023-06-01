@@ -96,7 +96,7 @@
             <li class="nav-item">
                 <a class="nav-link <?php if ($controller == 'admin') echo 'active' ?>" href="/admin/admin">
                     <i class="bi bi-people-fill"></i>
-                    <span>Quản trị viên</span>
+                    <span>Quản lý nhân viên</span>
                 </a>
             </li>
         <?php } ?>

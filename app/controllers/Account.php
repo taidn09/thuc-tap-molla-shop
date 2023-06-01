@@ -30,10 +30,38 @@ class Account extends Controller
             $ward = $_POST['ward-is'];
             $street = $_POST['street'];
             $userModel = new UserModel();
-            $res = $userModel->changeInfo($userId, $fname, $lname, $phone, $province, $district, $ward, $street);
+            if (!empty($_FILES['avatar'])) {
+                $avatar = $_FILES['avatar'];
+                $time = time();
+                $check = $this->uploadImage($avatar, 'user', $time);
+                if ($check) {
+                    echo json_encode([
+                        'status' => 0,
+                        'uploadErr' => $check
+                    ]);
+                    return;
+                }
+                $new_img_name = md5(strtolower(pathinfo(basename($avatar['name']), PATHINFO_FILENAME)) . $time) . '.' . strtolower(pathinfo(basename($avatar['name']), PATHINFO_EXTENSION));
+                $res = $userModel->changeInfo($userId, $fname, $lname, $phone, $province, $district, $ward, $street, $new_img_name);
+            } else {
+                $avatar = null;
+                $res = $userModel->changeInfo($userId, $fname, $lname, $phone, $province, $district, $ward, $street, $avatar);
+            }
             if (!empty($res)) {
-                $_SESSION['user'] = $userModel->getUserById($userId);
-                echo json_encode(['status' => 1]);
+                $user = $userModel->getUserById($userId);
+                $_SESSION['user'] = $user;
+                $userAvatar = '';
+                if (!empty($_SESSION['user']['avatar'])) {
+                    if (strstr($_SESSION['user']['avatar'], 'https') !== false) {
+                        $userAvatar = $_SESSION['user']['avatar'];
+                    } else {
+                        $userAvatar = '/public/assets/images/user/' . $_SESSION['user']['avatar'];
+                    }
+                } else {
+                    $userAvatar = '/public/assets/images/user.png';
+                }
+
+                echo json_encode(['status' => 1, 'avatar' => $userAvatar]);
                 return;
             }
             echo json_encode(['status' => 0]);
@@ -49,15 +77,15 @@ class Account extends Controller
             $userModel = new UserModel();
             $check = $userModel->checkEnterRightPassword($userId, $password);
             if (empty($check)) {
-                echo json_encode(['status' => 0, 'message' => 'Password incorrect...']);
+                echo json_encode(['status' => 0, 'message' => 'Mật khẩu không chính xác...']);
                 return;
             } else {
-                $res = $userModel->changePassword($userId, $password, $newPassword);
-                if (empty($res)) {
-                    echo json_encode(['status' => 0, 'message' => '']);
+                $res = $userModel->changePassword($userId, $newPassword);
+                if ($res !== false) {
+                    echo json_encode(['status' => 1]);
                     return;
                 }
-                echo json_encode(['status' => 1]);
+                echo json_encode(['status' => 0]);
                 return;
             }
         }
@@ -116,18 +144,17 @@ class Account extends Controller
             $reason = trim($_POST['reason']);
             $image = $_FILES['image'];
             $time = time();
-            $check = $this->uploadImage($image,'returns', $time);
-            if(empty($check)){
-                $new_img_name = md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME)).$time).'.'.strtolower(pathinfo(basename($image['name']), PATHINFO_EXTENSION));
-                $res = $this->orderModel->updateOrderDetailStatus($orderId,$optionId,1,$reason,$new_img_name);
-                if(!empty($res)){
+            $check = $this->uploadImage($image, 'returns', $time);
+            if (empty($check)) {
+                $new_img_name = md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME)) . $time) . '.' . strtolower(pathinfo(basename($image['name']), PATHINFO_EXTENSION));
+                $res = $this->orderModel->updateOrderDetailStatus($orderId, $optionId, 1, $reason, $new_img_name);
+                if (!empty($res)) {
                     echo json_encode([
                         'status' => 1,
                     ]);
                     return;
                 }
             }
-            
         }
         echo json_encode([
             'status' => 0,

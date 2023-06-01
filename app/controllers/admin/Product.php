@@ -26,16 +26,9 @@ class Product extends Controller
     {
         if (!empty($_POST)) {
             $products = $this->model->getProductFilter($_POST);
-            if (!empty($products)) {
-                echo json_encode([
-                    'status' => 1,
-                    'products' => $products
-                ]);
-                return;
-            }
             echo json_encode([
-                'status' => 0,
-                'errMsg' => 'Danh mục chưa có sản phẩm...'
+                'status' => 1,
+                'products' => $products
             ]);
             return;
         }
@@ -187,12 +180,10 @@ class Product extends Controller
     {
         if (!empty($_POST)) {
             $id = $_POST['id'];
-            $productId = $_POST['productId'];
             $res = $this->model->deleteOption($id);
             if (!empty($res)) {
                 echo json_encode([
                     'status' => 1,
-                    'options' => $this->model->getProductOptions($productId, false)
                 ]);
                 return;
             }
@@ -298,9 +289,6 @@ class Product extends Controller
     public function import()
     {
         if (!empty($_FILES)) {
-            // echo '<pre>';
-            // print_r($_FILES);
-            // echo '</pre>';
             $ext = strtolower(pathinfo($_FILES['import']['name'], PATHINFO_EXTENSION));
             // echo $ext;
             if ($ext != 'xlsx') {
@@ -310,7 +298,8 @@ class Product extends Controller
                 ]);
                 return;
             }
-            $spreadsheet = IOFactory::load($_FILES['import']['tmp_name']);
+            $reader = IOFactory::createReader('Xlsx');
+            $spreadsheet = $reader->load($_FILES['import']['tmp_name']);
             $worksheet = $spreadsheet->getActiveSheet();
             $highestRow = $worksheet->getHighestRow();
             $highestColumn = $worksheet->getHighestColumn();
@@ -352,20 +341,27 @@ class Product extends Controller
         $products = $this->model->getProductsList(null, true);
         $current_index = 2;
         foreach ($products as $product) {
-            $sheet->setCellValue('A'.$current_index, $product['title']);
-            $sheet->setCellValue('B'.$current_index, $product['originalPrice']);
-            $sheet->setCellValue('C'.$current_index, $product['salePercent']);
-            $sheet->setCellValue('D'.$current_index, $product['currentPrice']);
-            $sheet->setCellValue('E'.$current_index, $product['description']);
-            $sheet->setCellValue('F'.$current_index, $product['reviewCount']);
-            $sheet->setCellValue('G'.$current_index, $product['rating']);
-            $sheet->setCellValue('H'.$current_index, $product['sold']);
+            $sheet->setCellValue('A' . $current_index, $product['title']);
+            $sheet->setCellValue('B' . $current_index, $product['originalPrice']);
+            $sheet->setCellValue('C' . $current_index, $product['salePercent']);
+            $sheet->setCellValue('D' . $current_index, $product['currentPrice']);
+            $sheet->setCellValue('E' . $current_index, $product['description']);
+            $sheet->setCellValue('F' . $current_index, $product['reviewCount']);
+            $sheet->setCellValue('G' . $current_index, $product['rating']);
+            $sheet->setCellValue('H' . $current_index, $product['sold']);
             $current_index++;
         }
         $writer = new Xlsx($spreadsheet);
-        $filePath = 'export/danh_sach_san_pham_' . date("Y_m_d_H_i_s") . '.xlsx';
+        $file_name = 'danh_sach_san_pham_' . date("Y_m_d_H_i_s") . '.xlsx';
+        $filePath = 'export/' . $file_name;
         $writer->save($filePath);
-        echo '<script>window.open("' . _WEB_ROOT . '/' . $filePath . '")</script>';
-        echo '<script>window.location = "/admin/product"</script>';
+        ob_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $file_name . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        readfile($filePath);
+        unlink($filePath);
+        ob_end_clean();
     }
 }

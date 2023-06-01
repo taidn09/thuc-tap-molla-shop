@@ -150,38 +150,9 @@
     <script src="<?php echo _WEB_ROOT; ?>/public/assets/client/js/main.js"></script>
     <script src="<?php echo _WEB_ROOT; ?>/public/assets/client/js/demos/demo-6.js"></script>
     <script>
-        // window.fbAsyncInit = function() {
-        //     FB.init({
-        //         appId: '990858165418969',
-        //         cookie: true,
-        //         xfbml: true,
-        //         version: 'v17.0'
-        //     });
-
-        //     FB.AppEvents.logPageView();
-
-        // };
-
-        // (function(d, s, id) {
-        //     var js, fjs = d.getElementsByTagName(s)[0];
-        //     if (d.getElementById(id)) {
-        //         return;
-        //     }
-        //     js = d.createElement(s);
-        //     js.id = id;
-        //     js.src = "https://connect.facebook.net/en_US/sdk.js";
-        //     fjs.parentNode.insertBefore(js, fjs);
-        // }(document, 'script', 'facebook-jssdk'));
-
-        // function checkLoginState() {
-        //     FB.getLoginStatus(function(response) {
-        //         console.log(response);
-        //         // statusChangeCallback(response);
-        //     });
-        // }
-
         $(".nav-link[role=tab]").on('click', function() {
             $('.err-msg').html('')
+            $('input').val('')
         })
         $(".close[data-dismiss=modal]").on('click', function() {
             $('.err-msg').html('')
@@ -242,7 +213,6 @@
         }
         const confirmPopup = {
             title: 'Bạn chắc chắn muốn xóa sản phẩm này?',
-            text: "Nhấn vào đóng đủ hủy!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -286,6 +256,10 @@
                                 ...successPopup,
                                 title: 'Đăng ký thành công'
                             })
+                            $('#signin-2').addClass('show active')
+                            $('#signin-tab-2').addClass('active')
+                            $('#register-2').removeClass('show active')
+                            $('#register-tab-2').removeClass('active')
                         } else {
                             $('.res-email-err-msg').html('Email đã tồn tại...')
                         }
@@ -508,16 +482,7 @@
                     </div>`);
             }
         }
-        // chọn màu giỏ hàng
-        $('.circle').each(function() {
-            $(this).click(function() {
-                var productId = $(this).data('product-id');
-                $(this).siblings('.circle').removeClass('active')
-                // $('.circle[data-product-id="' + productId + '"]').removeClass('active');
-                $(this).addClass('active');
-                $('input[type="hidden"][data-product-id="' + productId + '"]').val($(this).data('color'));
-            });
-        });
+
         // validate input number có kết hợp với thư viện input spinner 
         $("input[type='number']").on('input', function() {
             $(this).attr('value', 1)
@@ -608,6 +573,7 @@
             var input = tableRow.find('.cart-product-quantity input')
             selectTag.find('option').addClass('d-none')
             selectTag.find('option[data-color="' + color + '"]').removeClass('d-none')
+            console.log(selectTag.find('option').not('.d-none')[0].value);
             selectTag.val(selectTag.find('option').not('.d-none')[0].value)
             // input.attr('max', selectTag.find('option').not('.d-none')[0].dataset.qty)
         });
@@ -742,7 +708,7 @@
                 }
             }
             $('.reviews-wrapper').html(reviewsHTML)
-            $('.review-count').html(`(${Object.keys(reviews).length} đánh giá)`)
+            $('.review-count').html(`Đánh giá (${Object.keys(reviews).length})`)
         }
         // add to cart - product detail page
         function addToCartDetail(id) {
@@ -1015,17 +981,11 @@
                                 ...successPopup,
                                 title: 'Thanh toán thành công!',
                             })
-                            $('.checkout .container').html(`<a href="/" class="btn btn-outline-primary-2 btn-minwidth-lg">
+                            $('.checkout .container').html(`<a href="/" class="btn btn-outline-primary-2 btn-minwidth-lg d-block text-center">
             			<span>Quay về trang chủ</span>
             			<i class="icon-long-arrow-right"></i>
             		</a>`);
                             updateCartHeader(response)
-                        } else {
-                            Swal.fire({
-                                ...successPopup,
-                                icon: 'error',
-                                title: 'Đã có lỗi xảy ra!',
-                            })
                         }
                     },
                 });
@@ -1054,7 +1014,10 @@
                     if (_a.slice(1, 3) != '00') {
                         chuc_dv = convert_block_two(_a.slice(1, 3));
                     }
-                    var tram = chuHangTram[_a[0]] + ' trăm';
+                    var tram = chuHangTram[_a[0]];
+                    if (tram !== 'không') {
+                        tram += ' trăm';
+                    }
                     return tram + ' ' + chuc_dv;
             }
         }
@@ -1066,7 +1029,7 @@
 
             // Nếu chữ số hàng đơn vị là 5
             if (number[0] > 0 && number[1] == 5) {
-                dv = 'lăm'
+                dv = 'lăm';
             }
 
             // Nếu số hàng chục lớn hơn 1
@@ -1142,7 +1105,6 @@
         // account - change user info form submit 
         $('#account-form').on('submit', function(e) {
             e.preventDefault();
-            var formData = $(this).serialize();
             let flag = true;
             let min = 2
             let max = 50
@@ -1174,13 +1136,29 @@
                 flag = false
             }
             if (flag) {
+                var formData = new FormData();
+                formData.append("fname", $('#fname').val().trim())
+                formData.append("lname", $('#lname').val().trim())
+                formData.append("phone", $('#phone').val().trim())
+                formData.append("province-is", $('#province-is').val().trim())
+                formData.append("district-is", $('#district-is').val().trim())
+                formData.append("ward-is", $('#ward-is').val().trim())
+                formData.append("street", $('#street').val().trim())
+                formData.append("avatar", $('#avatar')[0].files[0])
                 $.ajax({
                     type: 'POST',
                     url: '/account/update',
                     data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response && JSON.parse(response).status == 1) {
+                            $('#header-avatar').attr('src', JSON.parse(response).avatar)
                             Swal.fire(successPopup)
+                        } else if (response && JSON.parse(response).status == 0) {
+                            if(JSON.parse(response).uploadErr){
+                                $('.avatar-err-msg').html(JSON.parse(response).uploadErr)
+                            }
                         }
                     },
                 });
@@ -1228,7 +1206,7 @@
                                 Swal.fire({
                                     ...successPopup,
                                     icon: 'error',
-                                    title: 'Đã có lỗi xảy ra!',
+                                    title: 'Đã có lỗi xảy ra',
                                 })
                             }
                         } else if (response && JSON.parse(response).status == 1) {
@@ -1236,6 +1214,7 @@
                                 ...successPopup,
                                 title: 'Đã thay đổi mật khẩu thành công!',
                             })
+                            $('input').val('');
                         }
                     },
                 });
@@ -1902,6 +1881,27 @@
                 }
             });
         }
+        // fb auth 
+        $("#fb-auth-form").on('submit', function(e) {
+            e.preventDefault();
+            $('.err-msg').html('')
+            if (!checkEmail($('#email').val())) {
+                $('.email-err-msg').html('Email không hợp lệ...')
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/fbAuth',
+                    data: {
+                        email: $('#email').val().trim()
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            console.log('Success');
+                        }
+                    },
+                });
+            }
+        })
     </script>
 </body>
 

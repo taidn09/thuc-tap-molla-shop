@@ -104,3 +104,71 @@
         </div>
         <!-- End Recent Sales -->
 </main>
+<script>
+    $('#user-form').on('submit', function(e) {
+        e.preventDefault()
+        let min = 2
+        let max = 50
+        let flag = true
+        $(".err-msg").html('')
+        const fname = $(this).find('#fname').val()
+        const lname = $(this).find('#lname').val()
+        const password = $(this).find('#password').val()
+        const cfPass = $(this).find('#cfpass').val()
+        if (validateIsEmpty(fname)) {
+            $('.fname-err-msg').html('Chưa nhập họ...')
+            flag = false
+        } else if (!validateName(fname, min, max)) {
+            $('.fname-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+        if (validateIsEmpty(lname)) {
+            $('.lname-err-msg').html('Chưa nhập tên...')
+            flag = false
+        } else if (!validateName(lname, min, max)) {
+            $('.lname-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+        if (!validateEmailAdress($(this).find('#email').val())) {
+            $('.email-err-msg').html('Email không hợp lệ...')
+            flag = false
+        }
+        if (!validatePhoneNumber($(this).find('#phone').val())) {
+            $('.phone-err-msg').html('Số điện thoại không hợp lệ...')
+            flag = false
+        }
+        if (validateIsEmpty($(this).find('#street').val())) {
+            $('.street-err-msg').html('Chưa nhập tên đường và số nhà...')
+            flag = false
+        }
+        if (!validateIsEmpty(password) || !validateIsEmpty(cfPass)) {
+            if (password.length < 6) {
+                $(".pass-err-msg").html('Mật khẩu tối thiểu 6 ký tự...')
+                flag = false
+            }
+            if (cfPass != password) {
+                $(".cfpass-err-msg").html('Nhập lại mật khẩu không khớp...')
+                flag = false
+            }
+        }
+        if (flag) {
+            const formData = $(this).serialize()
+            $.ajax({
+                type: 'POST',
+                url: '/admin/user/edit',
+                data: formData,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = '/admin/user'
+                    } else {
+                        Swal.fire({
+                            ...successPopup,
+                            icon: 'error',
+                            title: `Email hoặc số điện thoại đã tồn tại`
+                        })
+                    }
+                },
+            });
+        }
+    })
+</script>

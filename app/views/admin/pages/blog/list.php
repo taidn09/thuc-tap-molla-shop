@@ -15,7 +15,8 @@
                 <table class="ui celled table datatable">
                     <thead>
                         <tr>
-                            <th scope="col">Thumbnail</th>
+                            <td>#</td>
+                            <th scope="col">Hình ảnh</th>
                             <th scope="col">Tiêu đề</th>
                             <th scope="col">Tác giả</th>
                             <th scope="col">Ngày tạo</th>
@@ -26,10 +27,11 @@
                     <tbody class="blog-table-body">
                         <?php
                         $adminModel = new AdminModel();
-                        foreach ($blogs as $blog) {
+                        foreach ($blogs as $key=>$blog) {
                             $author = $adminModel->getAdminById($blog['authorId']);
                         ?>
                             <tr>
+                                <td><?=$key+1?></td>
                                 <td><img src="<?php echo _WEB_ROOT ?>/public/assets/images/blog/<?= $blog['thumbnail'] ?>" style="width: 50px" alt=""></td>
                                 <td><?= $blog['title'] ?></td>
                                 <td><?= $author['name'] ?></td>
@@ -49,24 +51,33 @@
                                     <?php
                                     if ($this->checkRole('blog-toggle')) :
                                     ?>
-                                        <a class="btn btn-primary btn-custom" onclick="toggleShowHide('<?= $blog['blogId'] ?>','<?= $blog['isShown'] ?>');" href="javascript:void(0)"><i class="bi <?= $blog['isShown'] == 1 ? 'bi-eye-slash' : 'bi-eye' ?>"></i></a>
+                                        <div>
+                                            <a class="btn btn-primary btn-custom toggle-btn" data-id="<?= $blog['blogId'] ?>" data-show="<?= $blog['isShown'] ?>" href="javascript:void(0)"><?= $blog['isShown'] == 1 ? 'Ẩn' : 'Hiện' ?></a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('blog-detail')) :
 
                                     ?>
-                                        <a class="btn btn-success btn-custom" href="/admin/blog/detail/<?= $blog['blogId'] ?>"><i class="bi bi-list-task"></i></a>
+                                        <div>
+                                            <a class="btn btn-success btn-custom" href="/admin/blog/detail/<?= $blog['blogId'] ?>">Chi tiết</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('blog-delete')) :
                                     ?>
-                                        <a class="btn btn-danger btn-custom" onclick="deleteBlog('<?= $blog['blogId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
+                                        <div>
+                                            <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $blog['blogId'] ?>" href="javascript:void(0)">Xóa</a>
+                                        </div>
+
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('blog-edit')) :
                                     ?>
-                                        <a href="/admin/blog/edit/<?= $blog['blogId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                                        </a>
+                                        <div>
+                                            <a href="/admin/blog/edit/<?= $blog['blogId'] ?>" class="btn btn-warning btn-custom">
+                                                Chỉnh sửa</a>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -80,4 +91,55 @@
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa tin tức này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/blog/delete`,
+                    data: {
+                        id: btn.data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            if (window.location.pathname == '/admin/blog') {
+                                $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                            }
+                        }
+                    },
+                });
+            }
+        })
+    })
+    $(document).on('click', '.toggle-btn', function() {
+        let btn = $(this)
+        console.log(btn);
+        let show = $(this).data('show')
+        Swal.fire({
+            ...confirmPopup,
+            title: `${show == 1 ? 'Ẩn' : "Hiện"} tin tức này ?`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/blog/toggle`,
+                    data: {
+                        id: $(this).data('id'),
+                        show: show == 1 ? 0 : 1
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            btn.text(`${show == 1 ? 'Hiện' : "Ẩn"}`)
+                            btn.data('show', `${show == 1 ? 0 : 1}`)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

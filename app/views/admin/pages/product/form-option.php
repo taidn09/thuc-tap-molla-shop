@@ -123,3 +123,34 @@
     </div>
     <!-- End Recent Sales -->
 </main>
+<script>
+    $('#option-form').on('submit', function(e) {
+        e.preventDefault();
+        $('err-msg').html('')
+        let flag = true
+        let qty = $(this).find('#quantity').val().trim()
+        if (qty == '' || isNaN(qty) || qty < 0) {
+            flag = false
+            $('.quantity-err-msg').html('Số lượng không hợp lệ...')
+        }
+        let formData = $(this).serializeArray()
+        const action = $(this).attr('action')
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: formData,
+                success: function(response) {
+                    if (response) {
+                        if (JSON.parse(response).status == 1) {
+                            window.history.back()
+                        }
+                        if (JSON.parse(response).errMsg) {
+                            $('.existed-err-msg').html(JSON.parse(response).errMsg)
+                        }
+                    }
+                },
+            });
+        }
+    })
+</script>

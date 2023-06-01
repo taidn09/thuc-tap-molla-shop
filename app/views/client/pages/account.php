@@ -18,9 +18,13 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="true">Thông tin tài khoản</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="tab-password-link" data-toggle="tab" href="#tab-password" role="tab" aria-controls="tab-account" aria-selected="false">Thay đổi mật khẩu</a>
-                            </li>
+                            <?php
+                            if ($_SESSION['user']['socialLogin'] == 0) {
+                            ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-password-link" data-toggle="tab" href="#tab-password" role="tab" aria-controls="tab-account" aria-selected="false">Thay đổi mật khẩu</a>
+                                </li>
+                            <?php } ?>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Danh sách đơn hàng</a>
                             </li>
@@ -33,7 +37,29 @@
                     <div class="col-md-8 col-lg-9">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-                                <form action="/account/update" method="POST" id="account-form">
+                                <form action="/account/update" method="POST" id="account-form" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="w-100 d-flex justify-content-center mb-3">
+                                            <div class="position-relative" style="width: 200px; height: 200px">
+                                                <?php
+                                                $userAvatar = '';
+                                                if (!empty($_SESSION['user']['avatar'])) {
+                                                    if (strstr($_SESSION['user']['avatar'], 'https') !== false) {
+                                                        $userAvatar = $_SESSION['user']['avatar'];
+                                                    } else {
+                                                        $userAvatar = '/public/assets/images/user/' . $_SESSION['user']['avatar'];
+                                                    }
+                                                } else {
+                                                    $userAvatar = '/public/assets/images/user.png';
+                                                }
+                                                ?>
+                                                <img src="<?= $userAvatar ?>" data-old-image="<?=$userAvatar?>" class="w-100 h-100 rounded-circle" id="image">
+                                                <label for="avatar" style="font-size: 40px; position: absolute; bottom: -20px; right: -10px; cursor: pointer"><i class="bi bi-camera-fill"></i></label>
+                                                <div class="err-msg avatar-err-msg"></div>
+                                            </div>
+                                        </div>
+                                        <input type="file" name="avatar" id="avatar" hidden>
+                                    </div>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="fname">Họ *</label>
@@ -89,23 +115,29 @@
                                     </button>
                                 </form>
                             </div><!-- .End .tab-pane -->
-                            <div class="tab-pane fade" id="tab-password" role="tabpanel" aria-labelledby="tab-password-link">
-                                <form action="/account/cpassword" method="POST" id="password-form">
-                                    <label for="password">Mật khẩu hiện tại</label>
-                                    <input name="password" id="password" type="password" class="form-control">
-                                    <div class="ci-password-err-msg err-msg"></div>
-                                    <label for="new-password">Mật khẩu mới</label>
-                                    <input name="new-password" id="new-password" type="password" class="form-control">
-                                    <div class="ci-new-password-err-msg err-msg"></div>
-                                    <label for="cfpassword">Nhập lại mật khẩu mới</label>
-                                    <input id="cfpassword" name="cfpassword" type="password" class="form-control mb-2">
-                                    <div class="ci-cfpassword-err-msg err-msg"></div>
-                                    <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>Lưu thay đổi</span>
-                                        <i class="icon-long-arrow-right"></i>
-                                    </button>
-                                </form>
-                            </div><!-- .End .tab-pane -->
+                            <?php
+                            if ($_SESSION['user']['socialLogin'] == 0) {
+                            ?>
+                                <div class="tab-pane fade" id="tab-password" role="tabpanel" aria-labelledby="tab-password-link">
+                                    <form action="/account/cpassword" method="POST" id="password-form">
+                                        <label for="password">Mật khẩu hiện tại</label>
+                                        <input name="password" id="password" type="password" class="form-control">
+                                        <div class="ci-password-err-msg err-msg"></div>
+                                        <label for="new-password">Mật khẩu mới</label>
+                                        <input name="new-password" id="new-password" type="password" class="form-control">
+                                        <div class="ci-new-password-err-msg err-msg"></div>
+                                        <label for="cfpassword">Nhập lại mật khẩu mới</label>
+                                        <input id="cfpassword" name="cfpassword" type="password" class="form-control mb-2">
+                                        <div class="ci-cfpassword-err-msg err-msg"></div>
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>Lưu thay đổi</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </div><!-- .End .tab-pane -->
+                            <?php
+                            }
+                            ?>
                             <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
                                 <?php
                                 if (empty($orders)) {
@@ -148,9 +180,9 @@
                                                         <?php
                                                         if ($order['status'] == 1) :
                                                         ?>
-                                                            <button class="btn btn-primary" onclick="cancelOrder('<?=$order['orderId']?>')">Hủy đơn</button>
+                                                            <button class="btn btn-primary" onclick="cancelOrder('<?= $order['orderId'] ?>')">Hủy đơn</button>
                                                         <?php endif;  ?>
-            
+
                                                         <a href="/account/odt/<?= $order['orderId'] ?>" class="btn btn-custom btn-outline-primary">Chi tiết</a>
                                                     </td>
                                                 </tr>
@@ -169,3 +201,19 @@
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    const upload = document.querySelector('#avatar')
+    upload.addEventListener('change', function(e) {
+        var file = upload.files[0]
+        var img = document.querySelector('#image')
+        if (file != undefined) {
+            var fileReader = new FileReader()
+            fileReader.readAsDataURL(file)
+            fileReader.onloadend = function(e) {
+                img.src = e.target.result
+            }
+        } else {
+            img.src = '/public/assets/images/' + img.getAttribute('data-old-image')
+        }
+    })
+</script>

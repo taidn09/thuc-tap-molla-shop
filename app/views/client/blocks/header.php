@@ -25,7 +25,29 @@
                         <?php if ($_SERVER['REQUEST_URI'] != '/auth') : ?>
                             <ul>
                                 <?php if (!empty($_SESSION['user'])) { ?>
-                                    <li><a href="/auth/logout"><i class="icon-user"></i>Đăng xuất</a></li>
+                                    <li class="header-dropdown">
+                                        <?php 
+                                            $userAvatar = '';
+                                            if(!empty($_SESSION['user']['avatar'])){
+                                                if(strstr($_SESSION['user']['avatar'], 'https') !== false){
+                                                    $userAvatar = $_SESSION['user']['avatar'];
+                                                }else{
+                                                    $userAvatar = '/public/assets/images/user/'.$_SESSION['user']['avatar'];
+                                                }
+                                            }else{
+                                                $userAvatar = '/public/assets/images/user.png';
+                                            }
+                                        ?>
+                                        <a href="javascript:void(0)">
+                                            <img src="<?=$userAvatar?>" alt="" style="width: 25px; height: 25px" class="mr-2 rounded-circle" id="header-avatar">    
+                                        <?= $_SESSION['user']['fname'] ? $_SESSION['user']['fname'].' '. $_SESSION['user']['lname'] : 'Khách hàng' ?></a>
+                                        <div class="header-menu">
+                                            <ul style="flex-direction: column">
+                                                <li><a href="/account">Tài khoản</a></li>
+                                                <li><a href="/auth/logout">Đăng xuất</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
                                 <?php } else { ?>
                                     <li><a href="/auth"><i class="icon-user"></i>Đăng nhập</a></li>
                                 <?php } ?>
@@ -54,7 +76,7 @@
                             </div>
                             <div class="search-wrapper-wide">
                                 <label for="q" class="sr-only">Tìm kiếm</label>
-                                <input type="text" class="form-control" name="searchTerm" id="q" placeholder="Nhập từ khóa để tìm kiếm..." value="<?= !empty($searchTerm) ? $searchTerm : '' ?>">
+                                <input type="text" class="form-control" name="searchTerm" id="q" autocomplete="off" spellcheck="false" placeholder="Nhập từ khóa để tìm kiếm..." value="<?= !empty($searchTerm) ? $searchTerm : '' ?>">
                             </div><!-- End .header-search-wrapper -->
                         </div>
                     </form>
@@ -80,7 +102,7 @@
                         <span class="cart-txt"><?= !empty($_SESSION['cart-total-amount']) ? number_format($_SESSION['cart-total-amount']) : 0 ?>đ</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <div class="dropdown-cart-products">
+                        <div class="dropdown-cart-products" style="max-height: 450px; overflow-y: auto">
                             <?php
                             if (!empty($_SESSION['cart'])) {
                                 foreach ($_SESSION['cart'] as $id => $item) {
@@ -96,7 +118,7 @@
                                             </div>
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty"><?= $item['quantity'] ?></span>
-                                                x $<?= $item['currentPrice'] ?>
+                                                x <?= number_format($item['currentPrice']) ?>đ
                                             </span>
                                         </div><!-- End .product-cart-details -->
 
@@ -139,11 +161,6 @@
                         </li>
                         <li class="<?= (!empty($controller) && $controller == 'contact') ? 'active' : '' ?>"><a href="/contact">Liên hệ</a></li>
                         <li class="<?= (!empty($controller) && $controller == 'blog') ? 'active' : '' ?>"><a href="/blog">Tin tức</a></li>
-                        <?php
-                        if (!empty($_SESSION['user'])) {
-                        ?>
-                            <li class="<?= (!empty($controller) && $controller == 'account') ? 'active' : '' ?>"><a href="/account">Tài khoản</a></li>
-                        <?php } ?>
                     </ul><!-- End .menu -->
                 </nav><!-- End .main-nav -->
 

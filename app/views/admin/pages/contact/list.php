@@ -4,7 +4,7 @@
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title text-uppercase">Danh sách khách hàng</h5>
+                    <h5 class="card-title text-uppercase">Danh sách liên hệ</h5>
                 </div>
                 <table class="ui celled table datatable">
                     <thead>
@@ -21,10 +21,10 @@
                     </thead>
                     <tbody class="contact-table-body">
                         <?php
-                        foreach ($contacts as $contact) {
+                        foreach ($contacts as $key=>$contact) {
                         ?>
                             <tr>
-                                <td><?= $contact['id'] ?></td>
+                                <td><?=$key+1?></td>
                                 <td><?= $contact['name'] ?></td>
                                 <td><?= $contact['email'] ?></td>
                                 <td><?= $contact['phone'] ?></td>
@@ -47,13 +47,17 @@
                                     <?php
                                     if ($this->checkRole('contact-delete')) :
                                     ?>
-                                        <a class="btn btn-danger btn-custom" onclick="deleteContact('<?= $contact['id'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
+                                        <div>
+                                            <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $contact['id'] ?>" href="javascript:void(0)">Xóa</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('contact-edit')) :
                                     ?>
-                                        <a href="/admin/contact/reply/<?= $contact['id'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-chat-dots"></i></i>
-                                        </a>
+                                        <div>
+                                            <a href="/admin/contact/reply/<?= $contact['id'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -67,4 +71,27 @@
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa liên hệ này này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/contact/delete`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

@@ -57,7 +57,7 @@
                                 <div class="ratings">
                                     <div class="ratings-val" style="width: <?= ($product['rating'] / 5) * 100 ?>%"></div><!-- End .ratings-val -->
                                 </div><!-- End .ratings -->
-                                <a class="ratings-text review-count" href="#product-review-link" id="review-link">( <?= $product['reviewCount'] ?> đánh giá )</a>
+                                <a class="ratings-text review-count" href="#product-review-link" id="review-link">Đánh giá (<?= $product['reviewCount'] ?>)</a>
                             </div><!-- End .rating-container -->
 
                             <div class="product-price d-block">

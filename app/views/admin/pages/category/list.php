@@ -15,30 +15,34 @@
                 <table class="ui celled table datatable">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">Tên danh mục</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody class="category-table-body">
                         <?php
-                        foreach ($categoryList as $category) {
+                        foreach ($categoryList as $key=>$category) {
                         ?>
                             <tr>
+                                <td><?=$key+1?></td>
                                 <td><?= $category['title'] ?></td>
                                 <td>
                                     <?php
                                     if ($this->checkRole('category-delete')) :
                                     ?>
-                                        <a class="btn btn-danger btn-custom" onclick="deleteCategory('<?= $category['categoryId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
+                                        <div>
+                                            <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $category['categoryId'] ?>" href="javascript:void(0)">Xóa</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('category-edit')) :
                                     ?>
-                                        <a href="/admin/category/edit/<?= $category['categoryId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                                        </a>
+                                        <div>
+                                            <a href="/admin/category/edit/<?= $category['categoryId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa</i>
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
-
-
                                 </td>
                             </tr>
                         <?php
@@ -51,4 +55,27 @@
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa danh mục này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/category/delete`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

@@ -20,8 +20,8 @@ class CategoryModel
 
         $select = "SELECT c.categoryId, c.title, SUM(po.quantity) AS totalQuantity
         FROM categories c
-        JOIN products p ON c.categoryId = p.categoryId
-        LEFT JOIN product_options po ON p.productId = po.productId
+        JOIN products p ON c.categoryId = p.categoryId AND p.deleted = 0
+        LEFT JOIN product_options po ON p.productId = po.productId AND po.quantity > 0
         GROUP BY c.categoryId";
         return $this->db->getAll($select);
     }

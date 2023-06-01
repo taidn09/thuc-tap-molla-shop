@@ -15,6 +15,13 @@ class Auth extends Controller
     public function __construct()
     {
         $this->model = new UserModel();
+        //google
+        $this->client = new Google_Client();
+        $this->client->setClientId('121314066388-5372ggqhu57tvmuptjv1kdr4kbir1t72.apps.googleusercontent.com');
+        $this->client->setClientSecret('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');
+        $this->client->setRedirectUri('https://mvc.com/auth');
+        $this->client->addScope('https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email');
+        //facebook
         $this->fb = new \Facebook\Facebook([
             'app_id' => '706310547919887',
             'app_secret' => '04735092b41290def9ae210dfef1f6b1',
@@ -30,11 +37,6 @@ class Auth extends Controller
         }
 
         // handle login with google
-        $this->client = new Google_Client();
-        $this->client->setClientId('121314066388-5372ggqhu57tvmuptjv1kdr4kbir1t72.apps.googleusercontent.com');
-        $this->client->setClientSecret('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');
-        $this->client->setRedirectUri('https://mvc.com/auth');
-        $this->client->addScope('https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email');
         if (isset($_GET['code'])) {
             $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
             if (empty($token['error'])) {
@@ -44,24 +46,28 @@ class Auth extends Controller
                 $google_account_info = $google_oauth->userinfo->get();
                 $check = $this->model->checkEmailExisted($google_account_info->email);
                 if (empty($check)) {
+                    // sẽ dùng sau khi làm thêm avatar cho user
+                    $picture = $google_account_info->picture;
                     $this->model->register($google_account_info->email, $google_account_info->id);
                     $user = $this->model->login($google_account_info->email,  $google_account_info->id);
                     $id = $user['userId'];
-                    $this->model->updateUser($id, $google_account_info->familyName, $google_account_info->givenName);
+                    $this->model->updateUser($id, $google_account_info->familyName, $google_account_info->givenName, $google_account_info->email,'','','','','',$picture);
+                    $this->model->updateSocialLogin($id);
+                    $_SESSION['user'] = $this->model->getUserById($id);
+                    echo '<script>window.location = "/"</script>';
+                    die;
+                } else {
+                    $user = $this->model->login($google_account_info->email,  $google_account_info->id);
+                    $_SESSION['user'] = $user;
                     echo '<script>window.location = "/"</script>';
                     die;
                 }
-                $user = $this->model->login($google_account_info->email,  $google_account_info->id);
-                $_SESSION['user'] = $user;
-                echo '<script>window.location = "/"</script>';
-                die;
             }
         }
         // handle login with facebook
         $redirectTo = 'https://mvc.com/auth/fbAuth';
-        $arr = ['email'];
+        $arr = ['email', 'public_profile'];
         $fullUrl = $this->handler->getLoginUrl($redirectTo, $arr);
-
         // load ui
         $this->data['title'] = 'Đăng nhập / Đăng ký';
         $this->data['content'] = 'client/pages/auth';
@@ -71,45 +77,57 @@ class Auth extends Controller
     }
     public function fbAuth()
     {
+        $this->data['subcontent']['error'] = null;
+        // $accessToken = $this->handler->getAccessToken();
         try {
             $accessToken = $this->handler->getAccessToken();
-        } catch (Facebook\Exceptions\FacebookResponseException $e) {
-            // When Graph returns an error
-            echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            // When validation fails or other local issues
-            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-            exit;
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
+            echo '<script>window.location = "/auth"</script>';
+            die;
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+            echo '<script>window.location = "/auth"</script>';
+            die;
         }
-
         if (!isset($accessToken)) {
             if ($this->handler->getError()) {
-                header('HTTP/1.0 401 Unauthorized');
-                echo "Error: " . $this->handler->getError() . "\n";
-                echo "Error Code: " . $this->handler->getErrorCode() . "\n";
-                echo "Error Reason: " . $this->handler->getErrorReason() . "\n";
-                echo "Error Description: " . $this->handler->getErrorDescription() . "\n";
+                $error = '';
+                $error .= "Error: " . $this->handler->getError() . "\n";
+                $error .= "Error Code: " . $this->handler->getErrorCode() . "\n";
+                $error .= "Error Reason: " . $this->handler->getErrorReason() . "\n";
+                $error .= "Error Description: " . $this->handler->getErrorDescription() . "\n";
+                $this->data['subcontent']['error'] = $error;
             } else {
-                header('HTTP/1.0 400 Bad Request');
-                echo 'Bad request';
+                echo '<script>window.location = "/auth"</script>';
+                die;
             }
-            exit;
         }
-
         // Logged in
-        $response = $this->fb->get('/me?fields=email,picture', $accessToken->getValue());
-        $me = $response->getGraphUser();
-        $email = $me->getEmail();
-        $pictureUrl = $me->getPicture()->getUrl();
-        $nameArr = explode(' ', $me->getName());
-        $fname = $nameArr[0];
-        unset($nameArr[0]);
-        $lname = implode(' ', $nameArr);
-        $this->data['title'] = 'Đăng nhập / Đăng ký';
-        $this->data['content'] = 'client/pages/fb';
-        $this->data['subcontent'] = null;
-        $this->render('layouts/client', $this->data);
+        if ($this->data['subcontent']['error'] == null) {
+            $response = $this->fb->get('/me?fields=email,first_name,last_name,picture,id', $accessToken->getValue());
+            $me = $response->getGraphUser();
+            $email = $me->getEmail();
+            // sẽ dùng sau khi làm thêm avatar cho user
+            $pictureUrl = $me->getPicture()->getUrl();
+            $firstName = $me->getFirstName();
+            $lastName = $me->getLastName();
+            $userId = $me->getId();
+
+            $check = $this->model->checkEmailExisted($email);
+            if (empty($check)) {
+                $this->model->register($email, $userId);
+                $user = $this->model->login($email,  $userId);
+                $id = $user['userId'];
+                $this->model->updateUser($id, $firstName, $lastName, $email,'','','','','',$pictureUrl);
+                $this->model->updateSocialLogin($id);
+                $_SESSION['user'] = $this->model->getUserById($id);
+                echo '<script>window.location = "/"</script>';
+                die;
+            }
+            $user = $this->model->login($email,  $userId);
+            $_SESSION['user'] = $user;
+            echo '<script>window.location = "/"</script>';
+            die;
+        }
     }
     public function register()
     {
@@ -192,5 +210,8 @@ class Auth extends Controller
         }
         echo json_encode(['status' => 0, 'errMsg' => 'Đừng có sửa bậy']);
         return;
+    }
+    public function verifyEmail($email)
+    {
     }
 }

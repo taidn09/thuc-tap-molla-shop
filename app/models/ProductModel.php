@@ -26,6 +26,7 @@ class ProductModel
             $select .= ' AND p.isShown = 1';
         }
         $select = $this->formatQuery($select, $quantity);
+        $select .= " ORDER BY p.productId DESC";
         return $this->db->getAll($select);
     }
     public function getTrendingProducts($quantity = null)
@@ -69,11 +70,11 @@ class ProductModel
         }
         return $this->db->getOne($select);
     }
-    public function getProductOptions($id , $getDeleted = true)
+    public function getProductOptions($id, $getDeleted = true)
     {
         $select = "SELECT * FROM product_options WHERE productId = '$id'";
-        if($getDeleted == false){
-            $select.= " AND deleted = 0";
+        if ($getDeleted == false) {
+            $select .= " AND deleted = 0";
         }
         return $this->db->getAll($select);
     }
@@ -178,12 +179,10 @@ class ProductModel
                    GROUP BY productId
                 ) ig ON p.productId = ig.productId
         INNER JOIN product_options po ON p.productId = po.productId $where GROUP BY p.title $sortBy";
-        // echo $select;
-        // die;
         return $this->db->getAll($select);
     }
     public function getDataBySearchTerms($table, $searchTerm, $quantity)
-    {   
+    {
         if ($table == 'products') {
             $select = "SELECT p.*, ig.image, po.size , po.color
         FROM products p 
@@ -192,7 +191,6 @@ class ProductModel
         } else {
             $select = "SELECT * FROM blogs WHERE title LIKE '%$searchTerm%'";
         }
-        // echo $select;
         $select = $this->formatQuery($select, $quantity);
         return $this->db->getAll($select);
     }
@@ -220,8 +218,8 @@ class ProductModel
     public function getOptionById($id, $getDeleted = true)
     {
         $select = "SELECT * FROM product_options WHERE optionId = '$id'";
-        if($getDeleted == false){
-            $select.=" AND deleted = 0";
+        if ($getDeleted == false) {
+            $select .= " AND deleted = 0";
         }
         return $this->db->getOne($select);
     }
@@ -232,7 +230,6 @@ class ProductModel
         } else {
             $select = "SELECT * FROM product_options WHERE productId = $productId AND color = '$color' AND size = '$size'";
         }
-        // echo $select;
         return $this->db->getOne($select);
     }
     public function restoreOption($id, $quantity)
@@ -256,7 +253,7 @@ class ProductModel
         return $this->db->exec($query);
     }
     public function checkProductExisted($title, $productId = null)
-    {   
+    {
         $title = $this->db->quote($title);
         if ($productId) {
             $select = "SELECT * FROM `products` WHERE title = $title AND productId != $productId AND deleted != 1";

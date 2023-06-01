@@ -8,6 +8,7 @@ body {
   font-family: "Space Grotesk", sans-serif;
   background: #f6f9ff;
   color: #444444;
+  font-size: 14px !important;
 }
 
 a {
@@ -130,7 +131,7 @@ h6 {
 }
 
 .dropdown-menu .dropdown-item {
-  font-size: 14px;
+  font-size: 14px !important;
   padding: 10px 15px;
   transition: 0.3s;
 }
@@ -250,7 +251,7 @@ h6 {
 
 .card-title span {
   color: #899bbd;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -313,7 +314,7 @@ h6 {
 
 /* Breadcrumbs */
 .breadcrumb {
-  font-size: 14px;
+  font-size: 14px !important;
   color: #899bbd;
   font-weight: 600;
 }
@@ -435,7 +436,7 @@ h6 {
 
 .header .search-form input {
   border: 0;
-  font-size: 14px;
+  font-size: 14px !important;
   color: #012970;
   border: 1px solid rgba(1, 41, 112, 0.2);
   padding: 7px 38px 7px 8px;
@@ -490,7 +491,7 @@ h6 {
 }
 
 .header-nav .nav-profile span {
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 600;
 }
 
@@ -519,7 +520,7 @@ h6 {
 }
 
 .header-nav .notifications .notification-item h4 {
-  font-size: 16px;
+  font-size: 14px !important;
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -553,7 +554,7 @@ h6 {
 }
 
 .header-nav .messages .message-item h4 {
-  font-size: 16px;
+  font-size: 14px !important;
   font-weight: 600;
   margin-bottom: 5px;
   color: #444444;
@@ -583,11 +584,11 @@ h6 {
 }
 
 .header-nav .profile .dropdown-header span {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 .header-nav .profile .dropdown-item {
-  font-size: 14px;
+  font-size: 14px !important;
   padding: 10px 15px;
   transition: 0.3s;
 }
@@ -704,7 +705,7 @@ h6 {
 
 
 .sidebar-nav .nav-link i {
-  font-size: 16px;
+  font-size: 14px !important;
   margin-right: 10px;
 }
 
@@ -744,7 +745,7 @@ h6 {
 .sidebar-nav .nav-content a {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 600;
   color: #012970;
   transition: 0.3;
@@ -783,7 +784,7 @@ h6 {
   padding-right: 20px;
   padding-bottom: 5px;
   transition: 0.3s;
-  font-size: 16px;
+  font-size: 14px !important;
 }
 
 .dashboard .filter .icon:hover,
@@ -797,7 +798,7 @@ h6 {
 
 .dashboard .filter .dropdown-header h6 {
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 600;
   letter-spacing: 1px;
   color: #aab7cf;
@@ -848,7 +849,7 @@ h6 {
 
 /* Activity */
 .dashboard .activity {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 .dashboard .activity .activity-item .activite-label {
@@ -921,14 +922,14 @@ h6 {
 }
 
 .dashboard .news p {
-  font-size: 14px;
+  font-size: 14px !important;
   color: #777777;
   margin-left: 95px;
 }
 
 /* Recent Sales */
 .dashboard .recent-sales {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 .dashboard .recent-sales .table thead {
@@ -949,7 +950,7 @@ h6 {
 
 /* Top Selling */
 .dashboard .top-selling {
-  font-size: 14px;
+  font-size: 14px !important;
 }
 
 .dashboard .top-selling .table thead {
@@ -1095,7 +1096,7 @@ h6 {
 .contact .info-box p {
   padding: 0;
   line-height: 24px;
-  font-size: 14px;
+  font-size: 14px !important;
   margin-bottom: 0;
 }
 
@@ -1144,7 +1145,7 @@ h6 {
 .contact .php-email-form textarea {
   border-radius: 0;
   box-shadow: none;
-  font-size: 14px;
+  font-size: 14px !important;
   border-radius: 0;
 }
 
@@ -1200,7 +1201,7 @@ h6 {
 --------------------------------------------------------------*/
 .footer {
   padding: 20px 0;
-  font-size: 14px;
+  font-size: 14px !important;
   transition: all 0.3s;
   border-top: 1px solid #cddfff;
 }
@@ -1226,5 +1227,5 @@ h6 {
 
 .err-msg {
   color: red;
-  font-size: 14px;
+  font-size: 14px !important;
 }

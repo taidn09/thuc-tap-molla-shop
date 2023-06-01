@@ -7,6 +7,7 @@
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #999;
@@ -17,53 +18,29 @@
     background: #666;
 }
 
-.book-box {
-    border: 1px solid #ccc;
-}
-
-.book-desc {
-    word-wrap: break-word;
-    white-space: normal;
-    overflow: hidden;
-    display: -webkit-box;
-    text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+input,select,textarea {
+    box-shadow: none !important;
+    font-size: 14px !important;
 }
 
 .form-select,
 .form-control {
     border-radius: 2px;
+    box-shadow: none !important;
 }
 
-.form-select:focus,
-.form-control:focus {
-    box-shadow: 0 0 5px #86b7fe;
-}
-
-.was-validated .form-control:valid:focus {
-    box-shadow: 0 0 5px #19875495;
-}
-
-.was-validated .form-control:invalid:focus {
-    box-shadow: 0 0 5px #dc354692;
+.btn {
+    box-shadow: none !important;
 }
 
 .btn-custom {
     border-radius: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-width: 120px; 
+    margin-top: 2px;
+    font-size: 14px !important;
 }
-
-.dataTable-input,
-.dataTable-selector {
-    transition: 0.25s;
-    outline: none;
-    border: 1px solid #eee;
-    border-radius: 2px;
-}
-
-.dataTable-input:focus,
-.dataTable-selector:focus {
-    border: 1px solid #222;
+.page-link:focus{
+    box-shadow: none !important;
 }

@@ -14,7 +14,7 @@
                 <h2 class="text-center">Quên mật khẩu</h2>
                 <h6>Để lấy lại mật khẩu, hãy thực hiện theo các bước:</h6>
                 <ul style="list-style: circle;">
-                    <li>Nhập emial bạn đã dùng để đăng ký tài khoản</li>
+                    <li>Nhập email bạn đã dùng để đăng ký tài khoản</li>
                     <li>Đợi hệ thống gửi mã xác nhận</li>
                     <li>Nhập mã xác nhận(Mã chỉ có hiệu lực trong 5 phút)</li>
                     <li>Điền mật khẩu mới cho tài khoản của bạn</li>

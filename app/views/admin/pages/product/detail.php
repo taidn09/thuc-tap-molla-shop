@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/product" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body pt-4">
@@ -16,7 +17,7 @@
                         <li>Số lượt đánh giá: <?= $product['reviewCount'] ?></li>
                         <li>Số lượt bán: <?= $product['sold'] ?></li>
                         <li>Thuộc danh mục: <?= $category['title'] ?></li>
-                        <li>Mô tả: <?=$product['description']?></li>
+                        <li>Mô tả: <?= $product['description'] ?></li>
                     </ul>
                     <h3>Danh mục hình ảnh</h3>
                     <div>
@@ -38,7 +39,7 @@
                                     <?php
                                     if ($this->checkRole('product-deleteImage')) :
                                     ?>
-                                        <button onclick="deleteImage('<?= $image['imgId'] ?>', '<?= $product['productId'] ?>')" class="btn btn-custom btn-danger position-absolute" style="right: 0;"><i class="bi bi-x"></i></button>
+                                        <button onclick="deleteImage('<?= $image['imgId'] ?>', '<?= $product['productId'] ?>')" class="btn btn-custom btn-danger position-absolute" style="right: 0;">Xóa hình ảnh</button>
                                     <?php endif; ?>
                                     <img src="/public/assets/images/products/<?= $image['image'] ?>" class="w-100">
                                 </span>
@@ -54,15 +55,16 @@
                     if ($this->checkRole('product-addOption')) :
                     ?>
                     <?php endif; ?>
-                    <a href="/admin/product/addOption/<?= $product['productId'] ?>" class="btn btn-success btn-custom" style="min-width: 200px; padding: 6px 32px !important">Thêm thuộc tính <i class="bi bi-plus-circle"></i></i>
+                    <a href="/admin/product/addOption/<?= $product['productId'] ?>" class="btn btn-success btn-custom mb-5" style="min-width: 200px; padding: 6px 32px !important">Thêm thuộc tính <i class="bi bi-plus-circle"></i></i>
                     </a>
                 </div>
                 <?php
                 if (!empty($productOptions)) {
                 ?>
-                    <table class="table table-bordered mt-3">
+                    <table class="ui celled table datatable child">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Màu sắc</th>
                                 <th>Kích cỡ</th>
                                 <th>Số lượng còn lại</th>
@@ -70,26 +72,31 @@
                             </tr>
                         </thead>
                         <tbody class="options">
-
                             <?php
-
-                            foreach ($productOptions as $option) {
+                            foreach ($productOptions as $key => $option) {
                             ?>
                                 <tr>
-                                    <td class="d-flex gap-2"><span class="d-block" style="width: 30px; height: 30px; background-color: <?= $option['color'] ?>; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 3px #000"></span><?= $option['color'] ?></td>
+                                    <td><?= $key + 1 ?></td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2 text-uppercase"><span style="display: block ;width: 20px; height: 20px; background-color: <?= $option['color'] ?>; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 3px #000"></span> <?= $option['color'] ?></div>
+                                    </td>
                                     <td><?= $option['size'] ?></td>
                                     <td><?= $option['quantity'] ?></td>
                                     <td>
                                         <?php
                                         if ($this->checkRole('product-deleteOption')) :
                                         ?>
-                                            <a class="btn btn-danger btn-custom" onclick="deleteOption('<?= $option['optionId'] ?>','<?= $product['productId'] ?>');" href="javascript:void(0)">Xóa thuộc tính<i class="bi bi-trash"></i></a>
+                                            <div>
+                                                <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $option['optionId'] ?>" href="javascript:void(0)">Xóa</a>
+                                            </div>
                                         <?php endif; ?>
                                         <?php
                                         if ($this->checkRole('product-editOption')) :
                                         ?>
-                                            <a href="/admin/product/editOption/<?= $product['productId'] ?>/<?= $option['optionId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa thuộc tính<i class="bi bi-pen"></i>
-                                            </a>
+                                            <div>
+                                                <a href="/admin/product/editOption/<?= $product['productId'] ?>/<?= $option['optionId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa
+                                                </a>
+                                            </div>
                                         <?php endif; ?>
 
                                     </td>
@@ -99,15 +106,110 @@
                             ?>
                         </tbody>
                     </table>
-                <?php }else{
+                <?php } else {
                 ?>
                     <h2 class="text-center">Sản phẩm này chưa có thuộc tính</h2>
-                <?php }?>
-                <a href="/admin/product" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
+                <?php } ?>
             </div>
         </div>
     </div>
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    function updateImageList(response) {
+        const {
+            images
+        } = JSON.parse(response)
+        let imgsHTML = ''
+        for (const key in images) {
+            const {
+                imgId,
+                productId,
+                image
+            } = images[key]
+            imgsHTML += `
+                <span style="width: 20%; min-width: 200px" class="position-relative d-inline-block">
+                <?php
+                if ($this->checkRole('product-deleteImage')) :
+                ?>
+                                        <button onclick="deleteImage('${imgId}', '${productId}')" class="btn btn-custom btn-danger position-absolute" style="right: 0;"><i class="bi bi-x"></i></button>
+                                    <?php endif; ?>
+                                    
+                                    <img src="/public/assets/images/products/${image}" class="w-100">
+                                </span>
+                    `
+        }
+        $('.imgs').html(imgsHTML)
+    }
+    $('#images-form').on('submit', function(e) {
+        e.preventDefault()
+        if ($('#images')[0].files.length > 0) {
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: '/admin/product/uploadProductImages',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        updateImageList(response)
+                        $('#images').val('')
+                    } else {
+                        $('.file-err-msg').html(JSON.parse(response).uploadErr)
+                    }
+                },
+            });
+        } else {
+            $('.file-err-msg').html('Vui lòng chọn hình ảnh')
+        }
+    })
+
+    function deleteImage(id, productId) {
+        if (id && productId) {
+            Swal.fire({
+                ...confirmPopup,
+                title: 'Xác nhận xóa ảnh ?',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: `/admin/product/deleteImage`,
+                        data: {
+                            id,
+                            productId
+                        },
+                        success: function(response) {
+                            if (response && JSON.parse(response).status == 1) {
+                                updateImageList(response)
+                            }
+                        },
+                    });
+                }
+            })
+        }
+    }
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa sản phẩm này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/product/deleteOption`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

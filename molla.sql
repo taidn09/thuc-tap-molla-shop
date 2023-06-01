@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2023 at 03:16 PM
+-- Generation Time: Jun 01, 2023 at 12:10 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -42,7 +42,8 @@ CREATE TABLE `admins` (
 
 INSERT INTO `admins` (`adminId`, `name`, `email`, `password`, `image`, `role`) VALUES
 (1, 'Admin', 'taidn@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'shipper.jpg', 0),
-(21, 'Admin 1', 'abc@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '44379f2b1a5611f625592bbf6e596a47.png', 0);
+(21, 'Admin 1', 'abc@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '44379f2b1a5611f625592bbf6e596a47.png', 0),
+(26, 'vaa', 'a@gmail.com', 'd41d8cd98f00b204e9800998ecf8427e', '3667f6a0c97490758d7dc9659d01ea34.png', 0);
 
 -- --------------------------------------------------------
 
@@ -92,7 +93,18 @@ INSERT INTO `admin_roles` (`roleId`, `adminId`, `roleString`) VALUES
 (482, 8, 'statistics'),
 (496, 22, 'dashboard'),
 (497, 22, 'contact'),
-(498, 22, 'contact-delete');
+(498, 22, 'contact-delete'),
+(505, 21, 'dashboard'),
+(506, 21, 'product'),
+(507, 21, 'product-detail'),
+(508, 21, 'product-delete'),
+(509, 21, 'product-edit'),
+(510, 21, 'product-add'),
+(526, 26, 'dashboard'),
+(527, 26, 'product'),
+(528, 26, 'product-detail'),
+(529, 26, 'product-toggle'),
+(530, 26, 'category');
 
 -- --------------------------------------------------------
 
@@ -117,11 +129,11 @@ CREATE TABLE `blogs` (
 --
 
 INSERT INTO `blogs` (`blogId`, `title`, `createdAt`, `authorId`, `commentsCount`, `shortDesc`, `content`, `thumbnail`, `isShown`) VALUES
-(21, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '2023-05-17', 21, 0, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '<h1>MỞ B&Aacute;N RANDOM BOX CHỈ VỚI GI&Aacute; 299.000Đ</h1>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://staging-toto-cms.mltechsoft.com/uploads/RANDOM_BOX_MT_810dbff991.jpg\" alt=\"\" width=\"590\" height=\"835\"></p>\r\n<p>Ai mà chả thích thử độ may mắn của m&igrave;nh đ&uacute;ng kh&ocirc;ng n&agrave;o? Trong tháng 5 này tụi m&igrave;nh đang có&nbsp;<strong>chương trình ưu đãi cực lớn</strong>&nbsp;đ&oacute; ch&iacute;nh l&agrave;&nbsp;<strong>mở b&aacute;n Random Box trị gi&aacute; l&ecirc;n đến 700.000đ</strong>&nbsp;chỉ với giá&nbsp;<strong>299.000đ</strong>&nbsp;với nhiều&nbsp;<strong>sản phẩm ngẫu nhi&ecirc;n hấp dẫn</strong>&nbsp;đang chờ đợi các FRIEND&rsquo;s tới rinh về. Th&ocirc;ng tin ưu đãi như sau:</p>\r\n<p>Đặc biệt d&agrave;nh cho chương trình l&acirc;̀n này l&agrave;&nbsp;<strong>mở bán giới hạn s&ocirc;́ lượng</strong>&nbsp;chỉ với&nbsp;<strong>100 Random Box</strong>&nbsp;cho 100 bạn may mắn nh&acirc;́t:</p>\r\n<ul>\r\n<li style=\"list-style-type: disc;\">Random Box : bao gồm&nbsp;<strong>2 mẫu Tee Totoday</strong>&nbsp;ngẫu nhi&ecirc;n&nbsp;<strong>trị gi&aacute; 590.000 - 700.000đ</strong>&nbsp;&amp;&nbsp;<strong>1 voucher mua h&agrave;ng trị gi&aacute; 50.000đ.</strong>&nbsp;</li>\r\n<li style=\"list-style-type: disc;\">Với hơn&nbsp;<strong>30 mẫu &aacute;o thun</strong>&nbsp;cực k&igrave; chất lượng v&agrave; thời thượng với mức gi&aacute; nhẹ t&ecirc;nh chờ bạn rinh về.</li>\r\n</ul>\r\n<p>*Lưu ý:</p>\r\n<p>- Khi mua&nbsp;<strong>Random Box</strong>&nbsp;bạn sẽ&nbsp;<strong>được chọn đ&uacute;ng size &aacute;o</strong>&nbsp;v&igrave; ch&uacute;ng tớ đ&atilde; ph&acirc;n size r&otilde; r&agrave;ng cho từng Box n&ecirc;n sẽ kh&ocirc;ng phải lo vấn đề về size &aacute;o nhé.</p>\r\n<p>- Thời gian mở b&aacute;n: 00:00 ngày 12.05.2023 cho đ&ecirc;́n 28.05.2023.</p>\r\n<p>- K&ecirc;nh b&aacute;n: To&agrave;n hệ thống cửa h&agrave;ng v&agrave; online.</p>\r\n<p>- Sản phẩm c&oacute; mặt to&agrave;n bộ tr&ecirc;n hệ thống Website v&agrave; c&aacute;c k&ecirc;nh thương mại điện tử của tụi m&igrave;nh, nhanh tay mua h&agrave;ng để kh&ocirc;ng bỏ lỡ nh&eacute;</p>\r\n<p>- Chương tr&igrave;nh kh&ocirc;ng &aacute;p dụng với c&aacute;c CTKM kh&aacute;c.</p>\r\n<p>- Kh&ocirc;ng áp dụng chung với chi&ecirc;́t kh&acirc;́u VIP.</p>', '2bf48fc3eaa4a859a5ce131a92c18e7b.jpg', 1),
-(31, 'Sản phẩm mới', '2023-05-24', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới đến từ h&agrave;ng của ch&uacute;ng t&ocirc;i</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"293\" height=\"293\"></p>', '8851fbb486073073194150d7eae36b3d.jpg', 1),
+(21, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '2023-05-17', 21, 0, 'MỞ BÁN RANDOM BOX CHỈ VỚI GIÁ 299.000Đ', '<h1>MỞ B&Aacute;N RANDOM BOX CHỈ VỚI GI&Aacute; 299.000Đ</h1>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://staging-toto-cms.mltechsoft.com/uploads/RANDOM_BOX_MT_810dbff991.jpg\" alt=\"\" width=\"590\" height=\"835\"></p>\r\n<p>Ai mà chả thích thử độ may mắn của m&igrave;nh đ&uacute;ng kh&ocirc;ng n&agrave;o? Trong tháng 5 này tụi m&igrave;nh đang có&nbsp;<strong>chương trình ưu đãi cực lớn</strong>&nbsp;đ&oacute; ch&iacute;nh l&agrave;&nbsp;<strong>mở b&aacute;n Random Box trị gi&aacute; l&ecirc;n đến 700.000đ</strong>&nbsp;chỉ với giá&nbsp;<strong>299.000đ</strong>&nbsp;với nhiều&nbsp;<strong>sản phẩm ngẫu nhi&ecirc;n hấp dẫn</strong>&nbsp;đang chờ đợi các FRIEND&rsquo;s tới rinh về. Th&ocirc;ng tin ưu đãi như sau:</p>\r\n<p>Đặc biệt d&agrave;nh cho chương trình l&acirc;̀n này l&agrave;&nbsp;<strong>mở bán giới hạn s&ocirc;́ lượng</strong>&nbsp;chỉ với&nbsp;<strong>100 Random Box</strong>&nbsp;cho 100 bạn may mắn nh&acirc;́t:</p>\r\n<ul>\r\n<li style=\"list-style-type: disc;\">Random Box : bao gồm&nbsp;<strong>2 mẫu Tee Totoday</strong>&nbsp;ngẫu nhi&ecirc;n&nbsp;<strong>trị gi&aacute; 590.000 - 700.000đ</strong>&nbsp;&amp;&nbsp;<strong>1 voucher mua h&agrave;ng trị gi&aacute; 50.000đ.</strong>&nbsp;</li>\r\n<li style=\"list-style-type: disc;\">Với hơn&nbsp;<strong>30 mẫu &aacute;o thun</strong>&nbsp;cực k&igrave; chất lượng v&agrave; thời thượng với mức gi&aacute; nhẹ t&ecirc;nh chờ bạn rinh về.</li>\r\n</ul>\r\n<p>*Lưu ý:</p>\r\n<p>- Khi mua&nbsp;<strong>Random Box</strong>&nbsp;bạn sẽ&nbsp;<strong>được chọn đ&uacute;ng size &aacute;o</strong>&nbsp;v&igrave; ch&uacute;ng tớ đ&atilde; ph&acirc;n size r&otilde; r&agrave;ng cho từng Box n&ecirc;n sẽ kh&ocirc;ng phải lo vấn đề về size &aacute;o nhé.</p>\r\n<p>- Thời gian mở b&aacute;n: 00:00 ngày 12.05.2023 cho đ&ecirc;́n 28.05.2023.</p>\r\n<p>- K&ecirc;nh b&aacute;n: To&agrave;n hệ thống cửa h&agrave;ng v&agrave; online.</p>\r\n<p>- Sản phẩm c&oacute; mặt to&agrave;n bộ tr&ecirc;n hệ thống Website v&agrave; c&aacute;c k&ecirc;nh thương mại điện tử của tụi m&igrave;nh, nhanh tay mua h&agrave;ng để kh&ocirc;ng bỏ lỡ nh&eacute;</p>\r\n<p>- Chương tr&igrave;nh kh&ocirc;ng &aacute;p dụng với c&aacute;c CTKM kh&aacute;c.</p>\r\n<p>- Kh&ocirc;ng áp dụng chung với chi&ecirc;́t kh&acirc;́u VIP.</p>', '2bf48fc3eaa4a859a5ce131a92c18e7b.jpg', 0),
 (32, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới đến từ cửa h&agrave;ng của ch&uacute;ng t&ocirc;i</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"314\" height=\"314\"></p>', 'f150af00f20b2a21371fc119f7372560.jpg', 1),
 (33, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"317\" height=\"317\"></p>', 'e4b28989af8083fe704664d42b13616f.jpg', 1),
-(34, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Sản phẩm mới', '<p>Sản phẩm mới</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"353\" height=\"353\"></p>', 'c4655d36d0fc81f5d23044430447f592.jpg', 1);
+(34, 'Sản phẩm mới', '2023-05-25', 1, 0, 'Tin tức sản phẩm mới', '<p>Sản phẩm mới</p>\r\n<p><img src=\"https://img.cdn.vncdn.io/cdn-pos/d0f3ca-7136/ps/20230410_rmcqzv65.jpg\" alt=\"\" width=\"353\" height=\"353\"></p>', 'c4655d36d0fc81f5d23044430447f592.jpg', 1),
+(35, 'Sản phẩm mới', '2023-05-29', 1, 0, 'Sản phẩm mới', '<p>Ch&iacute;nh thức ra mắt bộ sưu tập L&aacute; v&agrave;ng trong gi&oacute;</p>\r\n<p><img src=\"http://imgs.vietnamnet.vn/Images/2015/09/11/19/20150911195605-0909suutap002.jpg\" width=\"459\" height=\"459\"></p>', '110be9b6f32510b23e4e4ed6974b5f97.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -169,9 +181,7 @@ INSERT INTO `categories` (`categoryId`, `title`) VALUES
 (4, 'Áo khoác'),
 (2, 'Áo thun'),
 (1, 'Chưa phân loại'),
-(3, 'Unisex'),
-(5, 'Đồ nam'),
-(40, 'Đồ nữ');
+(3, 'Unisex');
 
 -- --------------------------------------------------------
 
@@ -221,7 +231,7 @@ CREATE TABLE `contact` (
 --
 
 INSERT INTO `contact` (`id`, `name`, `userId`, `email`, `phone`, `message`, `reply`, `createdAt`) VALUES
-(8, 'Nguyễn Tài', 39, 'wow@gmail.com', '0986512466', 'Rất hài lòng', NULL, '2023-05-20 09:56:44');
+(9, 'Nguyễn Tài', NULL, 'tainguyen2003@gmail.com', '0934567542', 'Tôi muốn đặt một lô hàng lớn', '<p>Cảm ơn nhaaaaaaaaaaaaaa anh Bạn</p>', '2023-05-29 09:02:24');
 
 -- --------------------------------------------------------
 
@@ -265,7 +275,6 @@ INSERT INTO `images_gallery` (`imgId`, `productId`, `image`) VALUES
 (40, 1, '21bb22123b04c8f5ec46725ddb0159ac.jpg'),
 (41, 1, 'cb0e192bfb946d2668f9074b75462eaf.jpg'),
 (43, 58, 'ebc2307b7393f8b1dd9fd34fb5c7cc39.jpg'),
-(44, 58, 'e82c08bbcdae051000563a60a6172310.jpg'),
 (45, 58, '12bf78a740af6d82d511b9ae7bd7bd52.jpg'),
 (46, 59, 'b705706dcca98477c638262fa8ed481d.jpg'),
 (47, 59, '4a5741d2db6cdb34b70eb5253c8df7d2.jpg'),
@@ -307,16 +316,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`orderId`, `userId`, `orderDate`, `receiver`, `email`, `phone`, `province`, `district`, `ward`, `street`, `summary`, `notes`, `status`) VALUES
-(49, 33, '2023-05-17', 'tai tai', 'test2@test.com', '0934567549', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT 2', 320, 'Cảm ơn nhiều ạ', 3),
-(50, 33, '2023-05-17', 'tai tai', 'test2@test.com', '0934567549', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT 2', 80, '', 0),
-(51, 36, '2023-05-17', 'tai tai', 'tainguyen@gmail.com', '09872144555', 'Tỉnh Phú Thọ', 'Thành phố Việt Trì', 'Phường Dữu Lâu', 'ghjk', 3520, '', 0),
-(52, 36, '2023-05-17', 'tai taitai', 'tainguyen@gmail.com', '0134567888', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '123', 800, '', 0),
-(53, 33, '2023-05-20', 'tai tai', 'test2@test.com', '0934567549', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT 2', 3135, '', 0),
-(54, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 200000, '', 3),
-(55, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 3),
-(56, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 4),
-(57, 39, '2023-05-22', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 90, '', 5),
-(58, 39, '2023-05-17', 'Nguyễn Tài', 'wow@gmail.com', '0986512466', 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT', 365, '', 5);
+(72, 54, '2023-05-30', 'Nguyễn Tấn Tài', 'kingdomrok81@gmail.com', '0987866515', 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Hiến', '28 Trịnh Đình Thảo', 1202000, '', 1),
+(73, 54, '2023-05-30', 'Nguyễn Tấn Tài', 'kingdomrok81@gmail.com', '0987866515', 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Hiến', '28 Trịnh Đình Thảo', 1202000, '', 1);
 
 --
 -- Triggers `orders`
@@ -351,21 +352,10 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`orderId`, `productId`, `optionId`, `price`, `quantity`, `total`, `returned`, `return_reason`, `return_image`) VALUES
-(49, 3, 9, 80, 1, 80, 0, NULL, NULL),
-(49, 3, 10, 80, 1, 80, 0, NULL, NULL),
-(49, 3, 11, 80, 1, 80, 0, NULL, NULL),
-(49, 3, 12, 80, 1, 80, 0, NULL, NULL),
-(50, 5, 17, 80, 1, 80, 0, NULL, NULL),
-(51, 3, 9, 80, 1, 80, 0, NULL, NULL),
-(51, 5, 17, 80, 43, 3440, 0, NULL, NULL),
-(52, 2, 6, 80, 10, 800, 0, NULL, NULL),
-(53, 21, 27, 285, 11, 3135, 0, NULL, NULL),
-(54, 2, 6, 200000, 1, 200000, 1, 'Hello', '7cdf8e1c9262b356be7536cdfb626fe6.png'),
-(55, 1, 34, 90, 1, 90, 1, 'Hello', '5e67ec95e637c46ae1b2a66c0acc7839.png'),
-(56, 1, 34, 90, 1, 90, 0, NULL, NULL),
-(57, 1, 36, 90, 1, 90, 1, 'Hello', 'ede496438ff30f3e5e51c904578e3945.jpg'),
-(58, 3, 10, 80, 1, 80, 0, 'Hàng lỗi', 'd12b052f0647c161fc270440a246e59d.jpg'),
-(58, 21, 41, 285, 1, 285, 1, 'Hàng hỏng', 'd7291970c8b8f26b0d4e105f61cfc9d2.jpg');
+(72, 59, 54, 558000, 1, 558000, 0, NULL, NULL),
+(72, 60, 57, 644000, 1, 644000, 0, NULL, NULL),
+(73, 59, 54, 558000, 1, 558000, 0, NULL, NULL),
+(73, 60, 57, 644000, 1, 644000, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -415,29 +405,19 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`productId`, `title`, `originalPrice`, `currentPrice`, `description`, `salePercent`, `reviewCount`, `rating`, `categoryId`, `sold`, `isShown`, `deleted`) VALUES
-(1, 'Ngày đầu tuần', 280000, 252000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 2, 4, 1, 6, 1, 0),
-(2, 'Đêm cuối', 250000, 200000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 5, 4, 25, 1, 0),
-(3, 'Hàng về', 100, 80, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 3, 4.7, 4, 14, 1, 0),
-(5, 'Its gradient', 200000, 160000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 3.3, 1, 45, 1, 0),
-(21, 'Be your side', 300000, 285000, 'Good', 5, 0, 4, 1, 20, 1, 0),
-(23, '2345t6yuirftgh', 3000000, 2850000, '34567', 5, 0, 5, 4, 0, 0, 1),
-(24, 'Colaborate', 250000, 225000, 'Good for you', 10, 0, 5, 1, 0, 1, 0),
-(25, 'test2', 9000, 9, 'Hello', 0, 0, 5, 4, 0, 1, 1),
-(26, 'test2', 10000, 10, 'Ngon', 0, 0, 5, 4, 0, 1, 1),
+(1, 'Ngày đầu tuần', 300000, 270000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. EDITED', 10, 2, 4, 1, 6, 1, 0),
+(2, 'Đêm cuối', 250000, 200000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 0, 5, 4, 25, 0, 0),
+(3, 'Hàng về', 200000, 160000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 5, 4.4, 4, 14, 1, 1),
+(5, 'Its gradient', 200000, 160000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris. ', 20, 3, 3.7, 3, 45, 1, 0),
+(21, 'Be your side', 300000, 285000, 'Good', 5, 0, 4, 2, 20, 1, 0),
+(24, 'Colaborate', 250000, 225000, 'Good for you', 10, 0, 5, 1, 0, 0, 0),
 (55, 'Perfection', 200000, 194000, 'Mô tả', 3, 0, 5, 1, 0, 1, 0),
 (56, 'Punch needle', 300000, 288000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 4, 0, 5, 1, 0, 1, 0),
 (57, 'Simplicity', 400000, 380000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 5, 0, 5, 1, 0, 1, 0),
-(58, 'Signature today', 500000, 470000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 6, 0, 5, 1, 0, 1, 0),
+(58, 'Signature today', 500000, 470000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 6, 0, 5, 1, 0, 0, 0),
 (59, 'Today up', 600000, 558000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 7, 0, 5, 1, 0, 1, 0),
 (60, 'Neosist', 700000, 644000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 8, 0, 5, 1, 0, 1, 0),
-(61, 'Continue', 800000, 728000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 9, 0, 5, 1, 0, 1, 0),
-(62, 'Funnylove', 900000, 810000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 10, 0, 5, 1, 0, 1, 0),
-(63, 'Longsleeve 1', 1000000, 890000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 11, 0, 5, 1, 0, 1, 0),
-(64, 'Longsleeve 2', 1100000, 968000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 12, 0, 5, 1, 0, 1, 0),
-(65, 'Longsleeve 3', 1200000, 1044000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 13, 0, 5, 1, 0, 1, 0),
-(66, 'Longsleeve 4', 1300000, 1118000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 14, 0, 5, 1, 0, 1, 0),
-(67, 'Longsleeve 5', 1400000, 1190000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 15, 0, 5, 1, 0, 1, 0),
-(68, 'Longsleeve 6', 1500000, 1260000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 16, 0, 5, 1, 0, 1, 0);
+(61, 'Continue', 800000, 728000, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus velit, in pretium risus condimentum ut. Fusce vel ligula sit amet magna maximus dictum. Sed vulputate eu dui at convallis. Nam vitae ante fermentum, scelerisque turpis a, fermentum felis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis rhoncus accumsan. Praesent fermentum sit amet velit sit amet molestie. Quisque eget risus a arcu volutpat fringilla. Morbi a metus non arcu scelerisque convallis. In euismod purus vel arcu molestie faucibus. Nunc vulputate, eros vel eleifend efficitur, lectus eros fermentum magna, sed feugiat leo sapien vitae mauris.', 9, 0, 5, 1, 0, 1, 0);
 
 --
 -- Triggers `products`
@@ -484,8 +464,6 @@ INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quanti
 (18, 5, 'M', '#FFFF00', 50, 0),
 (19, 5, 'S', '#097a27', 50, 0),
 (20, 5, 'S', '#FFFF00', 50, 0),
-(32, 23, 'S', '#ff0000', 9, 0),
-(33, 23, 'M', '#000000', 7, 0),
 (34, 1, 'S', 'red', 29, 0),
 (35, 1, 'M', 'green', 9, 0),
 (36, 1, 'S', 'green', 16, 0),
@@ -512,7 +490,10 @@ INSERT INTO `product_options` (`optionId`, `productId`, `size`, `color`, `quanti
 (57, 60, 'M', 'yellow', 300, 0),
 (58, 61, 'S', 'black', 30, 0),
 (59, 61, 'L', 'black', 30, 0),
-(60, 61, 'L', 'white', 30, 0);
+(60, 61, 'L', 'white', 30, 0),
+(61, 58, 'M', 'blue', 2000, 0),
+(62, 58, 'S', 'red', 200, 0),
+(63, 58, 'L', 'white', 30, 0);
 
 -- --------------------------------------------------------
 
@@ -545,8 +526,10 @@ INSERT INTO `product_reviews` (`reviewId`, `userId`, `productId`, `star`, `title
 (26, 39, 3, 5, 'hello', 'abc', '2023-05-18 10:40:45', 0, 0),
 (27, 33, 21, 4, 'Hello', 'abc', '2023-05-18 11:01:45', 0, 0),
 (28, 39, 1, 3, 'Ngon', 'ngon', '2023-05-20 11:35:53', 0, 0),
-(30, 39, 5, 4, 'tốt', 'tốt', '2023-05-20 14:42:39', 0, 0),
-(31, 39, 1, 5, 'Ngon', 'Ngon', '2023-05-23 09:41:48', 0, 0);
+(30, 39, 5, 5, 'tốt', 'tốt', '2023-05-20 14:42:39', 0, 0),
+(31, 39, 1, 5, 'Ngon', 'Ngon', '2023-05-23 09:41:48', 0, 0),
+(32, 70, 3, 5, 'Tốt', 'Sản phẩm chất lượng, hợp túi tiền', '2023-06-01 14:37:42', 0, 0),
+(33, 70, 3, 3, 'Hello', 'Hello\r\n', '2023-06-01 14:40:02', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -609,18 +592,27 @@ CREATE TABLE `users` (
   `province` text DEFAULT NULL,
   `district` text DEFAULT NULL,
   `ward` text DEFAULT NULL,
-  `street` text DEFAULT NULL
+  `street` text DEFAULT NULL,
+  `socialLogin` tinyint(4) DEFAULT 0,
+  `avatar` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userId`, `fname`, `lname`, `email`, `phone`, `password`, `role`, `province`, `district`, `ward`, `street`) VALUES
-(38, NULL, NULL, 'phagame@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL),
-(39, 'Nguyễn', 'Tài', 'wow@gmail.com', '0986512466', 'fcea920f7412b5da7be0cf42b8c93759', 0, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 TDT'),
-(41, NULL, NULL, 'new@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL),
-(42, NULL, NULL, 'nguyentantai12b1@gmail.com', NULL, 'fcea920f7412b5da7be0cf42b8c93759', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`userId`, `fname`, `lname`, `email`, `phone`, `password`, `role`, `province`, `district`, `ward`, `street`, `socialLogin`, `avatar`) VALUES
+(45, 'Nguyễn', 'Tấn Tài', '', '', '9e8d1907830b840fc2fffedc6c32aecf', 0, '', '', '', '', 1, NULL),
+(46, 'Nguyễn', 'Tài', 'bieee.rise@gmail.com', '0968144233', 'd5587a8fdcce38de17dd138fcf3a7d64', 0, 'Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Phúc Xá', '28 A Trịnh Đình Thảo', 1, ''),
+(54, 'Nguyễn', 'Tấn Tài', 'kingdomrok81@gmail.com', '0934567547', '6089697bfc9cb5bb3d09d8513f31fcde', 0, 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Hiến', '28 Trịnh Đình Thảo', 1, 'e2fbcbe5f31ae04a385b9abc00efb3bc.png'),
+(58, NULL, NULL, 'phagame@gmail.com', NULL, 'fcea920f7412b5da7be0cf42b8c93759', 0, NULL, NULL, NULL, NULL, 0, NULL),
+(59, NULL, NULL, 'newAccount@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL, 0, NULL),
+(60, NULL, NULL, 'newAccount2@gmail.com', NULL, 'e10adc3949ba59abbe56e057f20f883e', 0, NULL, NULL, NULL, NULL, 0, NULL),
+(64, 'Nguyễn', 'Tấn Tài', 'kingdom3149.rok.3@gmail.com', '', '9e8d1907830b840fc2fffedc6c32aecf', 0, '', '', '', '', 1, NULL),
+(65, 'Nguyễn', 'Tấn Tài', 'kingdom3149.rok.2@gmail.com', '0934567546', '8bc5f7026c8d775ab5791cdf5c77d45b', 0, 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Hiến', '28 Trịnh Đình Thảo', 1, NULL),
+(66, 'Nguyễn', 'Tấn Tài', 'kingdom3149.rok.1@gmail.com', '0934567548', '4c35826a6e9950db0076eedd8d2325ca', 0, 'Tỉnh Cao Bằng', 'Thành phố Cao Bằng', 'Phường Sông Hiến', '28 Trịnh Đình Thảo', 1, '4f7f0b95fdc55df305d367dc45ce5049.png'),
+(68, 'Nguyen', 'TanTai', 'taint3112@gmail.com', '', '6e96ac2294f85a0cd1c543553de76e64', 0, '', '', '', '', 1, 'https://lh3.googleusercontent.com/a/AAcHTtc1v1psd6nZUZac2JGQ_XQyqM5zH8A_0sKPOzG7=s96-c'),
+(70, 'Ti', 'Nguyễn', 'grayink69@gmail.com', '', '6ae04dc6952f245a6cf68607945f32f8', 0, '', '', '', '', 1, 'https://scontent.fsgn2-7.fna.fbcdn.net/v/t1.30497-1/84628273_176159830277856_972693363922829312_n.jpg?stp=c15.0.50.50a_cp0_dst-jpg_p50x50&_nc_cat=1&ccb=1-7&_nc_sid=12b3be&_nc_ohc=T1s2hGEaBOsAX_yq534&_nc_ht=scontent.fsgn2-7.fna&edm=AP4hL3IEAAAA&oh=00_AfAFEaKNVJDyuE7YWuyNq8zbTl9hW7FrbtdlGidu673TdQ&oe=649FB6D9');
 
 -- --------------------------------------------------------
 
@@ -638,7 +630,8 @@ CREATE TABLE `wishlist` (
 --
 
 INSERT INTO `wishlist` (`userId`, `productId`) VALUES
-(41, 21);
+(41, 21),
+(43, 2);
 
 --
 -- Indexes for dumped tables
@@ -761,19 +754,19 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `adminId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `admin_roles`
 --
 ALTER TABLE `admin_roles`
-  MODIFY `roleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=499;
+  MODIFY `roleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=531;
 
 --
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `blogId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -785,7 +778,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `colors`
@@ -797,19 +790,19 @@ ALTER TABLE `colors`
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `images_gallery`
 --
 ALTER TABLE `images_gallery`
-  MODIFY `imgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `imgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `orderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -821,19 +814,19 @@ ALTER TABLE `order_status`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 
 --
 -- AUTO_INCREMENT for table `product_options`
 --
 ALTER TABLE `product_options`
-  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `optionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `product_reviews`
 --
 ALTER TABLE `product_reviews`
-  MODIFY `reviewId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `reviewId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -851,7 +844,7 @@ ALTER TABLE `tokens`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
