@@ -16,6 +16,7 @@ class Contact extends Controller
     public function add()
     {
         if (!empty($_POST)) {
+            $this->checkUserValid();
             $userId = $_SESSION['user']['userId'] ?? null;
             $name = trim($_POST['name']);
             $email = trim($_POST['email']);

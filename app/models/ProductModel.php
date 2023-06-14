@@ -21,10 +21,13 @@ class ProductModel
            FROM images_gallery 
            GROUP BY productId
         ) ig ON p.productId = ig.productId 
-        LEFT JOIN (SELECT productId,color, MIN(size) AS size FROM product_options GROUP BY productId) AS po ON p.productId = po.productId WHERE p.deleted = 0";
+        LEFT JOIN (SELECT productId,color, MIN(size) AS size FROM product_options GROUP BY productId) AS po ON p.productId = po.productId 
+        WHERE p.deleted = 0";
+
         if (!$isAdmin) {
             $select .= ' AND p.isShown = 1';
         }
+
         $select = $this->formatQuery($select, $quantity);
         $select .= " ORDER BY p.productId DESC";
         return $this->db->getAll($select);
@@ -70,11 +73,15 @@ class ProductModel
         }
         return $this->db->getOne($select);
     }
+    public function updateProductView($id){
+        $query = "UPDATE `products` SET `views`= views + 1 WHERE productId = '$id'";
+        return $this->db->exec($query);
+    }
     public function getProductOptions($id, $getDeleted = true)
     {
         $select = "SELECT * FROM product_options WHERE productId = '$id'";
         if ($getDeleted == false) {
-            $select .= " AND deleted = 0";
+            $select .= " AND deleted = 0 ORDER BY color DESC";
         }
         return $this->db->getAll($select);
     }
@@ -102,7 +109,7 @@ class ProductModel
     }
     public function getCartProductInfo($id)
     {
-        $select = "SELECT p.productId, p.title, p.currentPrice, ig.image 
+        $select = "SELECT p.productId, p.title, p.currentPrice, p.originalPrice , ig.image 
             FROM products p 
             LEFT JOIN (
                SELECT productId, MIN(imgId) ,image 
@@ -138,48 +145,57 @@ class ProductModel
         $select = "SELECT distinct(color) FROM product_options WHERE quantity > 0";
         return $this->db->getAll($select);
     }
-    public function getProductFilter($filterArr)
+    public function getProductFilterAdmin($filterArr)
     {
         $where = '';
         $sortBy = '';
+        
         if (!empty($filterArr)) {
             $where = "WHERE ";
             if (!empty($filterArr['catesFilter']) && !in_array('all', $filterArr['catesFilter'])) {
-                $where .= 'categoryId IN(' . implode(',', $filterArr['catesFilter']) . ') ';
-            }
-            if (!empty($filterArr['sizesFilter'])) {
-                $string = '';
-                foreach ($filterArr['sizesFilter'] as $value) {
-                    $string .= '"' . $value . '",';
-                }
-                $string = rtrim($string, ',');
-                $where .= $where == 'WHERE ' ? 'po.size IN (' . $string . ') ' : 'AND po.size IN (' . $string . ') ';
-            }
-            if (!empty($filterArr['colorsFilter'])) {
-                $string = '';
-                foreach ($filterArr['colorsFilter'] as $value) {
-                    $string .= '"' . $value . '",';
-                }
-                $string = rtrim($string, ',');
-                $where .= $where == 'WHERE ' ? 'po.color IN (' . $string . ') ' : 'AND po.color IN (' . $string . ') ';
-            }
-            if (!empty($filterArr['priceFrom']) && !empty($filterArr['priceTo'])) {
-                $where .= $where == 'WHERE ' ? 'p.currentPrice BETWEEN ' . $filterArr['priceFrom'] . ' AND ' . $filterArr['priceTo'] : 'WHERE p.currentPrice BETWEEN ' . $filterArr['priceFrom'] . ' AND ' . $filterArr['priceTo'];
-            }
-            if (!empty($filterArr['sortBy'])) {
-                $sortBy = 'ORDER BY p.' . $filterArr['sortBy'] . ' DESC';
+                $where .= 'categoryId IN (' . implode(',', $filterArr['catesFilter']) . ') ';
             }
         }
-        $where = $where == 'WHERE ' ? 'WHERE p.isShown = 1 AND p.deleted != 1' : $where .= " AND p.isShown = 1 AND p.deleted != 1";
-        $select = "SELECT p.*, ig.image, po.size, po.color
-        FROM products p 
-        LEFT JOIN (
-                   SELECT productId, MIN(imgId) as imgId ,image 
-                   FROM images_gallery 
-                   GROUP BY productId
-                ) ig ON p.productId = ig.productId
-        INNER JOIN product_options po ON p.productId = po.productId $where GROUP BY p.title $sortBy";
-        return $this->db->getAll($select);
+        $where = $where == 'WHERE ' ? 'WHERE p.deleted != 1' : $where .= " AND p.deleted != 1";
+        $select = "SELECT p.*, ig.image, po.size, po.color FROM products p LEFT JOIN (
+            SELECT productId, MIN(imgId) as imgId ,image 
+            FROM images_gallery 
+            GROUP BY productId
+         ) ig ON p.productId = ig.productId
+         LEFT JOIN product_options po ON p.productId = po.productId $where
+         GROUP BY p.productId ORDER BY p.productId DESC";
+         return $this->db->getAll($select);
+    }
+    public function getProductFilter($filterArr)
+    {
+            $where = '';
+            $sortBy = '';
+            
+            if (!empty($filterArr)) {
+                $where = "WHERE ";
+                if (!empty($filterArr['catesFilter']) && !in_array('all', $filterArr['catesFilter'])) {
+                    $where .= 'categoryId IN (' . implode(',', $filterArr['catesFilter']) . ') ';
+                }
+            
+                if (!empty($filterArr['priceFrom']) && !empty($filterArr['priceTo'])) {
+                    $where .= $where == 'WHERE ' ? 'p.currentPrice BETWEEN ' . ($filterArr['priceFrom'] * 1000) . ' AND ' . ($filterArr['priceTo'] * 1000) : 'AND p.currentPrice BETWEEN ' . ($filterArr['priceFrom'] * 1000) . ' AND ' . ($filterArr['priceTo'] * 1000);
+                }
+            
+                if (!empty($filterArr['sortBy'])) {
+                    $sortBy = 'ORDER BY p.' . $filterArr['sortBy'] . ' DESC';
+                }
+            }
+            
+            $where = $where == 'WHERE ' ? 'WHERE p.isShown = 1 AND p.deleted != 1' : $where .= " AND p.isShown = 1 AND p.deleted != 1";
+            $select = "SELECT p.*, ig.image, po.size, po.color FROM products p INNER JOIN (
+                SELECT productId, MIN(imgId) as imgId ,image 
+                FROM images_gallery 
+                GROUP BY productId
+             ) ig ON p.productId = ig.productId
+             INNER JOIN product_options po ON p.productId = po.productId AND po.quantity > 0 $where
+             GROUP BY p.productId $sortBy";
+            return $this->db->getAll($select);
+       
     }
     public function getDataBySearchTerms($table, $searchTerm, $quantity)
     {
@@ -264,7 +280,9 @@ class ProductModel
     }
     public function deleteProduct($id)
     {
-        $query = "UPDATE products set deleted = 1 WHERE productId = $id";
+        $query = "UPDATE products set deleted = 1 WHERE productId = '$id'";
+        $query2 = "DELETE FROM product_reviews WHERE productId = '$id'";
+        $this->db->exec($query2);
         return $this->db->exec($query);
     }
     public function addProduct($title, $originalPrice, $salePercent, $desc, $categoryId)
@@ -278,7 +296,7 @@ class ProductModel
     public function editProduct($productId, $title, $originalPrice, $salePercent, $desc, $categoryId)
     {
         $currentPrice = $originalPrice - $originalPrice * $salePercent / 100;
-        $query = "UPDATE `products` SET `title`='$title',`originalPrice`='$originalPrice',`currentPrice`='$currentPrice',`description`='$desc',`salePercent`='$salePercent',`categoryId`='$categoryId' WHERE productId = $productId";
+        $query = "UPDATE `products` SET `title`='$title',`originalPrice`='$originalPrice',`currentPrice`='$currentPrice',`description`='$desc',`salePercent`='$salePercent',`categoryId`='$categoryId' WHERE productId = '$productId'";
         return $this->db->exec($query);
     }
     public function showHideProduct($id, $show)

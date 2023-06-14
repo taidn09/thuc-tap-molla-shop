@@ -155,8 +155,8 @@ class Auth extends Controller
             if (!empty($_SESSION['cart-total-quantity'])) {
                 unset($_SESSION['cart-total-quantity']);
             }
-            echo header("location: /");
         }
+        echo header("location: /");
     }
     public function generateToken()
     {

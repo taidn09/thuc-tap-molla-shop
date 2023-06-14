@@ -104,7 +104,7 @@ class Account extends Controller
             } else {
                 $this->loadError();
             }
-            $this->data['subcontent']['controller'] = 'order-details';
+            $this->data['subcontent']['controller'] = 'account';
             $this->data['title'] = 'Chi tiết đơn hàng';
             $this->data['content'] = 'client/pages/order-details';
             $this->render('layouts/client', $this->data);
@@ -116,6 +116,7 @@ class Account extends Controller
     {
 
         if (!empty($_POST)) {
+            $this->checkUserValid();
             $orderId = $_POST['orderId'];
             $res = $this->orderModel->cancel($orderId);
             $orders = $this->orderModel->getUserOrder($_SESSION['user']['userId']);
@@ -134,6 +135,27 @@ class Account extends Controller
                 'status' => 0
             ]);
             return;
+        }
+    }
+    public function review($orderId){
+        if(!empty($orderId)){
+            $orderModel = new OrderModel();
+            $order = $orderModel->getOrderById($orderId);
+            if($order['rated']== 1){
+                echo header('location: /account');
+            }
+            $detail = $orderModel->getOrderDetail($orderId);
+            if(empty($detail)){
+                $this->loadError();
+            }
+            $this->data['subcontent']['controller'] = 'account';
+            $this->data['subcontent']['orderId'] = $orderId;
+            $this->data['subcontent']['detail'] =  $detail;
+            $this->data['title'] = 'Đánh giá sản phẩm';
+            $this->data['content'] = 'client/pages/review';
+            $this->render('layouts/client', $this->data);
+        }else{
+            $this->loadError();
         }
     }
     public function returns()

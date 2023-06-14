@@ -22,7 +22,7 @@ class AdminModel
     public function getAdminList($all = false)
     {
         $select = "SELECT * FROM `admins` WHERE email != 'taidn@gmail.com'";
-        if($all == true){
+        if ($all == true) {
             $select = "SELECT * FROM `admins`";
         }
         return $this->db->getAll($select);
@@ -52,15 +52,28 @@ class AdminModel
         if ($this->checkEmailExisted($email, $adminId)) {
             return false;
         }
-        $password = md5(($password));
-        if ($image) {
-            $admin = $this->getAdminById($adminId);
-            if(file_exists('public/assets/images/admin/' . $admin['image'])){
-                unlink('public/assets/images/admin/' . $admin['image']);
+
+        if (!empty($password)) {
+            $password = md5(($password));
+            if ($image) {
+                $admin = $this->getAdminById($adminId);
+                if (file_exists('public/assets/images/admin/' . $admin['image'])) {
+                    unlink('public/assets/images/admin/' . $admin['image']);
+                }
+                $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`password`='$password',`image`='$image',`role`='$role' WHERE adminId = $adminId";
+            } else {
+                $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`password`='$password',`role`='$role' WHERE adminId = $adminId";
             }
-            $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`password`='$password',`image`='$image',`role`='$role' WHERE adminId = $adminId";
-        } else {
-            $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`password`='$password',`role`='$role' WHERE adminId = $adminId";
+        }else{
+            if ($image) {
+                $admin = $this->getAdminById($adminId);
+                if (file_exists('public/assets/images/admin/' . $admin['image'])) {
+                    unlink('public/assets/images/admin/' . $admin['image']);
+                }
+                $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`image`='$image',`role`='$role' WHERE adminId = $adminId";
+            } else {
+                $query = "UPDATE `admins` SET `name`='$name',`email`='$email',`role`='$role' WHERE adminId = $adminId";
+            }
         }
         return $this->db->exec($query);
     }
@@ -92,10 +105,10 @@ class AdminModel
         return $this->db->exec($query);
     }
     public function checkEnterRightPassword($id, $password)
-    {   
+    {
         $password = md5($password);
         $select = "SELECT * FROM `admins` WHERE adminId = '$id' AND password = '$password'";
-        if($this->db->getOne($select)){
+        if ($this->db->getOne($select)) {
             return true;
         }
         return false;

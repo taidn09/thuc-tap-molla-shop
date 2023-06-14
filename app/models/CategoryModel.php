@@ -13,6 +13,7 @@ class CategoryModel
         } else {
             $select = "SELECT * FROM categories WHERE categoryId != 1";
         }
+        $select.= " ORDER BY categoryId ASC";
         return $this->db->getAll($select);
     }
     public function getCategoryAndProductQuantity()
@@ -20,7 +21,7 @@ class CategoryModel
 
         $select = "SELECT c.categoryId, c.title, SUM(po.quantity) AS totalQuantity
         FROM categories c
-        JOIN products p ON c.categoryId = p.categoryId AND p.deleted = 0
+        JOIN products p ON c.categoryId = p.categoryId AND p.deleted = 0 AND p.isShown = 1
         LEFT JOIN product_options po ON p.productId = po.productId AND po.quantity > 0
         GROUP BY c.categoryId";
         return $this->db->getAll($select);

@@ -1,6 +1,7 @@
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 /* Track */
@@ -18,7 +19,9 @@
     background: #666;
 }
 
-input,select,textarea {
+input,
+select,
+textarea {
     box-shadow: none !important;
     font-size: 14px !important;
 }
@@ -37,10 +40,23 @@ input,select,textarea {
     border-radius: 2px;
     padding-top: 0px;
     padding-bottom: 0px;
-    min-width: 120px; 
+    min-width: 120px;
     margin-top: 2px;
     font-size: 14px !important;
 }
-.page-link:focus{
+
+.page-link:focus {
     box-shadow: none !important;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field i {
+    font-size: 20px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }

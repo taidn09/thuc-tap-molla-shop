@@ -9,7 +9,7 @@ class Category extends Controller
     }
     public function index()
     {
-        $this->data['title'] = 'Category';
+        $this->data['title'] = 'Danh mục sản phẩm';
         $this->data['subcontent']['controller'] = 'category';
         $this->data['subcontent']['categoryList'] = $this->model->getCategoriesList(false);
         $this->data['content'] = 'admin/pages/category/list';
@@ -18,6 +18,7 @@ class Category extends Controller
     public function add()
     {
         if (!empty($_POST['title'])) {
+            $this->checkRolePost('category-add');
             $res = $this->model->addCategory($_POST['title']);
             if (!empty($res)) {
                 echo json_encode([
@@ -30,7 +31,7 @@ class Category extends Controller
             ]);
             return;
         } else {
-            $this->data['title'] = 'Add category';
+            $this->data['title'] = 'Thêm danh mục';
             $this->data['subcontent']['controller'] = 'category';
             $this->data['subcontent']['editMode'] = false;
             $this->data['content'] = 'admin/pages/category/form';
@@ -40,6 +41,7 @@ class Category extends Controller
     public function edit($id = null)
     {
         if (!empty($_POST['title']) && !empty($_POST['id'])) {
+            $this->checkRolePost('category-edit');
             $res = $this->model->updateCategory($_POST['id'], $_POST['title']);
             if (!empty($res)) {
                 echo json_encode([
@@ -53,7 +55,7 @@ class Category extends Controller
             return;
         } else {
             if (!empty($id)) {
-                $this->data['title'] = 'Edit category';
+                $this->data['title'] = 'Sửa danh mục';
                 $this->data['subcontent']['controller'] = 'category';
                 $this->data['subcontent']['editMode'] = true;
                 $category = $this->model->getCategoryById($id);
@@ -71,12 +73,12 @@ class Category extends Controller
     public function delete()
     {
         if (!empty($_POST['id'])) {
+            $this->checkRolePost('category-delete');
             $id = $_POST['id'];
             $res = $this->model->deleteCategory($id);
             if (!empty($res)) {
                 echo json_encode([
-                    'status' => 1,
-                    'categoryList' => $this->model->getCategoriesList(false)
+                    'status' => 1
                 ]);
                 return;
             }

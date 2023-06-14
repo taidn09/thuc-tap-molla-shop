@@ -52,7 +52,7 @@
                                         </div>
                                     <?php endif; ?>
                                     <?php
-                                    if ($this->checkRole('contact-edit')) :
+                                    if ($this->checkRole('contact-reply')) :
                                     ?>
                                         <div>
                                             <a href="/admin/contact/reply/<?= $contact['id'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa
@@ -86,6 +86,7 @@
                         id: $(this).data('id')
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
                         }

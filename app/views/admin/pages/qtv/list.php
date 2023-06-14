@@ -19,6 +19,7 @@
                     </thead>
                     <tbody class="admin-table-body">
                         <?php
+                        $postionModel = new PositionModel();
                         foreach ($admins as $admin) {
                         ?>
                             <tr>
@@ -26,12 +27,16 @@
                                 </td>
                                 <td><?= $admin['name'] ?></td>
                                 <td><?= $admin['email'] ?></td>
-                                <td><?= $admin['role'] == 0 ? 'Nhân viên' : 'Quản lý' ?></td>
+                                <td><?=$postionModel->getById($admin['role'])['job_title']?></td>
                                 <td>
-                                    <a href="/admin/admin/authorize/<?=$admin['adminId']?>" class="btn btn-custom btn-primary"><i class="bi bi-gear-wide"></i></a>
-                                    <a class="btn btn-danger btn-custom" onclick="deleteAdmin('<?= $admin['adminId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
-                                    <a href="/admin/admin/edit/<?= $admin['adminId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                                    </a>
+                                    <div>
+
+                                        <a class="btn btn-danger btn-custom delete-btn" data-id="<?=$admin['adminId']?>" href="javascript:void(0)">Xóa</a>
+                                    </div>
+                                    <div>
+                                        <a href="/admin/admin/edit/<?= $admin['adminId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa</i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php
@@ -44,4 +49,27 @@
     <!-- End Recent Sales -->
 </main>
 
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa nhân viên này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/admin/delete`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

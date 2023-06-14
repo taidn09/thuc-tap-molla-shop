@@ -49,7 +49,7 @@
                     <div class="text-center">
                         <h2 class="title mb-1">Giữ liện lạc</h2><!-- End .title mb-2 -->
                         <p class="lead text-primary">
-                        Chúng tôi hợp tác với những thương hiệu và con người đầy tham vọng; chúng tôi muốn cùng nhau xây dựng một điều gì đó tuyệt vời.
+                            Chúng tôi hợp tác với những thương hiệu và con người đầy tham vọng; chúng tôi muốn cùng nhau xây dựng một điều gì đó tuyệt vời.
                         </p><!-- End .lead text-primary -->
                     </div><!-- End .text-center -->
 
@@ -90,3 +90,50 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    // submit contact form
+    $('#contact-form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        let flag = true;
+        let min = 2
+        let max = 50
+        $('.err-msg').html('')
+        if (checkIsEmpty($(this).find('#name').val())) {
+            $('.ct-name-err-msg').html('Vui lòng nhập họ...')
+            flag = false
+        } else if (!checkName($(this).find('#name').val(), min, max)) {
+            $('.ct-name-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+
+        if (!checkEmail($(this).find('#email').val())) {
+            $('.ct-email-err-msg').html('Email không hợp lệ...')
+            flag = false
+        }
+        if (!checkPhone($(this).find('#phone').val())) {
+            $('.ct-phone-err-msg').html('Số điện thoại không hợp lệ...')
+            flag = false
+        }
+        if (checkIsEmpty($(this).find('#message').val())) {
+            $('.ct-mess-err-msg').html('Chưa nhập nội dung...')
+            flag = false
+        }
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/contact/add',
+                data: formData,
+                success: function(response) {
+                    checkUserValid(JSON.parse(response).status)
+                    if (response && JSON.parse(response).status == 1) {
+                        Swal.fire({
+                            ...successPopup,
+                            title: 'Tin nhẵn của bạn đã được gửi!',
+                        })
+                    }
+                },
+            });
+        }
+    })
+</script>

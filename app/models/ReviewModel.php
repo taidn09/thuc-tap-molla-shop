@@ -12,10 +12,10 @@ class ReviewModel
     public function getReviewList($productId = null)
     {
         if ($productId) {
-            $select = "SELECT * FROM product_reviews, users WHERE productId = $productId AND product_reviews.userId = users.userId ORDER BY reviewTime DESC";
+            $select = "SELECT `reviewId`, users.`userId`, `productId`, `star`, `title`, `content`, `reviewTime`, `helpful`, `unhelpful`,`fname`, `lname`, `email` FROM product_reviews, users WHERE productId = $productId AND product_reviews.userId = users.userId ORDER BY reviewTime DESC";
             return $this->db->getAll($select);
         }
-        $select = "SELECT * FROM product_reviews, users WHERE product_reviews.userId = users.userId ORDER BY reviewTime DESC";
+        $select = "SELECT `reviewId`, users.`userId`, `productId`, `star`, `title`, `content`, `reviewTime`, `helpful`, `unhelpful`,`fname`, `lname`, `email` FROM product_reviews, users WHERE product_reviews.userId = users.userId ORDER BY reviewTime DESC";
         return $this->db->getAll($select);
     }
     public function add($userId, $productId, $star, $title, $content)

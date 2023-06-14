@@ -35,3 +35,26 @@
     }
     ?>
 </div>
+<script>
+    // fb auth 
+    $("#fb-auth-form").on('submit', function(e) {
+        e.preventDefault();
+        $('.err-msg').html('')
+        if (!checkEmail($('#email').val())) {
+            $('.email-err-msg').html('Email không hợp lệ...')
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/auth/fbAuth',
+                data: {
+                    email: $('#email').val().trim()
+                },
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        console.log('Success');
+                    }
+                },
+            });
+        }
+    })
+</script>

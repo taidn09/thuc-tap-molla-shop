@@ -31,6 +31,7 @@ class User extends Controller
     public function edit($id = null)
     {
         if (!empty($_POST['id'])) {
+            $this->checkRolePost('user-edit');
             $userId = $_POST['id'];
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
@@ -76,6 +77,7 @@ class User extends Controller
     public function delete()
     {
         if (!empty($_POST['id'])) {
+            $this->checkRolePost('user-delete');
             $id = $_POST['id'];
             $res = $this->model->deleteUser($id);
             if (!empty($res)) {

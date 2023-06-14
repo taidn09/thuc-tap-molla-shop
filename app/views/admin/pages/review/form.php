@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/review" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -23,11 +24,11 @@
                                     <div class="form-group m-auto mt-2">
                                         <label for="title" class="form-label">Số sao</label>
                                         <select name="star" class="form-control" id="star">
-                                            <option <?=$review['star'] == 5 ? 'selected': '' ?> value="5">5 sao</option>
-                                            <option <?=$review['star'] == 4 ? 'selected': '' ?> value="4">4 sao</option>
-                                            <option <?=$review['star'] == 3 ? 'selected': '' ?> value="3">3 sao</option>
-                                            <option <?=$review['star'] == 2 ? 'selected': '' ?> value="2">2 sao</option>
-                                            <option <?=$review['star'] == 1 ? 'selected': '' ?> value="1">1 sao</option>
+                                            <option <?= $review['star'] == 5 ? 'selected' : '' ?> value="5">5 sao</option>
+                                            <option <?= $review['star'] == 4 ? 'selected' : '' ?> value="4">4 sao</option>
+                                            <option <?= $review['star'] == 3 ? 'selected' : '' ?> value="3">3 sao</option>
+                                            <option <?= $review['star'] == 2 ? 'selected' : '' ?> value="2">2 sao</option>
+                                            <option <?= $review['star'] == 1 ? 'selected' : '' ?> value="1">1 sao</option>
                                         </select>
 
                                     </div>
@@ -70,3 +71,36 @@
         </div>
         <!-- End Recent Sales -->
 </main>
+<script>
+    $('#review-form').on('submit', function(e) {
+        e.preventDefault()
+        let flag = true
+        $('.err-msg').html('')
+        var formData = $(this).serialize();
+        if ($('#title').val() == '') {
+            $('.title-err-msg').html('Chưa nhập tiêu đề')
+            flag = false
+        }
+        if ($('#content').val() == '') {
+            $('.title-err-msg').html('Chưa nhập nội dung...')
+            flag = false
+        }
+        if ($('#reviewTime').val() == '') {
+            $('.title-err-msg').html('Chưa chọn thời gian...')
+            flag = false
+        }
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/review/edit',
+                data: formData,
+                success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = "/admin/review"
+                    }
+                },
+            });
+        }
+    })
+</script>

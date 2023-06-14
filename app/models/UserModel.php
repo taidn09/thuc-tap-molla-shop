@@ -85,6 +85,8 @@ class UserModel
     public function deleteUser($id)
     {
         $query = "DELETE FROM `users` WHERE userId = '$id'";
+        $query1 = "DELETE FROM wishlist WHERE userId = '$id'";
+        $this->db->exec($query1);
         return $this->db->exec($query);
     }
     public function updateSocialLogin($userId){

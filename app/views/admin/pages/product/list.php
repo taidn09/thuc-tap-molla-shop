@@ -6,19 +6,27 @@
         ?>
             <a href="/admin/product/add" class="text-white btn btn-custom btn-success d-inline-block py-2 px-5 mb-4">Thêm sản phẩm mới</a>
         <?php endif; ?>
-        <a href="javascript:void(0)" onclick="exportExcel()" class="text-white btn btn-custom btn-primary ms-auto d-inline-block py-2 px-5 mb-4">Xuất dữ liệu</a>
+        <?php
+        if ($this->checkRole('product-export')) :
+        ?>
+            <a href="javascript:void(0)" onclick="exportExcel()" class="text-white btn btn-custom btn-primary ms-auto d-inline-block py-2 px-5 mb-4">Xuất dữ liệu</a>
+        <?php endif; ?>
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
                 <h5 class="card-title text-uppercase">Danh sách sản phẩm</h5>
                 <div class="d-flex justify-content-around mb-3">
-                    <div class="form-group">
-                        <label for="import">Nhập liệu từ file</label>
-                        <div class="d-flex">
-                            <input type="file" name="import" id="import" class="form-control" placeholder="Chọn file">
-                            <button class="btn btn-custom btn-primary" style="width: 200px" onclick="importProducts()">Nhập file</button>
+                    <?php
+                    if ($this->checkRole('product-import')) :
+                    ?>
+                        <div class="form-group">
+                            <label for="import">Nhập liệu từ file</label>
+                            <div class="d-flex">
+                                <input type="file" name="import" id="import" class="form-control" placeholder="Chọn file">
+                                <button class="btn btn-custom btn-primary mt-0" style="width: 200px" onclick="importProducts()">Nhập file</button>
+                            </div>
+                            <div class="err-msg import-err-msg"></div>
                         </div>
-                        <div class="err-msg import-err-msg"></div>
-                    </div>
+                    <?php endif; ?>
                     <div class=" form-group">
                         <label for="catesFilter">Phân loại theo danh mục:</label>
                         <select name="catesFilter[]" id="catesFilter" class="form-select" onchange="filterProduct(this.value)">
@@ -110,7 +118,11 @@
 <script>
     function updateProductsTable(response) {
         const {
-            products
+            products,
+            allowDelete,
+            allowEdit,
+            allowToggle,
+            allowViewDetail
         } = JSON.parse(response)
         let productsHTML = []
         let i = 0
@@ -126,7 +138,20 @@
                 sold,
                 isShown
             } = products[key]
-            productsHTML.push( `
+            let _btns = '';
+            if (allowToggle) {
+                _btns += `<div> <a class="btn btn-primary btn-custom toggle-btn" data-id="${productId}" data-show="${isShown}" href="javascript:void(0)">${ isShown == 1 ? 'Ẩn' : 'Hiện'}</a></div>`
+            }
+            if (allowViewDetail) {
+                _btns += `<div> <a class="btn btn-success btn-custom" href="/admin/product/detail/${productId}">Chi tiết</a></div>`
+            }
+            if (allowDelete) {
+                _btns += ` <div><a class="btn btn-danger btn-custom delete-btn" data-id="${productId}" href="javascript:void(0)">Xóa</a></div>`
+            }
+            if (allowEdit) {
+                _btns += `<div><a href="/admin/product/edit/${productId}" class="btn btn-warning btn-custom">Chỉnh sửa</i></a></div>`
+            }
+            productsHTML.push(`
                 <tr>            
                                 <td>${i}</td>
                                 <td><img src="/public/assets/images/products/${image ? image : ''}" style="width: 50px" alt=""></td>
@@ -144,32 +169,7 @@
                                 <td>${Number(currentPrice).toLocaleString('en-US', priceFormatOption)}đ</td>
                                 <td>${sold}</td>
                                 <td>
-                                <?php
-                                if ($this->checkRole('product-toggle')) :
-                                ?>
-                                        <div>
-                                                <a class="btn btn-primary btn-custom toggle-btn" data-id="${productId}" data-show="${isShown}" href="javascript:void(0)">${ isShown == 1 ? 'Ẩn' : 'Hiện'}</a>
-                                            </div>
-                                    <?php endif; ?>
-                                    <?php
-                                    if ($this->checkRole('product-detail')) :
-                                    ?>
-                                        <div> <a class="btn btn-success btn-custom" href="/admin/product/detail/${productId}">Chi tiết</a></div>
-                                    <?php endif; ?>
-                                    <?php
-                                    if ($this->checkRole('product-delete')) :
-                                    ?>
-                                      <div>
-                                                <a class="btn btn-danger btn-custom delete-btn" data-id="${productId}" href="javascript:void(0)">Xóa</a>
-                                            </div>
-                                    <?php endif; ?>
-                                    <?php
-                                    if ($this->checkRole('product-edit')) :
-                                    ?>
-                                        <div>
-                                        <a href="/admin/product/edit/${productId}" class="btn btn-warning btn-custom">Chỉnh sửa</i>
-                                    </a></div>
-                                    <?php endif; ?>
+                                    ${_btns}
                                 </td>
                             </tr>   
                     `)
@@ -186,7 +186,9 @@
             },
             success: function(response) {
                 if (response && JSON.parse(response).status == 1) {
+                    $('.datatable').DataTable().destroy()
                     updateProductsTable(response)
+                    initDataTable()
                 }
             },
         });
@@ -206,8 +208,12 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
+                        $('.datatable').DataTable().destroy()
                         updateProductsTable(response)
+                        initDataTable()
+                        $("#catesFilter").val($("#catesFilter option:first").val())
                     } else {
                         $('.import-err-msg').html(JSON.parse(response).errMsg)
                     }
@@ -215,6 +221,27 @@
             });
         }
 
+    }
+
+    function exportExcel() {
+        $.ajax({
+            type: "POST",
+            url: '/admin/product/export',
+            data: {
+                catesFilter: [$('#catesFilter').val()]
+            },
+            success: function(response, textStatus, jqXHR) {
+                var contentType = jqXHR.getResponseHeader('Content-Type');
+                if(contentType == 'text/html; charset=UTF-8'){
+                    checkAdminRoleValid(JSON.parse(response).status)
+                }else{
+                    let dowloadLink = document.createElement("a")
+                    dowloadLink.setAttribute('href', 'https://mvc.com/export/danh_sach_san_pham.xlsx')
+                    dowloadLink.click()
+                    dowloadLink.remove()
+                }
+            },
+        });
     }
     $(document).on('click', '.delete-btn', function() {
         let btn = $(this)
@@ -230,6 +257,7 @@
                         id: $(this).data('id')
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
                         }
@@ -255,6 +283,7 @@
                         show: show == 1 ? 0 : 1
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             btn.text(`${show == 1 ? 'Hiện' : "Ẩn"}`)
                             btn.data('show', `${show == 1 ? 0 : 1}`)

@@ -53,6 +53,8 @@ class Admin extends Controller
         } else {
             $this->data['title'] = 'Thêm nhân viên';
             $this->data['subcontent']['controller'] = 'admin';
+            $positionModel = new PositionModel();
+            $this->data['subcontent']['positions'] = $positionModel->getAll();
             $this->data['subcontent']['editMode'] = false;
             $this->data['content'] = 'admin/pages/qtv/form';
             $this->render('layouts/admin', $this->data);
@@ -111,6 +113,8 @@ class Admin extends Controller
                 } else {
                     $this->loadError();
                 }
+                $positionModel = new PositionModel();
+                $this->data['subcontent']['positions'] = $positionModel->getAll();
                 $this->data['content'] = 'admin/pages/qtv/form';
                 $this->render('layouts/admin', $this->data);
             } else {
@@ -134,34 +138,6 @@ class Admin extends Controller
                 'status' => 0
             ]);
             return;
-        }
-    }
-    public function authorize($id = null)
-    {
-        if (!empty($_POST['roles'])) {
-            $this->model->deleteRoles($_POST['adminId']);
-            foreach ($_POST['roles'] as $role) {
-                $result = $this->model->insertAdminRoles($_POST['adminId'], $role);
-            }
-            if ($result) {
-                echo json_encode([
-                    'status' => 1
-                ]);
-                return;
-            }
-        } else if (!empty($id)) {
-            $this->data['title'] = 'Admin authorization';
-            $this->data['subcontent']['controller'] = 'admin';
-            $admin = $this->model->getAdminById($id);
-            if(!empty($admin)){
-                $this->data['subcontent']['admin'] = $admin;
-            }else{
-                $this->loadError();
-            }
-            $this->data['content'] = 'admin/pages/qtv/authorize';
-            $this->render('layouts/admin', $this->data);
-        }else{
-            $this->loadError();
         }
     }
 }

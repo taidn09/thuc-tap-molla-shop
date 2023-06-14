@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/contact" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -59,6 +60,7 @@
                 url: '/admin/contact/reply',
                 data: formData,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         Swal.fire({
                             ...successPopup,

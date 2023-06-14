@@ -7,7 +7,7 @@
         }
         public function index()
         {
-            $this->data['title'] = 'Contact';
+            $this->data['title'] = 'Liên hệ';
             $this->data['subcontent']['controller'] = 'contact';
             $this->data['subcontent']['contacts'] = $this->model->getAllContact();
             $this->data['content'] = 'admin/pages/contact/list';
@@ -16,6 +16,7 @@
         public function reply($id = null)
         {
             if (!empty($_POST['id'])) {
+                $this->checkRolePost('contact-reply');
                 $contactId = $_POST['id'];
                 $email = trim($_POST['email']);
                 $sendMailStatus = true;
@@ -36,7 +37,7 @@
                 return;
             } else {
                 if (!empty($id)) {
-                    $this->data['title'] = 'Edit contact';
+                    $this->data['title'] = 'Phản hồi liên hệ';
                     $this->data['subcontent']['controller'] = 'contact';
                     $contact = $this->model->getContactById($id);
                     if (empty($contact)) {
@@ -53,6 +54,7 @@
         public function delete()
         {
             if (!empty($_POST['id'])) {
+                $this->checkRolePost('contact-delete');
                 $id = $_POST['id'];
                 $res = $this->model->deleteContact($id);
                 if (!empty($res)) {

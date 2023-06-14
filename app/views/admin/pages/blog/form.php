@@ -54,18 +54,31 @@
 
                                     </div>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="createdAt" class="form-label">Ngày tạo</label>
                                                 <input name="createdAt" type="date" class="form-control" id="createdAt" placeholder="Ngày tạo..." spellcheck="false" autocomplete="off" value="<?= $blog['createdAt'] ?>" />
                                                 <div class="err-msg createdAt-err-msg"></div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="shortDesc" class="form-label">Mô tả ngắn</label>
                                                 <input name="shortDesc" type="text" class="form-control" id="shortDesc" placeholder="Mô tả ngắn..." spellcheck="false" autocomplete="off" value="<?= $blog['shortDesc'] ?>" />
                                                 <div class="err-msg shortDesc-err-msg"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group m-auto mt-2">
+                                                <label for="blogCateId" class="form-label">Danh mục tin tức</label>
+                                                <select name="blogCateId" id="blogCateId" class="form-control form-select-custom">
+                                                    <?php 
+                                                    foreach($categories as $key=>$category):
+                                                    ?>
+                                                    <option value="<?=$category['id']?>" <?php if($blog['blogCateId'] == $category['id']) echo 'selected'?>><?=$category['title']?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <div class="err-msg blogCateId-err-msg"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -125,11 +138,24 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="shortDesc" class="form-label">Mô tả ngắn</label>
                                                 <input name="shortDesc" type="text" class="form-control" id="shortDesc" placeholder="Mô tả ngắn..." spellcheck="false" autocomplete="off" />
                                                 <div class="err-msg shortDesc-err-msg"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group m-auto mt-2">
+                                                <label for="blogCateId" class="form-label">Danh mục tin tức</label>
+                                                <select name="blogCateId" id="blogCateId" class="form-control form-select-custom">
+                                                    <?php 
+                                                    foreach($categories as $key=>$category):
+                                                    ?>
+                                                    <option value="<?=$category['id']?>"><?=$category['title']?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <div class="err-msg blogCateId-err-msg"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -205,6 +231,7 @@
             var formData = new FormData();
             formData.append('title', name);
             formData.append('thumbnail', $('#thumbnail')[0].files[0]);
+            formData.append('blogCateId', $('#blogCateId').val());
             formData.append('author', $('#select-box').val());
             formData.append('content', tinymce.activeEditor.getContent());
             formData.append('shortDesc', $('#shortDesc').val().trim());
@@ -222,6 +249,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         window.location = "/admin/blog"
                     } else {

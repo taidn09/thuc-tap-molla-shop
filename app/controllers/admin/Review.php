@@ -16,6 +16,7 @@
         public function edit($id = null)
         {
             if (!empty($_POST)) {
+                $this->checkRolePost('review-edit');
                 $reviewId = $_POST['id'];
                 $star = $_POST['star'];
                 $title = $_POST['title'];
@@ -51,6 +52,7 @@
         public function delete()
         {
             if (!empty($_POST['id'])) {
+                $this->checkRolePost('review-delete');
                 $id = $_POST['id'];
                 $res = $this->model->deleteReview($id);
                 if (!empty($res)) {

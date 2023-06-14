@@ -50,17 +50,17 @@
                                                                                     } else {
                                                                                         echo '';
                                                                                     } ?>"><?php
-                                                                                        if ($product['salePercent'] > 0) {
-                                                                                            echo 'Giảm giá ' . $product['salePercent'] . "%";
-                                                                                        } else {
-                                                                                            echo '';
-                                                                                        } ?></span>
+                                                                                            if ($product['salePercent'] > 0) {
+                                                                                                echo 'Giảm giá ' . $product['salePercent'] . "%";
+                                                                                            } else {
+                                                                                                echo '';
+                                                                                            } ?></span>
                                                 <a href="/product/detail/<?= $product['productId'] ?>">
                                                     <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/products/<?= $product['image'] ?>" alt="Product image" class="product-image">
                                                 </a>
 
                                                 <div class="product-action-vertical">
-                                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" data-productid="<?= $product['productId'] ?>"><span>Thêm vào danh sách yêu thích</span></a>
                                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="Quick view"><span>quick view</span></a> -->
                                                 </div><!-- End .product-action-vertical -->
 
@@ -71,7 +71,7 @@
                                             <div class="product-body">
                                                 <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                                 <div class="product-price">
-                                                    <?= number_format($product['currentPrice']) ?>đ
+                                                    <?= number_format($product['currentPrice']) ?>đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;"><?= number_format($product['originalPrice']) ?>đ</span>
                                                 </div><!-- End .product-price -->
                                                 <div class="ratings-container">
                                                     <div class="ratings">
@@ -137,90 +137,11 @@
                                                     <input name="catesFilter[]" type="checkbox" class="custom-control-input" value="<?= $category['categoryId'] ?>" id="cat-<?= $category['categoryId'] ?>">
                                                     <label class="custom-control-label" for="cat-<?= $category['categoryId'] ?>"><?= $category['title'] ?></label>
                                                 </div><!-- End .custom-checkbox -->
-                                                <span class="item-count"><?= $category['totalQuantity'] ?></span>
+                                                <span class="item-count"><?= number_format($category['totalQuantity']) ?></span>
                                             </div><!-- End .filter-item -->
                                         <?php }
                                         ?>
                                     </div><!-- End .filter-items -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
-
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
-                                    Kích thước
-                                </a>
-                            </h3><!-- End .widget-title -->
-
-                            <div class="collapse show" id="widget-2">
-                                <div class="widget-body">
-                                    <div class="filter-items">
-                                        <?php
-                                        foreach ($allSizes as $key => $size) {
-                                        ?>
-                                            <!-- <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" name="sizesFilter[]" value="<?= $size['size'] ?>" class="custom-control-input" id="size-<?= $size['size'] ?>">
-                                                    <label class="custom-control-label" for="size-<?= $size['size'] ?>"><?= $size['size'] ?></label>
-                                                </div>
-                                            </div> -->
-                                        <?php
-                                        }
-                                        ?>
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="sizesFilter[]" value="S" class="custom-control-input" id="size-S">
-                                                <label class="custom-control-label" for="size-S">S</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="sizesFilter[]" value="M" class="custom-control-input" id="size-M">
-                                                <label class="custom-control-label" for="size-M">M</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="sizesFilter[]" value="L" class="custom-control-input" id="size-L">
-                                                <label class="custom-control-label" for="size-L">L</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="sizesFilter[]" value="XL" class="custom-control-input" id="size-XL">
-                                                <label class="custom-control-label" for="size-XL">XL</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="sizesFilter[]" value="XXL" class="custom-control-input" id="size-XXL">
-                                                <label class="custom-control-label" for="size-XXL">XXL</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                    </div><!-- End .filter-items -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
-
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
-                                    Màu sắc
-                                </a>
-                            </h3><!-- End .widget-title -->
-
-                            <div class="collapse show" id="widget-3">
-                                <div class="widget-body">
-                                    <div class="filter-colors">
-                                        <?php
-                                        foreach ($allColors as $key => $color) {
-                                        ?>
-                                            <label style="background: <?= $color['color'] ?>; border: 2px solid" for="color-<?= $color['color'] ?>" class="color-circle-shop <?= $color['color'] ?>"><span class="sr-only">Color Name</span></label>
-                                            <input type="checkbox" hidden name="colorsFilter[]" value="<?= $color['color'] ?>" id="color-<?= $color['color'] ?>">
-                                        <?php
-                                        } ?>
-                                    </div><!-- End .filter-colors -->
                                 </div><!-- End .widget-body -->
                             </div><!-- End .collapse -->
                         </div><!-- End .widget -->
@@ -254,3 +175,153 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    $('.color-circle-shop').on('click', function() {
+        $(this).toggleClass('selected');
+    });
+    $("#filter-form").on("submit", function(event) {
+        event.preventDefault();
+        callFilterProducts(1)
+    });
+
+    function updateShopPage(response) {
+        const {
+            productsList,
+            currentPage,
+            totalPage,
+            totalProductFound
+        } = JSON.parse(response)
+        let productsHTML = ''
+        if (totalProductFound > 0) {
+            if (productsList) {
+                for (const key in productsList) {
+                    const {
+                        categoryId,
+                        color,
+                        currentPrice,
+                        originalPrice,
+                        description,
+                        image,
+                        productId,
+                        rating,
+                        reviewCount,
+                        salePercent,
+                        title,
+                        size,
+                        sold
+                    } = productsList[key]
+                    let label = salePercent > 0 ? 'sale' : '';
+                    productsHTML += `
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="product product-7 text-center">
+                                        <figure class="product-media">
+                                            <span class="product-label label-${label}">${salePercent > 0 ? 'Giảm giá '+salePercent+'%' : ''}</span>
+                                            <a href="/product/detail/${productId}">
+                                                <img src="/public/assets/images/products/${image}" alt="Product image" class="product-image">
+                                            </a>
+
+                                            <div class="product-action-vertical">
+                                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" data-productid="${productId}"><span>Thêm vào danh sách yêu thích</span></a>
+                                                <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="Quick view"><span>quick view</span></a> -->
+                                            </div><!-- End .product-action-vertical -->
+
+                                            <div class="product-action">
+                                                <a href="javascript:void(0)" onclick="addToCart('${productId}',1,'${size}','${color}')" class="btn-product btn-cart"><span>Thêm vào giỏ hàng</span></a>
+                                            </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="/product/detail/${productId}">${title}</a></h3><!-- End .product-title -->
+                                            <div class="product-price">
+                                                ${Number(currentPrice).toLocaleString('en-US', priceFormatOption)}đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;">${Number(originalPrice).toLocaleString('en-US', priceFormatOption)}đ</span>
+                                            </div><!-- End .product-price -->
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width:${(rating/5*100).toFixed(0)}%;"></div><!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">( ${reviewCount} đánh giá )</span>
+                                            </div><!-- End .rating-container -->
+
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    `
+                }
+            }
+            $('.products-list-container').html(productsHTML)
+            $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
+        } else {
+            $('.toolbox-info').html(`Đang hiển thị <span>${Object.keys(productsList).length} trong số ${totalProductFound}</span> sản phẩm`)
+            $('.products-list-container').html('<h3 class="text-center">Hiện chưa có sản phẩm nào</h3>')
+        }
+        let paginateHTML = ` <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link page-link-prev" href="#${currentPage - 1}" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Trang trước
+                                </a>
+                            </li>`
+        for (let index = 0; index < totalPage; index++) {
+            let isAcitve = index + 1 == currentPage ? 'active' : ''
+            paginateHTML += `
+                    <li class="page-item ${isAcitve}" aria-current="page"><a class="page-link" href="#${index+1}">${index+1}</a></li>
+                `
+        }
+        paginateHTML += `
+            <li class="page-item-total">of ${totalPage}</li>
+            <li class="page-item ${currentPage >= totalPage ? 'disabled' : ''}">
+                                <a class="page-link page-link-next" href="#${Number(currentPage) + 1}" aria-label="Next">
+                                    Trang sau <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>`
+        $('.paginate-shop').html(paginateHTML)
+        $('.page-item a').on('click', function(e) {
+            e.preventDefault()
+            if (!$(this).parent().hasClass('active')) {
+                $(this).parent().siblings().removeClass('active')
+                $(this).parent().addClass('active')
+                if (window.location.pathname == '/blog') {
+                    paginateBlogs()
+                } else {
+                    callFilterProducts()
+                }
+            }
+        }) 
+    }
+
+    $('.page-item a').on('click', function(e) {
+        e.preventDefault()
+        if (!$(this).parent().hasClass('active')) {
+            $(this).parent().siblings().removeClass('active')
+            $(this).parent().addClass('active')
+            if (window.location.pathname == '/blog') {
+                paginateBlogs()
+            } else {
+                callFilterProducts()
+            }
+        }
+
+    })
+    $('#sortby').on('change', function() {
+        callFilterProducts()
+    })
+
+    function callFilterProducts(page = null) {
+        var formData = $('#filter-form').serialize();
+        const priceFrom = $('.noUi-handle-lower').text().replace('K', '');
+        const priceTo = $('.noUi-handle-upper').text().replace('K', '');
+        if (page == null) {
+            page = $('.page-item.active a').attr('href').split('')[1];
+        }
+        const sortBy = $('#sortby').val();
+        const queryString = formData + '&priceFrom=' + priceFrom + '&priceTo=' + priceTo + '&page=' + page + '&sortBy=' + sortBy; // Tạo một chuỗi query string mới
+        $.ajax({
+            type: 'POST',
+            url: '/product/filter',
+            data: queryString, // Truyền chuỗi query string mới vào data
+            success: function(response) {
+                if (response) {
+                    updateShopPage(response)
+                }
+            },
+        });
+    }
+</script>

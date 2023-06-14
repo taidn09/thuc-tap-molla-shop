@@ -79,4 +79,128 @@
             toInput.classList.remove("d-none");
         }
     });
+    $('#report-form').on('submit', function(e) {
+        e.preventDefault();
+        let _this = $(this)
+        let flag = true
+        if (!$('#display-type-table').hasClass('d-none')) {
+            $('#display-type-table').addClass('d-none')
+        }
+        if (!$('#pieChart').hasClass('d-none')) {
+            $('#pieChart').addClass('d-none')
+        }
+        const inputs = $('.input-after-choose');
+        const errorDiv = $('.err-msg');
+        if (!errorDiv.hasClass('d-none')) {
+            errorDiv.addClass('d-none')
+        }
+        inputs.each(function() {
+            if (!$(this).hasClass('d-none')) {
+                if ($(this).attr('name') == 'from' && $(this).val() > _this.find('[name=to]').val()) {
+                    const errorMessage = 'Ngày không hợp lệ';
+                    errorDiv.text(errorMessage).removeClass('d-none');
+                    flag = false
+                } else if (!$(this).val()) {
+                    const errorMessage = 'Vui lòng chọn phương thức thống kê';
+                    errorDiv.text(errorMessage).removeClass('d-none');
+                    flag = false
+                }
+            }
+        });
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/statistics',
+                data: _this.serializeArray(),
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        var {
+                            result
+                        } = JSON.parse(response)
+                        const typeReport = _this.find('[name=typeReport]').val()
+                        if (_this.find('[name=typeDisplay]').val() == 2) {
+                            var dataArray = [];
+                            result.forEach(item => {
+                                const {
+                                    color,
+                                    size,
+                                    title
+                                } = item
+                                dataArray.push({
+                                    value: typeReport == 1 ? item.soldQty : item.total,
+                                    name: title
+                                })
+                            })
+                            if ($('#pieChart').hasClass('d-none')) {
+                                $('#pieChart').removeClass('d-none')
+                            }
+                            echarts.init(document.querySelector("#pieChart")).setOption({
+                                title: {
+                                    text: `Thống kê theo ${typeReport == 1 ? 'số lượng bán ra' :
+                                            'doanh thu (đ)'}`,
+                                    left: 'center'
+                                },
+                                tooltip: {
+                                    trigger: 'item'
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    left: 'left',
+                                    top: 30
+                                },
+                                textStyle: {
+                                    fontFamily: 'Space Grotesk'
+                                },
+                                series: [{
+                                    name: 'Danh sách sản phẩm',
+                                    type: 'pie',
+                                    radius: '50%',
+                                    data: dataArray,
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }]
+                            });
+                        } else {
+                            if ($('#display-type-table').hasClass('d-none')) {
+                                $('#display-type-table').removeClass('d-none')
+                            }
+                            let _html = ''
+                            let summary = 0;
+                            result.forEach(item => {
+                                summary += (typeReport == 1) ? Number(item.soldQty) : Number(item.total)
+                                const {
+                                    color,
+                                    size,
+                                    title
+                                } = item
+                                _html += `
+                                    <tr>
+                                            <td>${title}</td>
+                                            <td>${typeReport == 1 ? item.soldQty : item.total+'đ'}</td>
+                                    </tr>
+                                `
+                            })
+                            $('#display-type-table').html(`
+                                <thead>
+                                        <th>Tên sản phẩm</th>
+                                        <th>${typeReport == 1 ? 'Số lượng bán' : 'Doanh số'}</th>
+                                    </thead>
+                                    <tbody>
+                                    ${_html}
+                                    <tr>
+                                    <td colspan='2' class="text-center">Tổng ${typeReport == 1 ? "số lượng: "+ summary.toLocaleString('en-US', priceFormatOption) : 'doanh thu: ' + summary.toLocaleString('en-US', priceFormatOption)+'đ'}</td></tr>
+                                    </tbody>
+                                `)
+                        }
+                    }
+                },
+            });
+        }
+
+    })
 </script>

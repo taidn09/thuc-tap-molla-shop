@@ -147,3 +147,163 @@
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    // submit checkout
+    $('#checkout-form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        let flag = true;
+        let min = 2
+        let max = 50
+        $('.err-msg').html('')
+        if (checkIsEmpty($(this).find('#fname').val())) {
+            $('.co-fname-err-msg').html('Please enter first name...')
+            flag = false
+        } else if (!checkName($(this).find('#fname').val(), min, max)) {
+            $('.co-fname-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+
+        if (checkIsEmpty($(this).find('#lname').val())) {
+            $('.co-lname-err-msg').html('Please enter last name...')
+            flag = false
+        } else if (!checkName($(this).find('#lname').val(), min, max)) {
+            $('.co-lname-err-msg').html(`Độ dài ${min} - ${max} ký tự, không chứa số...`)
+            flag = false
+        }
+
+        if (!checkEmail($(this).find('#email').val())) {
+            $('.co-email-err-msg').html('Email không hợp lệ...')
+            flag = false
+        }
+        if (!checkPhone($(this).find('#phone').val())) {
+            $('.co-phone-err-msg').html('Số điện thoại không hợp lệ...')
+            flag = false
+        }
+        if (checkIsEmpty($(this).find('#street').val())) {
+            $('.co-street-err-msg').html('Chưa nhập tên đường và số nhà...')
+            flag = false
+        }
+        if (flag) {
+            Swal.fire({
+                title: 'Đang xử lý, vui lòng đợi...!',
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+            $.ajax({
+                type: 'POST',
+                url: '/checkout/complete',
+                data: formData,
+                success: function(response) {
+                    checkUserValid(JSON.parse(response).status)
+                    if (response && JSON.parse(response).status == 1) {
+                        Swal.fire({
+                            ...successPopup,
+                            title: 'Thanh toán thành công!',
+                        })
+                        $('.checkout .container').html(`<a href="/" class="btn btn-outline-primary-2 btn-minwidth-lg d-block text-center">
+            			<span>Quay về trang chủ</span>
+            			<i class="icon-long-arrow-right"></i>
+            		</a>`);
+                        updateCartHeader(response)
+                    }
+                },
+            });
+        }
+
+    })
+    const defaultNumbers = ' hai ba bốn năm sáu bảy tám chín';
+    const chuHangDonVi = ('1 một' + defaultNumbers).split(' ');
+    const chuHangChuc = ('lẻ mười' + defaultNumbers).split(' ');
+    const chuHangTram = ('không một' + defaultNumbers).split(' ');
+
+    function convert_block_three(number) {
+        if (number == '000') return '';
+        var _a = number + ''; //Convert biến 'number' thành kiểu string
+
+        //Kiểm tra độ dài của khối
+        switch (_a.length) {
+            case 0:
+                return '';
+            case 1:
+                return chuHangDonVi[_a];
+            case 2:
+                return convert_block_two(_a);
+            case 3:
+                var chuc_dv = '';
+                if (_a.slice(1, 3) != '00') {
+                    chuc_dv = convert_block_two(_a.slice(1, 3));
+                }
+                var tram = chuHangTram[_a[0]];
+                if (tram !== 'không') {
+                    tram += ' trăm';
+                }
+                return tram + ' ' + chuc_dv;
+        }
+    }
+
+    function convert_block_two(number) {
+        var dv = chuHangDonVi[number[1]];
+        var chuc = chuHangChuc[number[0]];
+        var append = '';
+
+        // Nếu chữ số hàng đơn vị là 5
+        if (number[0] > 0 && number[1] == 5) {
+            dv = 'lăm';
+        }
+
+        // Nếu số hàng chục lớn hơn 1
+        if (number[0] > 1) {
+            append = ' mươi';
+            if (number[1] == 1) {
+                dv = ' mốt';
+            }
+        }
+
+        return chuc + '' + append + ' ' + dv;
+    }
+    const dvBlock = '1 nghìn triệu tỷ'.split(' ');
+
+    function to_vietnamese(number) {
+        var str = parseInt(number) + '';
+        var i = 0;
+        var arr = [];
+        var index = str.length;
+        var result = [];
+        var rsString = '';
+
+        if (index == 0 || str == 'NaN') {
+            return '';
+        }
+
+        // Chia chuỗi số thành một mảng từng khối có 3 chữ số
+        while (index >= 0) {
+            arr.push(str.substring(index, Math.max(index - 3, 0)));
+            index -= 3;
+        }
+
+        // Lặp từng khối trong mảng trên và convert từng khối đấy ra chữ Việt Nam
+        for (i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] != '' && arr[i] != '000') {
+                result.push(convert_block_three(arr[i]));
+
+                // Thêm đuôi của mỗi khối
+                if (dvBlock[i]) {
+                    result.push(dvBlock[i]);
+                }
+            }
+        }
+
+        // Join mảng kết quả lại thành chuỗi string
+        rsString = result.join(' ');
+
+        // Trả về kết quả kèm xóa những ký tự thừa
+        return rsString.replace(/[0-9]/g, '').replace(/ /g, ' ').replace(/ $/, '');
+    }
+    $(document).ready(function() {
+        let totalPrice = $('.total-price').text().split('đ')[0].replaceAll(',', '');
+        console.log(totalPrice);
+        $('.price-to-words').html('Bằng chữ: <b class="text-uppercase">' + to_vietnamese(totalPrice) + ' đồng</b>');
+    });
+</script>

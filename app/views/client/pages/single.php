@@ -39,9 +39,6 @@
                                 <button type="submit" class="btn"><i class="icon-search"></i><span class="sr-only">Tìm</span></button>
                             </form>
                         </div><!-- End .widget -->
-
-
-
                         <div class="widget">
                             <h3 class="widget-title">Tin tức mới nhất</h3><!-- End .widget-title -->
 

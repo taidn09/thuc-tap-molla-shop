@@ -30,7 +30,10 @@
 
                                 <div class="form-group">
                                     <label for="signin-password">Mật khẩu *</label>
-                                    <input type="password" class="form-control" id="signin-password" name="signin-password">
+                                    <div class="password-field">
+                                        <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                        <input type="password" class="form-control" id="signin-password" name="signin-password">
+                                    </div>
                                     <div class="login-pass-err-msg err-msg"></div>
                                 </div><!-- End .form-group -->
 
@@ -67,18 +70,24 @@
                             <form class="register-form" method="post">
                                 <div class="form-group">
                                     <label for="register-email">Email *</label>
-                                    <input type="email" class="form-control" id="register-email" name="register-email">
+                                    <input type="text" class="form-control" id="register-email" name="register-email">
                                     <div class="res-email-err-msg err-msg"></div>
                                 </div><!-- End .form-group -->
 
                                 <div class="form-group">
                                     <label for="register-password">Mật khẩu *</label>
-                                    <input type="password" class="form-control" id="register-password" name="register-password">
+                                    <div class="password-field">
+                                        <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                        <input type="password" class="form-control" id="register-password" name="register-password">
+                                    </div>
                                     <div class="res-pass-err-msg err-msg"></div>
                                 </div><!-- End .form-group -->
                                 <div class="form-group">
                                     <label for="register-cfpassword">Nhập lại mật khẩu *</label>
-                                    <input type="password" class="form-control" id="register-cfpassword" name="register-cfpassword">
+                                    <div class="password-field">
+                                        <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                        <input type="password" class="form-control" id="register-cfpassword" name="register-cfpassword">
+                                    </div>
                                     <div class="res-cfpass-err-msg err-msg"></div>
                                 </div><!-- End .form-group -->
                                 <div class="form-footer">
@@ -114,3 +123,4 @@
         </div><!-- End .container -->
     </div><!-- End .login-page section-bg -->
 </main><!-- End .main -->
+<script src="/public/assets/client/js/dev/auth.js"></script>

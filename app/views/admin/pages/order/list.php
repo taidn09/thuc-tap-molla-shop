@@ -10,9 +10,9 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th>Mã đơn hàng</th>
                             <th scope="col">Ngày đặt</th>
                             <th scope="col">Người nhận</th>
-                            <th scope="col">Email</th>
                             <th scope="col">Số điện thoại</th>
                             <th scope="col">Địa chỉ</th>
                             <th scope="col">Tổng tiền</th>
@@ -21,13 +21,13 @@
                     </thead>
                     <tbody class="order-table-body">
                         <?php
-                        foreach ($orders as $order) {
+                        foreach ($orders as $key=>$order) {
                         ?>
                             <tr>
+                                <td><?=$key+1?></td>
                                 <td><a href="/admin/order/detail/<?= $order['orderId'] ?>"><?= $order['orderId'] ?></a></td>
                                 <td><?= $order['orderDate'] ?></td>
                                 <td><?= $order['receiver'] ?></td>
-                                <td><?= $order['email'] ?></td>
                                 <td><?= $order['phone'] ?></td>
                                 <td style="max-width: 250px;">
                                     <p style=" word-wrap: break-word;
@@ -91,6 +91,7 @@
                         id: $(this).data('id')
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
                         }

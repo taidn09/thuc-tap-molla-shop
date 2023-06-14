@@ -56,7 +56,7 @@ class OrderModel
     }
     public function getOrderById($id)
     {
-        $select = "SELECT * FROM `orders` WHERE orderId = $id";
+        $select = "SELECT * FROM `orders` WHERE orderId = '$id'";
         return $this->db->getOne($select);
     }
     public function getOrderDetail($orderId)
@@ -77,6 +77,10 @@ class OrderModel
     public function cancel($orderId)
     {
         $query = "UPDATE `orders` SET `status` = 4 WHERE orderId = '$orderId'";
+        return $this->db->exec($query);
+    }
+    public function rated($orderId){
+        $query = "UPDATE `orders` SET `rated` = 1 WHERE orderId = '$orderId'";
         return $this->db->exec($query);
     }
     public function updateOrderStatus($orderId, $status)

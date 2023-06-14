@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/user" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -46,14 +47,20 @@
                                 <div class="col-4">
                                     <div class="form-group m-auto mt-2">
                                         <label for="title" class="form-label">Mật khẩu</label>
-                                        <input name="password" type="text" class="form-control" id="password" placeholder="" spellcheck="false" autocomplete="off" value="" />
+                                        <div class="password-field">
+                                            <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                            <input name="password" type="password" class="form-control" id="password" placeholder="" spellcheck="false" autocomplete="off" value="" />
+                                        </div>
                                         <div class="err-msg pass-err-msg"></div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group m-auto mt-2">
                                         <label for="title" class="form-label">Nhập lại mật khẩu</label>
-                                        <input name="cfpass" type="text" class="form-control" id="cfpass" placeholder="" spellcheck="false" autocomplete="off" value="" />
+                                        <div class="password-field">
+                                            <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                            <input name="cfpass" type="text" class="form-control" id="cfpass" placeholder="" spellcheck="false" autocomplete="off" value="" />
+                                        </div>
                                         <div class="err-msg cfpass-err-msg"></div>
                                     </div>
                                 </div>
@@ -93,7 +100,6 @@
                                 <button class="btn btn-custom btn-warning" style="min-width: 200px; padding: 6px 32px !important">
                                     Chỉnh sửa
                                 </button>
-                                <a href="/admin/user" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                             </div>
                         </form>
 
@@ -158,6 +164,7 @@
                 url: '/admin/user/edit',
                 data: formData,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         window.location = '/admin/user'
                     } else {

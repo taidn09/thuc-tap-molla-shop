@@ -85,6 +85,7 @@
                         id: btn.data('id')
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
                         }

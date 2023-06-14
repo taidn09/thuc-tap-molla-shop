@@ -15,7 +15,7 @@
                                 <form id="product-form" action="/admin/product/edit" method="post" class="mx-auto">
                                     <div class="row">
                                         <div class="col-6">
-                                            <input type="hidden" name="id" value="<?= $product['productId'] ?>">
+                                            <input type="hidden" name="id" value="<?= $product['productId'] ?>" id="id">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="title" class="form-label">Tên sản phẩm</label>
                                                 <input name="title" type="text" class="form-control" id="title" placeholder="Nhập tên sản phẩm..." spellcheck="false" autocomplete="off" value="<?= $product['title'] ?>" />
@@ -25,14 +25,14 @@
                                         <div class="col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="originalPrice" class="form-label">Giá</label>
-                                                <input name="originalPrice" type="text" class="form-control" id="originalPrice" placeholder="Nhập tên sản phẩm..." spellcheck="false" autocomplete="off" value="<?= $product['originalPrice'] ?>" />
+                                                <input name="originalPrice" type="text" class="form-control form-number" id="originalPrice" placeholder="Nhập tên sản phẩm..." spellcheck="false" autocomplete="off" value="<?= $product['originalPrice'] ?>" />
                                                 <div class="err-msg originalPrice-err-msg"></div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="salePercent" class="form-label">Giảm giá (%)</label>
-                                                <input name="salePercent" type="text" class="form-control" id="salePercent" placeholder="Giả giá..." spellcheck="false" autocomplete="off" value="<?= $product['salePercent'] ?>" />
+                                                <input name="salePercent" type="text" class="form-control form-number" id="salePercent" placeholder="Giả giá..." spellcheck="false" autocomplete="off" value="<?= $product['salePercent'] ?>" />
                                                 <div class="err-msg salePercent-err-msg"></div>
                                             </div>
                                         </div>
@@ -86,14 +86,14 @@
                                     <div class="col-6">
                                         <div class="form-group m-auto mt-2">
                                             <label for="originalPrice" class="form-label">Giá</label>
-                                            <input name="originalPrice" type="text" class="form-control" id="originalPrice" placeholder="Nhập giá sản phẩm..." spellcheck="false" autocomplete="off" />
+                                            <input name="originalPrice" type="text" class="form-control form-number" id="originalPrice" placeholder="Nhập giá sản phẩm..." spellcheck="false" autocomplete="off" />
                                             <div class="err-msg originalPrice-err-msg"></div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group m-auto mt-2">
                                             <label for="salePercent" class="form-label">Giảm giá (%)</label>
-                                            <input name="salePercent" type="text" class="form-control" id="salePercent" placeholder="Giả giá..." spellcheck="false" autocomplete="off" />
+                                            <input name="salePercent" type="text" class="form-control form-number" id="salePercent" placeholder="Giả giá..." spellcheck="false" autocomplete="off" />
                                             <div class="err-msg salePercent-err-msg"></div>
                                         </div>
                                     </div>
@@ -149,6 +149,9 @@
     });
     $('#product-form').on('submit', function(e) {
         e.preventDefault()
+        $('.form-number').each(function() {
+            unFormatInputNumber(this)
+        });
         let flag = true
         let salePercent = $('#salePercent').val().trim()
         let originalPrice = $('#originalPrice').val().trim()
@@ -172,22 +175,26 @@
             flag = false
         }
         if (flag) {
+            var action = $(this).attr('action')
             var formData = new FormData();
+            if (action.includes('/edit')) {
+                formData.append('id', $('#id').val());
+            }
             formData.append('title', title);
             formData.append('originalPrice', originalPrice);
             formData.append('salePercent', salePercent);
             formData.append('desc', tinymce.activeEditor.getContent().trim());
             formData.append('categoryId', categoryId);
-            var action = $(this).attr('action')
             console.log(action);
             console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: action,
                 data: formData,
-                processData:false,
+                processData: false,
                 contentType: false,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         window.location = '/admin/product'
                     } else {

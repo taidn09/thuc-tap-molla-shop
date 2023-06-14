@@ -57,6 +57,7 @@
                                 <div class="ratings">
                                     <div class="ratings-val" style="width: <?= ($product['rating'] / 5) * 100 ?>%"></div><!-- End .ratings-val -->
                                 </div><!-- End .ratings -->
+                                <a href="#" class="ml-1">Số lượt xem: <?= $product['views'] ?></a>
                                 <a class="ratings-text review-count" href="#product-review-link" id="review-link">Đánh giá (<?= $product['reviewCount'] ?>)</a>
                             </div><!-- End .rating-container -->
 
@@ -105,7 +106,7 @@
                                 <div class="product-details-quantity">
                                     <input type="number" id="qty" class="form-control" value="1" min="1" max="<?= explode(',', $colors[0]['quantities'])[0] ?>" step="1" data-decimals="0" required>
                                 </div><!-- End .product-details-quantity -->
-                                <p class="left-quantity ml-5">Sản phẩm còn lại: <?= explode(',', $colors[0]['quantities'])[0] ?></p>
+                                <p class="left-quantity ml-5">Sản phẩm còn lại: <?= number_format(explode(',', $colors[0]['quantities'])[0]) ?></p>
                             </div><!-- End .details-filter-row -->
 
                             <div class="product-details-action">
@@ -113,7 +114,7 @@
                                     <a href="javascript:void(0)" class="btn-product btn-cart" onclick="addToCartDetail('<?= $product['productId'] ?>')"><span>Thêm vào giỏ hàng</span></a>
                                 <?php endif ?>
                                 <div class="details-action-wrapper">
-                                    <a href="javascript:void(0)" class="btn-product btn-wishlist" title="Wishlist" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                    <a href="javascript:void(0)" class="btn-product btn-wishlist" title="Wishlist" data-productid="<?= $product['productId'] ?>"><span>Thêm vào danh sách yêu thích</span></a>
                                 </div><!-- End .details-action-wrapper -->
                             </div><!-- End .product-details-action -->
 
@@ -175,7 +176,7 @@
                     <div class="tab-pane show active fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
                         <div class="reviews">
                             <h3 class="review-count">Đánh giá (<?= $product['reviewCount'] ?>)</h3>
-                            <div class="reviews-wrapper" style="max-height: 500px; overflow-y: auto;">
+                            <div class="reviews-wrapper">
                                 <?php
                                 $target = new DateTime('now');
                                 if (count($reviews) > 0) {
@@ -195,10 +196,10 @@
                                                     <span class="review-date"><?= $reviewDateDiff == 0 ? 'Hôm nay' : $reviewDateDiff . ' ngày trước' ?></span>
                                                 </div><!-- End .col -->
                                                 <div class="col">
-                                                    <h4><?= $review['title'] ?></h4>
+                                                    <h4><?= $review['title'] ? $review['title'] : 'Không có tiêu đề' ?></h4>
 
                                                     <div class="review-content">
-                                                        <p><?= $review['content'] ?></p>
+                                                        <p><?= $review['content'] ? $review['content']  : 'Không có nội dung'  ?></p>
                                                     </div><!-- End .review-content -->
 
                                                     <div class="review-action">
@@ -209,46 +210,44 @@
                                             </div><!-- End .row -->
                                         </div><!-- End .review -->
                                     <?php }
-                                } else { ?>
-                                    <p>Sản phẩm này chưa có lượt đánh giá nào</p>
-                                <?php } ?>
+                                    ?>
                             </div>
-                            <?php
-                            if (!empty($_SESSION['user'])) {
-                            ?>
-                                <h2 class="mt-3">Đánh giá sản phẩm</h2>
-
-                                <form action="/product/addReview" id="review-form" method="POST">
-                                    <span class="mr-3">Số sao:</span>
-                                    <span>
-                                        <i class="bi bi-star-fill star" data-value="1"></i>
-                                        <i class="bi bi-star-fill star" data-value="2"></i>
-                                        <i class="bi bi-star-fill star" data-value="3"></i>
-                                        <i class="bi bi-star-fill star" data-value="4"></i>
-                                        <i class="bi bi-star-fill star" data-value="5"></i>
-                                    </span>
-                                    <input type="hidden" name="stars" id="stars" value="">
-                                    <input type="hidden" name="productId" id="productId" value="<?= $product['productId'] ?>">
-                                    <div class="err-msg stars-err-msg text-left"></div>
-                                    <div class="form-group">
-                                        <label for="title">Tiêu đề đánh giá</label>
-                                        <input type="text" class="form-control" id="title" name="title">
-                                        <div class="err-msg title-err-msg text-left"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="content">Nội dung đánh giá</label>
-                                        <textarea type="text" class="form-control" id="content" name="content"></textarea>
-                                        <div class="err-msg content-err-msg text-left"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-outline-primary">Gửi đánh giá</button>
-                                    </div>
-                                </form>
-                            <?php } else { ?>
-                                <p><a href="/auth">Đăng nhập</a> để có thể đánh giá sản phẩm</p>
-                            <?php } ?>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center paginate-shop">
+                                    <li class="page-item <?= $currentPage < 4 ? 'disabled' : '' ?>">
+                                        <a data-productid="<?= $product['productId'] ?>" class="page-link page-link-prev" href="#1" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                            <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Trang đầu
+                                        </a>
+                                    </li>
+                                    <?php
+                                    for ($i = 1; $i <= $totalPage; $i++) {
+                                        if ($currentPage != $i) {
+                                            if ($i >  $currentPage - 3  &&  $i < $currentPage + 3) :
+                                    ?>
+                                                <li class="page-item" aria-current="page"><a class="page-link" data-productid="<?= $product['productId'] ?>" href="#<?= $i ?>"><?= $i ?></a></li>
+                                            <?php
+                                            endif;
+                                        } else {
+                                            ?>
+                                            <li class="page-item active" aria-current="page"><a class="page-link" data-productid="<?= $product['productId'] ?>" href="#<?= $i ?>"><?= $i ?></a></li>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                    <li class="page-item-total">of <?= $totalPage ?></li>
+                                    <li class="page-item <?= $currentPage > $totalPage - 3  ? 'disabled' : '' ?>">
+                                        <a class="page-link page-link-next" data-productid="<?= $product['productId'] ?>" href="#<?= $totalPage ?>" aria-label="Next">
+                                            Trang cuối <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        <?php } else { ?>
+                            <p>Sản phẩm này chưa có lượt đánh giá nào</p>
+                        <?php } ?>
 
                         </div><!-- End .reviews -->
+
                     </div><!-- .End .tab-pane -->
                 </div><!-- End .tab-content -->
             </div><!-- End .product-details-tab -->
@@ -292,7 +291,7 @@
                             </a>
 
                             <div class="product-action-vertical">
-                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?=$product['productId']?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" data-productid="<?= $product['productId'] ?>" ><span>Thêm vào danh sách yêu thích</span></a>
                                 <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a> -->
                             </div><!-- End .product-action-vertical -->
 
@@ -307,7 +306,7 @@
                             </div><!-- End .product-cat -->
                             <h3 class="product-title"><a href="#"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                             <div class="product-price">
-                                <?= $product['currentPrice'] ?>đ
+                                <?= $product['currentPrice'] ?>đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;"><?= number_format($product['originalPrice']) ?>đ</span>
                             </div><!-- End .product-price -->
                             <div class="ratings-container">
                                 <div class="ratings">
@@ -324,3 +323,133 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    // chọn màu trang chi tiết 
+    $('.circle3').on('click', function() {
+        var productId = $(this).data('product-id');
+        var color = $(this).data('color');
+        $(this).siblings('.circle3').removeClass('active');
+        $(this).addClass('active');
+        $('input[type="hidden"][data-product-id="' + productId + '"]').val($(this).data('color'));
+        $('.size-select option').addClass('d-none')
+        $('.size-select option[data-color="' + color + '"]').removeClass('d-none')
+        $('.size-select').val($('.size-select option').not('.d-none')[0].value)
+        let leftQty = $('.size-select option').not('.d-none').data('quantity');
+        $('.left-quantity').html(`Sản phẩm còn lại: ${leftQty}`)
+        $('#qty').attr('max', leftQty)
+        if (leftQty == 0) {
+            $('.product-details-action').html(`<div class="details-action-wrapper">
+                                    <a href="#" class="btn-product btn-wishlist" title="Wishlist" data-productid="${productId}"><span>Thêm vào danh sách yêu thích</span></a>
+                                </div>`)
+        } else {
+            $('.product-details-action').html(`
+                <a href="javascript:void(0)" class="btn-product btn-cart" onclick="addToCartDetail('${productId}')"><span>Thêm vào giỏ hàng</span></a>
+                <div class="details-action-wrapper">
+                                    <a href="#" class="btn-product btn-wishlist" title="Wishlist" data-productid="${productId}"><span>Thêm vào danh sách yêu thích</span></a>
+                                </div>`)
+        }
+        console.log($('.size-select option').not('.d-none')[0].dataset.quantity);
+    });
+    $('.size-select').on('change', function() {
+        const quantity = $('.size-select option:selected').data('quantity')
+        $('.left-quantity').html(`Sản phẩm còn lại: ${Number(quantity).toLocaleString()}`)
+        $('#qty').attr('max', quantity)
+    })
+    function updateReview(response) {
+        const {
+            reviews,
+            totalReviewFound,
+            totalPage,
+            currentPage,
+            productId
+        } = JSON.parse(response)
+        let reviewsHTML = ''
+        if (reviews) {
+            for (const key in reviews) {
+                const {fname,lname,email,star,content,title,reviewTime} = reviews[key]
+                var time = new Date(reviewTime);
+                var currentTime = new Date();
+                var timeDifference = currentTime - time;
+                var seconds = Math.floor(timeDifference / 1000);
+                var minutes = Math.floor(seconds / 60);
+                var hours = Math.floor(minutes / 60);
+                var days = Math.floor(hours / 24);
+                reviewsHTML += `
+                    <div class="review">
+                                <div class="row no-gutters">
+                                    <div class="col-auto" style="width: 220px">
+                                        <h4><a href="#">${fname ? fname + ' ' + lname : email}</a></h4>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: ${star*100/5}%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                        </div><!-- End .rating-container -->
+                                        <span class="review-date">${days == 0 ? 'Hôm nay' : `${days} ngày trước`}</span>
+                                    </div><!-- End .col -->
+                                    <div class="col">
+                                        <h4>${title ? title : 'Không có tiêu đề'}</h4>
+
+                                        <div class="review-content">
+                                            <p>${content ? content: 'Không có nội dung'}</p>
+                                        </div><!-- End .review-content -->
+
+                                        <div class="review-action">
+                                            <a href="#"><i class="icon-thumbs-up"></i>Hữu ích (0)</a>
+                                            <a href="#"><i class="icon-thumbs-down"></i>Không hữu ích (0)</a>
+                                        </div><!-- End .review-action -->
+                                    </div><!-- End .col-auto -->
+                                </div><!-- End .row -->
+                            </div><!-- End .review -->
+                    `
+            }
+        }
+        $('.reviews-wrapper').html(reviewsHTML)
+        $('.review-count').html(`Đánh giá (${totalReviewFound})`)
+
+
+
+        let paginateHTML = `<li class="page-item ${currentPage < 4 ? 'disabled' : ''}">
+                                        <a data-productid="${productId}" class="page-link page-link-prev" href="#1" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                            <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Trang đầu
+                                        </a>
+                                    </li>`
+        for (let index = 1; index <= totalPage; index++) {
+            let isAcitve = index == currentPage ? 'active' : ''
+            if (index > (Number(currentPage) - 3) && index < (Number(currentPage) + 3)) {
+                paginateHTML += `<li class="page-item ${isAcitve}" aria-current="page"><a data-productid="${productId}" class="page-link" href="#${index}">${index}</a></li>`
+            }
+        }
+        paginateHTML += `
+            <li class="page-item-total">of ${totalPage}</li>
+            <li class="page-item ${currentPage > totalPage - 3  ? 'disabled' : ''}">
+                                        <a class="page-link page-link-next" data-productid="${productId}" href="#${totalPage}" aria-label="Next">
+                                            Trang cuối <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                        </a>
+                                    </li>`
+        $('.paginate-shop').html(paginateHTML)
+    }
+    $(document).on('click', '.page-item a', function(e) {
+        e.preventDefault()
+        if (!$(this).parent().hasClass('active')) {
+            $(this).parent().siblings().removeClass('active')
+            $(this).parent().addClass('active')
+        }
+        let page = $('.page-item.active a').attr('href').split('')[1];
+        let id = $('.page-item.active a').data('productid');
+        $.ajax({
+            type: 'POST',
+            url: '/product/paginateReviews',
+            data: {page,id},
+            success: function(response) {
+                if (response && JSON.parse(response).status == 1) {
+                    updateReview(response)
+                }
+            },
+        });
+    })
+    // add to cart - product detail page
+    function addToCartDetail(id) {
+        console.log(id, $('#qty').val(), $('.size-select').val(), $('.colorSelected').val());
+        addToCart(Number(id), Number($('#qty').val()), $('.size-select').val(), $('.colorSelected').val())
+    }
+</script>

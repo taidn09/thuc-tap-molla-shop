@@ -16,6 +16,7 @@ class Checkout extends Controller
     public function complete()
     {
         if (!empty($_POST)) {
+            $this->checkUserValid();
             $userId = $_SESSION['user']['userId'];
             $receiver = trim($_POST['fname'], '') . ' ' . trim($_POST['lname'], '');
             $email = trim($_POST['email'], '');

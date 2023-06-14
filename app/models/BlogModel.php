@@ -42,22 +42,22 @@ class BlogModel
         }
         return $this->db->getOne($select);
     }
-    public function addBlog($title, $authorId, $content, $thumbnail, $shortDesc)
+    public function addBlog($title, $authorId, $content, $thumbnail, $shortDesc, $blogCateId)
     {
         $createAt = date('Y-m-d H:i:s');
-        $query = "INSERT INTO `blogs`(`title`,`createdAt`, `authorId`, `content`, `thumbnail`, `shortDesc`) VALUES ('$title','$createAt','$authorId','$content','$thumbnail','$shortDesc')";
+        $query = "INSERT INTO `blogs`(`title`,`createdAt`, `authorId`, `content`, `thumbnail`, `shortDesc`, `blogCateId`) VALUES ('$title','$createAt','$authorId','$content','$thumbnail','$shortDesc', '$blogCateId')";
         return $this->db->exec($query);
     }
-    public function updateBlog($id, $title, $createAt, $authorId, $content, $thumbnail, $shortDesc)
+    public function updateBlog($id, $title, $createAt, $authorId, $content, $thumbnail, $shortDesc, $blogCateId)
     {
         if ($thumbnail) {
             $link = 'public/assets/images/blog/' . $this->getBlogImage($id)['thumbnail'];
             if (file_exists($link)) {
                 unlink($link);
             }
-            $query = "UPDATE `blogs` SET `title`='$title',`createdAt`='$createAt',`authorId`='$authorId',`content`='$content',`thumbnail`='$thumbnail', `shortDesc` = '$shortDesc' WHERE blogId = $id";
+            $query = "UPDATE `blogs` SET `title`='$title',`createdAt`='$createAt',`authorId`='$authorId',`content`='$content',`thumbnail`='$thumbnail', `shortDesc` = '$shortDesc',`blogCateId` = '$blogCateId' WHERE blogId = $id";
         } else {
-            $query = "UPDATE `blogs` SET `title`='$title',`createdAt`='$createAt',`authorId`='$authorId',`content`='$content', `shortDesc` ='$shortDesc' WHERE blogId = $id";
+            $query = "UPDATE `blogs` SET `title`='$title',`createdAt`='$createAt',`authorId`='$authorId',`content`='$content', `shortDesc` ='$shortDesc',`blogCateId` = '$blogCateId' WHERE blogId = $id";
         }
         return $this->db->exec($query);
     }
@@ -89,5 +89,28 @@ class BlogModel
     {
         $select = "SELECT blogId FROM blogs WHERE blogId > $currentId AND isShown != 0 ORDER BY blogId ASC LIMIT 1";
         return $this->db->getOne($select);
+    }
+    public function filterAdmin($filterArr){
+        $select = "SELECT * FROM blogs";
+        $where = "";
+        if (!empty($filterArr['catesFilter']) && !in_array('all', $filterArr['catesFilter'])) {
+            $where = " WHERE ";
+            $where .= 'blogCateId IN (' . implode(',', $filterArr['catesFilter']) . ') ';
+        }
+        $where.= " ORDER BY createdAt DESC";
+        $select= $select.$where;
+        return $this->db->getAll($select);
+    }
+    public function filterClient($filterArr){
+        $select = "SELECT * FROM blogs";
+        $where = "";
+        if (!empty($filterArr['catesFilter']) && !in_array('all', $filterArr['catesFilter'])) {
+            $where = " WHERE ";
+            $where .= 'blogCateId IN (' . implode(',', $filterArr['catesFilter']) . ') ';
+        }
+        $where.= " ORDER BY createdAt DESC";
+        $select= $select.$where;
+        // echo $select;
+        return $this->db->getAll($select);
     }
 }

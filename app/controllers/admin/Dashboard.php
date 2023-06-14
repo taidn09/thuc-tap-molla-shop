@@ -18,17 +18,6 @@ class Dashboard extends Controller
             $res = $adminModel->login($email, $password);
             if (!empty($res)) {
                 $_SESSION['admin'] = $res;
-                $roles = $adminModel->getRoles($_SESSION['admin']['adminId']);
-                $values_array = array();
-                foreach ($roles as $item) {
-                    $values_array[] = $item['roleString'];
-                }
-                // array_push($values_array,'dashboard');
-                if (!empty($values_array) && is_array($values_array)) {
-                    $_SESSION['admin']['roles'] = $values_array;
-                } else {
-                    $_SESSION['admin']['roles'] = array();
-                }
                 echo json_encode([
                     'status' => 1
                 ]);

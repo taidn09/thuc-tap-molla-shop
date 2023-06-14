@@ -26,6 +26,7 @@ class Cart extends Controller
         if ($this->checkUserLogin()) {
             $this->initCart();
             if (!empty($_POST)) {
+                $this->checkUserValid();
                 $id = $_POST['id'];
                 $quantity = $_POST['quantity'];
                 $size = $_POST['size'];
@@ -51,6 +52,7 @@ class Cart extends Controller
                         'id' => $product['productId'],
                         'title' => $product['title'],
                         'currentPrice' => $product['currentPrice'],
+                        'originalPrice' => $product['originalPrice'],
                         'image' => $product['image'],
                         'quantity' => $quantity,
                         'colorSelected' => $color,
@@ -61,7 +63,7 @@ class Cart extends Controller
                     $_SESSION['cart'][] = $hardData;
                 }
                 $result = [
-                    'loginStatus' => $this->checkUserLogin(),
+                    'status' => $this->checkUserLogin(),
                     'cart' => $_SESSION['cart'],
                     'total' => $this->getTotalAmount(),
                     'totalQuantity' => $this->getTotalQuantity()
@@ -71,7 +73,7 @@ class Cart extends Controller
             }
         }
         $result = [
-            'loginStatus' => $this->checkUserLogin(),
+            'status' => $this->checkUserLogin(),
         ];
         echo json_encode($result);
         return;
@@ -79,6 +81,7 @@ class Cart extends Controller
     public function update()
     {
         if (!empty($_SESSION['cart'])) {
+            $this->checkUserValid();
             $sizes = $_POST['sizeSelected'];
             $colors = $_POST['colorSelected'];
             $quantities = $_POST['quantity'];
@@ -119,6 +122,7 @@ class Cart extends Controller
     {
         if (!empty($_SESSION['cart'])) {
             if (!empty($_POST)) {
+                $this->checkUserValid();
                 $id = $_POST['id'];
                 $size = $_POST['size'];
                 $color = $_POST['color'];
@@ -140,6 +144,7 @@ class Cart extends Controller
     }
     public function clear()
     {
+        $this->checkUserValid();
         if (!empty($_SESSION['cart'])) {
             unset($_SESSION['cart']);
             if (!empty($_SESSION['cart-total-amount'])) {
@@ -149,6 +154,7 @@ class Cart extends Controller
                 unset($_SESSION['cart-total-quantity']);
             }
             $result = [
+                'status' => 1,
                 'cart' => array(),
                 'total' => $this->getTotalAmount(),
                 'totalQuantity' => $this->getTotalQuantity()
@@ -156,7 +162,7 @@ class Cart extends Controller
             echo json_encode($result);
             return;
         }
-        echo json_encode('failed');
+        echo json_encode(['status' => 0]);
         return;
     }
     public function getTotalAmount()

@@ -49,13 +49,17 @@
                                     <?php
                                     if ($this->checkRole('review-delete')) :
                                     ?>
-                                        <a class="btn btn-danger btn-custom" onclick="deleteReview('<?= $review['reviewId'] ?>');" href="javascript:void(0)"><i class="bi bi-trash"></i></a>
+                                        <div>
+                                            <a class="btn btn-danger btn-custom delete-btn" data-id="<?= $review['reviewId'] ?>" href="javascript:void(0)">Xóa</a>
+                                        </div>
                                     <?php endif; ?>
                                     <?php
                                     if ($this->checkRole('review-edit')) :
                                     ?>
-                                        <a href="/admin/review/edit/<?= $review['reviewId'] ?>" class="btn btn-warning btn-custom"><i class="bi bi-pen"></i>
-                                        </a>
+                                        <div>
+                                            <a href="/admin/review/edit/<?= $review['reviewId'] ?>" class="btn btn-warning btn-custom">Chỉnh sửa</i>
+                                            </a>
+                                        </div>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -69,4 +73,29 @@
     <!-- End Recent Sales -->
 </main>
 
+
+<script>
+    $(document).on('click', '.delete-btn', function() {
+        let btn = $(this)
+        Swal.fire({
+            ...confirmPopup,
+            title: 'Xóa đánh giá này ?'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/admin/review/delete`,
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
+                        if (response && JSON.parse(response).status == 1) {
+                            $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
+                        }
+                    },
+                });
+            }
+        })
+    })
 </script>

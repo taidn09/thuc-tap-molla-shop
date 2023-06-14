@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/category" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -23,7 +24,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Sửa danh mục
                                         </button>
-                                        <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             <?php } ?>
@@ -42,7 +42,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Thêm danh mục
                                         </button>
-                                        <a href="/admin/category" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>
@@ -70,6 +69,7 @@
                 url: action,
                 data: formData,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         window.location = "/admin/category"
                     } else {

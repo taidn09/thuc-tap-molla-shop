@@ -7,20 +7,21 @@ class StatisticsModel
         $this->db = new Connection();
     }
     public function ReportByMonth($month, $year, $type = 1)
-    {
+    {   
         if ($type == 1) {
-            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and month(orderDate) = $month and year(orderDate) = $year GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and month(orderDate) = $month and year(orderDate) = $year AND b.returned = 0 GROUP BY a.title";
         } else {
-            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and month(orderDate) = $month and year(orderDate) = $year GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and month(orderDate) = $month and year(orderDate) = $year AND b.returned = 0 GROUP BY a.title";
         }
+        // echo $select;
         return $this->db->getAll($select);
     }
     public function ReportByDay($day, $month, $year, $type = 1)
     {
         if ($type == 1) {
-            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and day(orderDate) = $day and month(orderDate) = $month and year(orderDate) = $year GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and day(orderDate) = $day and month(orderDate) = $month and year(orderDate) = $year AND b.returned = 0 GROUP BY a.title";
         } else {
-            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and day(orderDate) = $day and month(orderDate) = $month and year(orderDate) = $year GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId and day(orderDate) = $day and month(orderDate) = $month and year(orderDate) = $year AND b.returned = 0 GROUP BY a.title";
         }
         return $this->db->getAll($select);
     }
@@ -62,11 +63,10 @@ class StatisticsModel
     }
     public function ReportFormTo($startDate, $endDate, $type = 1)
     {
-        // c.orderDate >= '$startDate' AND c.orderDate <= '$endDate
         if ($type == 1) {
-            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId AND c.orderDate >= '$startDate' AND c.orderDate <= '$endDate' GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.quantity) as soldQty, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId AND c.orderDate >= '$startDate' AND c.orderDate <= '$endDate' AND b.returned = 0 GROUP BY a.title";
         } else {
-            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId AND c.orderDate >= '$startDate' AND c.orderDate <= '$endDate' GROUP BY a.title";
+            $select = "SELECT a.title, SUM(b.total) as total, d.size, d.color FROM products as a, order_details as b, orders as c, product_options as d WHERE a.productId = b.productId and c.orderId = b.orderId AND d.optionId = b.optionId AND c.orderDate >= '$startDate' AND c.orderDate <= '$endDate' AND b.returned = 0 GROUP BY a.title";
         }
         return $this->db->getAll($select);
     }

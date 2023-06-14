@@ -30,6 +30,7 @@
         public function edit($id = null)
         {
             if (!empty($_POST['id'])) {
+                $this->checkRolePost('order-edit');
                 $orderId = $_POST['id'];
                 $orderDate = $_POST['orderDate'];
                 $receiver = $_POST['receiver'];
@@ -74,6 +75,7 @@
         public function delete()
         {
             if (!empty($_POST['id'])) {
+                $this->checkRolePost('order-delete');
                 $id = $_POST['id'];
                 $res = $this->model->deleteOrder($id);
                 if (!empty($res)) {

@@ -16,31 +16,26 @@ class Wishlist extends Controller
             $this->data['content'] = 'client/pages/wishlist';
             $this->render('layouts/client', $this->data);
         } else {
-            header('location: /');
+            header('location: /auth');
         }
     }
     public function add()
     {
         if (!empty($_SESSION['user'])) {
             if (!empty($_POST)) {
+                $this->checkUserValid();
                 $userId = $_SESSION['user']['userId'];
                 $productId = $_POST['productId'];
                 $existed = $this->model->existed($userId, $productId);
                 if (!empty($existed)) {
-                    echo json_encode([
-                        'status' => 0,
-                        'errMsg' => 'Sản phẩm đã tồn tại trong danh sách yêu thích!'
-                    ]);
-                    return;
+                    $this->model->delete($userId, $productId);
                 } else {
-                    $res = $this->model->add($userId, $productId);
-                    if (!empty($res)) {
-                        echo json_encode([
-                            'status' => 1
-                        ]);
-                        return;
-                    }
+                    $this->model->add($userId, $productId);
                 }
+                echo json_encode([
+                    'status' => 1
+                ]);
+                return;
             }
         }
         echo json_encode([
@@ -52,6 +47,7 @@ class Wishlist extends Controller
     public function delete()
     {
         if (!empty($_POST)) {
+            $this->checkUserValid();
             $userId = $_SESSION['user']['userId'];
             $res = $this->model->delete($userId, $_POST['productId']);
             $wishlist = $this->model->show($userId);
@@ -80,16 +76,19 @@ class Wishlist extends Controller
     }
     public function deleteAll()
     {
-        $userId = $_SESSION['user']['userId'];
-        $res = $this->model->deleteAll($userId);
-        $wishlist = $this->model->show($userId);
-        if (!empty($res)) {
-            echo json_encode([
-                'status' => 1,
-                'total' => $this->model->total($userId)['total'],
-                'wishlist' => $wishlist
-            ]);
-            return;
+        $this->checkUserValid();
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $userId = $_SESSION['user']['userId'];
+            $res = $this->model->deleteAll($userId);
+            $wishlist = $this->model->show($userId);
+            if (!empty($res)) {
+                echo json_encode([
+                    'status' => 1,
+                    'total' => $this->model->total($userId)['total'],
+                    'wishlist' => $wishlist
+                ]);
+                return;
+            }
         }
         echo json_encode([
             'status' => 0
@@ -101,7 +100,7 @@ class Wishlist extends Controller
         if (!empty($_SESSION['user'])) {
             $userId = $_SESSION['user']['userId'];
             $total = $this->model->total($userId)['total'];
-            if (!empty($total)) {
+            if ($total !== false) {
                 echo json_encode([
                     'status' => 1,
                     'total' => $total

@@ -16047,7 +16047,7 @@ button:focus {
 }
 
 .table .price-col {
-    width: 180px;
+    width: 250px;
     color: #333;
     font-weight: 400;
     font-size: 1.6rem
@@ -16298,7 +16298,7 @@ button:focus {
 }
 
 .table.table-cart .price-col {
-    width: 120px
+    width: 250px
 }
 
 .table.table-cart .total-col {
@@ -19889,88 +19889,3 @@ button:focus {
 .icon-yarn:before {
     content: '\f7e3'
 }
-
-.star {
-    cursor: pointer;
-}
-
-.star.yellow {
-    color: gold;
-}
-
-.err-msg {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-}
-
-.circle,
-.circle2 {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 3px;
-    cursor: pointer;
-    position: relative;
-    transition: 0.2s;
-    border: 1px solid
-}
-
-.circle2.active::before {
-    font-family: 'molla';
-    position: absolute;
-    content: "\ec2d";
-    color: #fff;
-    top: 50%;
-    left: 50%;
-    transform:translate(-50%,-50%);
-    border-radius: inherit;
-    border-radius: 50%;
-    font-size: 12px;
-}
-
-.circle2.white.active::before {
-    color: #000;
-}
-
-/* width */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 2px grey;
-    border-radius: 3px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #666;
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
-
-.thick-line-through {
-    position: relative;
-    text-decoration: none;
-}
-
-.thick-line-through::after {
-    content: "";
-    position: absolute;
-    bottom: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    /* adjust the thickness as needed */
-    background-color: gray;
-    /* adjust the color as needed */
-}
-/*# sourceMappingURL=style.css.map */

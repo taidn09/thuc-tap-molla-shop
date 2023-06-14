@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a class="btn btn-custom btn-primary mb-3" href="javascript:void(0)" onclick="window.history.back()" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -45,7 +46,7 @@
                                         <div class="col-4">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="quantity" class="form-label">Số lượng</label>
-                                                <input name="quantity" type="text" class="form-control" id="quantity" placeholder="Nhập số lượng..." spellcheck="false" autocomplete="off" value="<?= $option['quantity'] ?>" />
+                                                <input name="quantity" type="text" class="form-control form-number" id="quantity" placeholder="Nhập số lượng..." spellcheck="false" autocomplete="off" value="<?= $option['quantity'] ?>" />
                                                 <div class="err-msg quantity-err-msg"></div>
                                             </div>
                                         </div>
@@ -57,7 +58,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Chỉnh sửa thuộc tính
                                         </button>
-                                        <a class="btn btn-custom btn-primary" href="javascript:void(0)" onclick="window.history.back()" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>
@@ -98,7 +98,7 @@
                                     <div class="col-4">
                                         <div class="form-group m-auto mt-2">
                                             <label for="quantity" class="form-label">Số lượng</label>
-                                            <input name="quantity" type="text" class="form-control" id="quantity" placeholder="Nhập số lượng..." spellcheck="false" autocomplete="off" value="<?= !empty($_POST['quantity']) ? $_POST['quantity'] : 0 ?>" />
+                                            <input name="quantity" type="text" class="form-control form-number" id="quantity" placeholder="Nhập số lượng..." spellcheck="false" autocomplete="off" value="<?= !empty($_POST['quantity']) ? $_POST['quantity'] : 0 ?>" />
                                             <div class="err-msg quantity-err-msg"></div>
                                         </div>
                                     </div>
@@ -110,7 +110,6 @@
                                     <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                         Thêm thuộc tính
                                     </button>
-                                    <a class="btn btn-custom btn-primary" href="javascript:void(0)" onclick="window.history.back()" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                 </div>
                             </form>
                         </div>
@@ -126,6 +125,9 @@
 <script>
     $('#option-form').on('submit', function(e) {
         e.preventDefault();
+        $('.form-number').each(function() {
+            unFormatInputNumber(this)
+        });
         $('err-msg').html('')
         let flag = true
         let qty = $(this).find('#quantity').val().trim()
@@ -142,6 +144,7 @@
                 data: formData,
                 success: function(response) {
                     if (response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (JSON.parse(response).status == 1) {
                             window.history.back()
                         }

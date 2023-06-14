@@ -32,20 +32,34 @@ class Product extends Controller
         $this->data['content'] = 'client/pages/shop';
         $this->render('layouts/client', $this->data);
     }
-    public function detail($id)
+    public function detail($id = null)
     {
-        $this->data['title'] = 'Product detail';
-        if (!empty($this->model->getProductById($id))) {
-            $this->data['subcontent']['product'] =  $this->model->getProductById($id);
-        } else {
+        $this->data['title'] = 'Chi tiết sản phẩm';
+        if (empty($id) || empty($this->model->getProductById($id))) {
             $this->loadError();
+        } else {
+            $this->data['subcontent']['product'] =  $this->model->getProductById($id);
+        }
+        if (empty($_SESSION['now'])) {
+            $this->model->updateProductView($id);
+            $_SESSION['now'] = time();
+        } else if (time() - $_SESSION['now'] > 60) {
+            $this->model->updateProductView($id);
+            $_SESSION['now'] = time();
         }
         $categoryModel = new CategoryModel();
         $reviewModel = new ReviewModel();
+        $perPage = 5;
+        $currentPage = 1;
+        $start = ($currentPage - 1) * $perPage;
+        $reviews = $reviewModel->getReviewList($id);
+        $totalPage = ceil(count($reviews) / $perPage);
         $this->data['subcontent']['controller'] = 'product';
         $this->data['subcontent']['category'] =  $categoryModel->getCategoryById($this->data['subcontent']['product']['categoryId']);
         $this->data['subcontent']['imagesGallery'] =  $this->model->getProductImage($id);
-        $this->data['subcontent']['reviews'] =  $reviewModel->getReviewList($id);
+        $this->data['subcontent']['totalPage'] =  $totalPage;
+        $this->data['subcontent']['currentPage'] =  $currentPage;
+        $this->data['subcontent']['reviews'] = array_slice($reviews, $start, $perPage);
         $this->data['subcontent']['colors'] =  $this->model->getProductColorWithSize($id);
         $this->data['subcontent']['nextId'] =  !empty($this->model->getNextProductId($id)) ?  $this->model->getNextProductId($id)['productId'] : "";
         $this->data['subcontent']['prevId'] = !empty($this->model->getPrevProductId($id)) ?  $this->model->getPrevProductId($id)['productId'] : "";
@@ -106,18 +120,52 @@ class Product extends Controller
     public function addReview()
     {
         if (!empty($_POST)) {
+            $this->checkUserValid();
+            $orderId = $_POST['orderId'];
             $stars = $_POST['stars'];
             $productId = $_POST['productId'];
             $title = $_POST['title'];
             $content = $_POST['content'];
             $reviewModel = new ReviewModel();
-            $res = $reviewModel->add($_SESSION['user']['userId'], $productId, $stars, $title, $content);
-            if (!empty($res)) {
-                echo json_encode([
-                    'status' => 1,
-                    'reviews' => $reviewModel->getReviewList($productId)
-                ]);
+            $orderModel = new OrderModel();
+            foreach ($stars as $id => $item) {
+                $reviewModel->add($_SESSION['user']['userId'], $productId[$id], $stars[$id], $title[$id], $content[$id]);
             }
+            echo json_encode([
+                'status' => 1
+            ]);
+            $orderModel->rated($orderId);
+        }
+    }
+    public function paginateReviews()
+    {
+        if (!empty($_POST)) {
+            $currentPage = 1;
+            if (!empty($_POST['page']) && is_numeric($_POST['page'])) {
+                $currentPage  = $_POST['page'];
+            }
+            $id  = $_POST['id'];
+            $product = $this->model->getProductById($id);
+            if (empty($product)) {
+                echo json_encode([
+                    'status' => 0,
+                ]);
+                return;
+            }
+            $perPage = 5;
+            $start = ($currentPage - 1) * $perPage;
+            $reviewModel = new ReviewModel();
+            $reviews = $reviewModel->getReviewList($id);
+            $totalPage = ceil(count($reviews) / $perPage);
+            echo json_encode([
+                'status' => 1,
+                'productId' => $id,
+                'totalReviewFound' => count($reviews),
+                'totalPage' => $totalPage,
+                'currentPage' => $currentPage,
+                'reviews' => array_slice($reviews, $start, $perPage)
+            ]);
+            return;
         }
     }
 }

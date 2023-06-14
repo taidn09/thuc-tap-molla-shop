@@ -16,47 +16,52 @@
                         <li>Số sao đánh giá: <?= $product['rating'] ?></li>
                         <li>Số lượt đánh giá: <?= $product['reviewCount'] ?></li>
                         <li>Số lượt bán: <?= $product['sold'] ?></li>
+                        <li>Số lượt xem: <?= $product['views'] ?></li>
                         <li>Thuộc danh mục: <?= $category['title'] ?></li>
                         <li>Mô tả: <?= $product['description'] ?></li>
                     </ul>
-                    <h3>Danh mục hình ảnh</h3>
-                    <div>
-                        <?php
-                        if ($this->checkRole('product-uploadProductImages')) :
-                        ?>
-                            <form id="images-form" action="/admin/product/uploadProductImages" class="form-group my-2" enctype="multipart/form-data">
-                                <input type="file" name="images[]" id="images" multiple class="form-control">
-                                <input type="hidden" name="productId" id="productId" value="<?= $product['productId'] ?>">
-                                <div class="err-msg file-err-msg"></div>
-                                <button class="btn btn-custom btn-primary mt-1" type="submit" style="min-width: 200px; padding: 6px 32px !important">Cập nhật danh sách hình ảnh</button>
-                            </form>
-                        <?php endif; ?>
-                        <div class="imgs">
+                    <?php if ($this->checkRole('product-accessImages')) : ?>
+                        <h3>Danh mục hình ảnh</h3>
+                        <div>
                             <?php
-                            foreach ($imagesGallery as $image) {
+                            if ($this->checkRole('product-uploadProductImages')) :
                             ?>
-                                <span style="width: 20%; min-width: 200px" class="position-relative d-inline-block">
-                                    <?php
-                                    if ($this->checkRole('product-deleteImage')) :
-                                    ?>
-                                        <button onclick="deleteImage('<?= $image['imgId'] ?>', '<?= $product['productId'] ?>')" class="btn btn-custom btn-danger position-absolute" style="right: 0;">Xóa hình ảnh</button>
-                                    <?php endif; ?>
-                                    <img src="/public/assets/images/products/<?= $image['image'] ?>" class="w-100">
-                                </span>
-                            <?php
-                            }
-                            ?>
+                                <form id="images-form" action="/admin/product/uploadProductImages" class="form-group my-2" enctype="multipart/form-data">
+                                    <input type="file" name="images[]" id="images" multiple class="form-control">
+                                    <input type="hidden" name="productId" id="productId" value="<?= $product['productId'] ?>">
+                                    <div class="err-msg file-err-msg"></div>
+                                    <button class="btn btn-custom btn-primary mt-1" type="submit" style="min-width: 200px; padding: 6px 32px !important">Cập nhật danh sách hình ảnh</button>
+                                </form>
+                            <?php endif; ?>
+                            <div class="imgs">
+                                <?php
+                                foreach ($imagesGallery as $image) {
+                                ?>
+                                    <span style="width: 20%; min-width: 200px" class="position-relative d-inline-block">
+                                        <?php
+                                        if ($this->checkRole('product-deleteImage')) :
+                                        ?>
+                                            <button onclick="deleteImage('<?= $image['imgId'] ?>', '<?= $product['productId'] ?>')" class="btn btn-custom btn-danger position-absolute" style="right: 0;">Xóa hình ảnh</button>
+                                        <?php endif; ?>
+                                        <img src="/public/assets/images/products/<?= $image['image'] ?>" class="w-100">
+                                    </span>
+                                <?php
+                                }
+                                ?>
+                            </div>
                         </div>
-                    </div>
-
+                    <?php endif; ?>
                 </div>
-                <div class=text-end>
+                  <?php 
+                    if($this->checkRole('product-accessOptions')):
+                  ?>
+                                  <div class=text-end>
                     <?php
                     if ($this->checkRole('product-addOption')) :
                     ?>
+                        <a href="/admin/product/addOption/<?= $product['productId'] ?>" class="btn btn-success btn-custom mb-5" style="min-width: 200px; padding: 6px 32px !important">Thêm thuộc tính <i class="bi bi-plus-circle"></i></i>
+                        </a>
                     <?php endif; ?>
-                    <a href="/admin/product/addOption/<?= $product['productId'] ?>" class="btn btn-success btn-custom mb-5" style="min-width: 200px; padding: 6px 32px !important">Thêm thuộc tính <i class="bi bi-plus-circle"></i></i>
-                    </a>
                 </div>
                 <?php
                 if (!empty($productOptions)) {
@@ -81,7 +86,7 @@
                                         <div class="d-flex align-items-center gap-2 text-uppercase"><span style="display: block ;width: 20px; height: 20px; background-color: <?= $option['color'] ?>; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 3px #000"></span> <?= $option['color'] ?></div>
                                     </td>
                                     <td><?= $option['size'] ?></td>
-                                    <td><?= $option['quantity'] ?></td>
+                                    <td><?=number_format( $option['quantity']) ?></td>
                                     <td>
                                         <?php
                                         if ($this->checkRole('product-deleteOption')) :
@@ -111,6 +116,7 @@
                     <h2 class="text-center">Sản phẩm này chưa có thuộc tính</h2>
                 <?php } ?>
             </div>
+                  <?php endif;?>    
         </div>
     </div>
     <!-- End Recent Sales -->
@@ -119,7 +125,8 @@
 <script>
     function updateImageList(response) {
         const {
-            images
+            images,
+            allowDelete
         } = JSON.parse(response)
         let imgsHTML = ''
         for (const key in images) {
@@ -128,13 +135,13 @@
                 productId,
                 image
             } = images[key]
+            let _btn = ''
+            if(allowDelete){
+                _btn = `<button onclick="deleteImage('${imgId}', '${productId}')" class="btn btn-custom btn-danger position-absolute" style="right: 0;">Xóa hình ảnh</button>`
+            }
             imgsHTML += `
                 <span style="width: 20%; min-width: 200px" class="position-relative d-inline-block">
-                <?php
-                if ($this->checkRole('product-deleteImage')) :
-                ?>
-                                        <button onclick="deleteImage('${imgId}', '${productId}')" class="btn btn-custom btn-danger position-absolute" style="right: 0;"><i class="bi bi-x"></i></button>
-                                    <?php endif; ?>
+                    ${_btn}
                                     
                                     <img src="/public/assets/images/products/${image}" class="w-100">
                                 </span>
@@ -153,6 +160,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    checkAdminRoleValid(JSON.parse(response).status)
                     if (response && JSON.parse(response).status == 1) {
                         updateImageList(response)
                         $('#images').val('')
@@ -181,6 +189,7 @@
                             productId
                         },
                         success: function(response) {
+                            checkAdminRoleValid(JSON.parse(response).status)
                             if (response && JSON.parse(response).status == 1) {
                                 updateImageList(response)
                             }
@@ -204,6 +213,7 @@
                         id: $(this).data('id')
                     },
                     success: function(response) {
+                        checkAdminRoleValid(JSON.parse(response).status)
                         if (response && JSON.parse(response).status == 1) {
                             $('.datatable').DataTable().row(btn.parents('tr')).remove().draw(false)
                         }

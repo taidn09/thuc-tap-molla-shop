@@ -15,9 +15,9 @@ class Product extends Controller
     }
     public function index()
     {
-        $this->data['title'] = 'Product';
+        $this->data['subcontent']['title'] = 'Sản phẩm';
         $this->data['subcontent']['controller'] = 'product';
-        $this->data['subcontent']['products'] = $this->model->getProductsList(null, true);
+        $this->data['subcontent']['products'] = $this->model->getProductFilterAdmin([]);
         $this->data['subcontent']['categories'] = (new CategoryModel())->getCategoriesList();
         $this->data['content'] = 'admin/pages/product/list';
         $this->render('layouts/admin', $this->data);
@@ -25,7 +25,7 @@ class Product extends Controller
     public function filter()
     {
         if (!empty($_POST)) {
-            $products = $this->model->getProductFilter($_POST);
+            $products = $this->model->getProductFilterAdmin($_POST);
             echo json_encode([
                 'status' => 1,
                 'products' => $products
@@ -35,7 +35,7 @@ class Product extends Controller
     }
     public function detail($id)
     {
-        $this->data['title'] = 'Product detail';
+        $this->data['subcontent']['title'] = 'Chi tiết sản phẩm';
         $this->data['subcontent']['controller'] = 'product';
         $product = $this->model->getProductById($id, true);
         if (!empty($product)) {
@@ -54,13 +54,15 @@ class Product extends Controller
     public function deleteImage()
     {
         if (!empty($_POST)) {
+            $this->checkRolePost('product-deleteImage');
             $id = $_POST['id'];
             $productId = $_POST['productId'];
             $res = $this->model->deleteImage($id);
             if (!empty($res)) {
                 echo json_encode([
                     'status' => 1,
-                    'images' => $this->model->getProductImage($productId)
+                    'images' => $this->model->getProductImage($productId),
+                    'allowDelete' => $this->checkRole('product-deleteImage')
                 ]);
                 return;
             }
@@ -69,6 +71,7 @@ class Product extends Controller
     public function uploadProductImages()
     {
         if (!empty($_POST)) {
+            $this->checkRolePost('product-uploadProductImages');
             $images = $_FILES['images'];
             $productId = $_POST['productId'];
             $check = $this->uploadMultiImage($images, 'products');
@@ -83,7 +86,8 @@ class Product extends Controller
             if ($res !== false) {
                 echo json_encode([
                     'status' => 1,
-                    'images' => $this->model->getProductImage($productId)
+                    'images' => $this->model->getProductImage($productId),
+                    'allowDelete' => $this->checkRole('product-deleteImage')
                 ]);
                 return;
             }
@@ -93,6 +97,7 @@ class Product extends Controller
     public function addOption($id = null)
     {
         if (!empty($id)) {
+            $this->checkRolePost('product-addOption');
             if (!empty($_POST)) {
                 $color = $_POST['color'];
                 $size = $_POST['size'];
@@ -125,7 +130,7 @@ class Product extends Controller
                     }
                 }
             } else {
-                $this->data['title'] = 'Add option';
+                $this->data['subcontent']['title'] = 'Thêm thuốc tính';
                 $this->data['subcontent']['controller'] = 'product';
                 $this->data['subcontent']['editMode'] = false;
                 $this->data['subcontent']['colors'] = (new ColorModel())->getAllColors();
@@ -138,6 +143,7 @@ class Product extends Controller
     public function editOption($id = null, $optionId = null)
     {
         if (!empty($id)) {
+            $this->checkRolePost('product-editOption');
             if (!empty($_POST)) {
                 $optionId = $_POST['optionId'];
                 $color = $_POST['color'];
@@ -158,7 +164,7 @@ class Product extends Controller
                     return;
                 }
             } else if (!empty($optionId)) {
-                $this->data['title'] = 'Edit option';
+                $this->data['subcontent']['title'] = 'Chỉnh sửa thuộc tính';
                 $this->data['subcontent']['controller'] = 'product';
                 $this->data['subcontent']['editMode'] = true;
                 $this->data['subcontent']['productId'] = $id;
@@ -179,6 +185,7 @@ class Product extends Controller
     public function deleteOption()
     {
         if (!empty($_POST)) {
+            $this->checkRolePost('product-deleteOption');
             $id = $_POST['id'];
             $res = $this->model->deleteOption($id);
             if (!empty($res)) {
@@ -192,6 +199,7 @@ class Product extends Controller
     public function add()
     {
         if (!empty($_POST)) {
+            $this->checkRolePost('product-add');
             $salePercent = $_POST['salePercent'] >= 100 ? 100 : $_POST['salePercent'];
             $check = $this->model->checkProductExisted($_POST['title']);
             if (!empty($check)) {
@@ -209,7 +217,7 @@ class Product extends Controller
                 return;
             }
         } else {
-            $this->data['title'] = 'Add product';
+            $this->data['subcontent']['title'] = 'Thêm sản phẩm';
             $this->data['subcontent']['controller'] = 'product';
             $this->data['subcontent']['editMode'] = false;
             $this->data['content'] = 'admin/pages/product/form';
@@ -219,6 +227,7 @@ class Product extends Controller
     public function edit($id = null)
     {
         if (!empty($_POST)) {
+            $this->checkRolePost('product-edit');
             $salePercent = $_POST['salePercent'] >= 100 ? 100 : $_POST['salePercent'];
             $check = $this->model->checkProductExisted($_POST['title'], $_POST['id']);
             if (!empty($check)) {
@@ -234,7 +243,7 @@ class Product extends Controller
             ]);
             return;
         } else if (!empty($id)) {
-            $this->data['title'] = 'Edit product';
+            $this->data['subcontent']['title'] = 'Chỉnh sửa sản phẩm';
             $this->data['subcontent']['controller'] = 'product';
             $this->data['subcontent']['editMode'] = true;
             $product = $this->model->getProductById($id, true);
@@ -252,12 +261,12 @@ class Product extends Controller
     public function delete()
     {
         if (!empty($_POST['id'])) {
+            $this->checkRolePost('product-delete');
             $id = $_POST['id'];
             $res = $this->model->deleteProduct($id);
             if (!empty($res)) {
                 echo json_encode([
                     'status' => 1,
-                    'products' => $this->model->getProductsList(null, true)
                 ]);
                 return;
             }
@@ -270,13 +279,13 @@ class Product extends Controller
     public function toggle()
     {
         if (!empty($_POST['id'])) {
+            $this->checkRolePost('product-toggle');
             $productId = $_POST['id'];
             $show = $_POST['show'];
             $res = $this->model->showHideProduct($productId, $show);
             if ($res !== false) {
                 echo json_encode([
                     'status' => 1,
-                    'products' => $this->model->getProductsList(null, true)
                 ]);
                 return;
             }
@@ -289,8 +298,8 @@ class Product extends Controller
     public function import()
     {
         if (!empty($_FILES)) {
+            $this->checkRolePost('product-import');
             $ext = strtolower(pathinfo($_FILES['import']['name'], PATHINFO_EXTENSION));
-            // echo $ext;
             if ($ext != 'xlsx') {
                 echo json_encode([
                     'status' => 0,
@@ -306,7 +315,6 @@ class Product extends Controller
             for ($row = 2; $row <= $highestRow; $row++) {
                 $rowData = array();
                 for ($column = 'A'; $column <= $highestColumn; $column++) {
-                    // Get the cell value
                     $cellValue = $worksheet->getCell($column . $row)->getValue();
                     $rowData[] = $cellValue;
                 }
@@ -321,13 +329,18 @@ class Product extends Controller
             }
             echo json_encode([
                 'status' => 1,
-                'products' => $this->model->getProductsList(null, true)
+                'products' => $this->model->getProductFilterAdmin([]),
+                'allowDelete' => $this->checkRole('product-delete'),
+                'allowViewDetail' => $this->checkRole('product-detail'),
+                'allowEdit' => $this->checkRole('product-edit'),
+                'allowToggle' => $this->checkRole('product-toggle'),
             ]);
             return;
         }
     }
     public function export()
     {
+        $this->checkRolePost('product-export');
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'Tên sản phẩm');
@@ -338,7 +351,7 @@ class Product extends Controller
         $sheet->setCellValue('F1', 'Số lượt đánh giá');
         $sheet->setCellValue('G1', 'Số sao trung bình');
         $sheet->setCellValue('H1', 'Số lượng đã bán');
-        $products = $this->model->getProductsList(null, true);
+        $products = $this->model->getProductFilterAdmin($_POST);
         $current_index = 2;
         foreach ($products as $product) {
             $sheet->setCellValue('A' . $current_index, $product['title']);
@@ -352,7 +365,7 @@ class Product extends Controller
             $current_index++;
         }
         $writer = new Xlsx($spreadsheet);
-        $file_name = 'danh_sach_san_pham_' . date("Y_m_d_H_i_s") . '.xlsx';
+        $file_name = 'danh_sach_san_pham.xlsx';
         $filePath = 'export/' . $file_name;
         $writer->save($filePath);
         ob_clean();
@@ -361,7 +374,6 @@ class Product extends Controller
         header('Pragma: no-cache');
         header('Expires: 0');
         readfile($filePath);
-        unlink($filePath);
         ob_end_clean();
     }
 }

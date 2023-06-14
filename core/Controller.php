@@ -53,10 +53,10 @@ class Controller
     {
         $target_dir = "public/assets/images/$folder/";
         $targetFileType = strtolower(pathinfo(basename($image['name']), PATHINFO_EXTENSION));
-        if($time){
-            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME)).$time).'.'.$targetFileType;
-        }else{
-            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME))).'.'.$targetFileType;
+        if ($time) {
+            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME)) . $time) . '.' . $targetFileType;
+        } else {
+            $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name']), PATHINFO_FILENAME))) . '.' . $targetFileType;
         }
         if (file_exists($target_file)) {
             return 'Ảnh đã tồn tại';
@@ -75,15 +75,15 @@ class Controller
         }
         return null;
     }
-    public function uploadMultiImage($image, $folder,$time = null)
+    public function uploadMultiImage($image, $folder, $time = null)
     {
         $target_dir = "public/assets/images/$folder/";
         for ($i = 0; $i < count($image['name']); $i++) {
             $targetFileType = strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_EXTENSION));
-            if($time){
-                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME)).$time).'.'.$targetFileType;
-            }else{
-                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME))).'.'.$targetFileType;
+            if ($time) {
+                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME)) . $time) . '.' . $targetFileType;
+            } else {
+                $target_file = $target_dir . md5(strtolower(pathinfo(basename($image['name'][$i]), PATHINFO_FILENAME))) . '.' . $targetFileType;
             }
             if (file_exists($target_file)) {
                 return 'Ảnh đã tồn tại';
@@ -112,40 +112,127 @@ class Controller
             }
         }
     }
+    public function checkRolePost($req = null)
+    {
+        if (!empty($_SESSION['admin'])) {
+            // quản lý
+            $adminModel = new AdminModel();
+            $admin = $adminModel->getAdminById($_SESSION['admin']['adminId']);
+            if (empty($admin)) {
+                echo json_encode(['status' => 2]);
+                die;
+            }
+            if ($admin['role'] != 0) {
+                $positionModel = new PositionModel();
+                $res = $positionModel->getRoles($admin['role']);
+                if (empty($res)) {
+                    echo json_encode(['status' => 2]);
+                    die;
+                }
+                $rolesArr = explode(',', $res['rolesString']);
+                // ngược lại
+                if ($req == null) {
+                    $arr = explode('/', $_SERVER['PATH_INFO']);
+                    $adminReq =  $arr[2];
+                    $adminReq .= !empty($arr[3]) ? '-' . $arr[3] : '';
+                    if (!in_array($adminReq, $rolesArr)) {
+                        echo json_encode(['status' => 2]);
+                        die;
+                    }
+                } else {
+                    if (!in_array($req, $rolesArr)) {
+                        echo json_encode(['status' => 2]);
+                        die;
+                    }
+                }
+            }
+        }
+        return true;
+    }
     public function checkRole($req = null)
     {
         if (!empty($_SESSION['admin'])) {
-            $rolesArr  = $_SESSION['admin']['roles'];
-            // nếu mà admin lớn nhất
-            if ($_SESSION['admin']['email'] == 'taidn@gmail.com') {
-                return true;
-            }
             // quản lý
-            if ($_SESSION['admin']['role'] == 1 && strpos($_SERVER['PATH_INFO'],'/admin/admin') ) {
-                return true;
+            $adminModel = new AdminModel();
+            $admin = $adminModel->getAdminById($_SESSION['admin']['adminId']);
+            if (empty($admin)) {
+                return false;
             }
-            // ngược lại
-            if ($req == null) {
-                $arr = explode('/', $_SERVER['PATH_INFO']);
-                $adminReq =  $arr[2];
-                $adminReq .= !empty($arr[3]) ? '-' . $arr[3] : '';
-                return in_array($adminReq, $rolesArr);
-            } else {
-                return in_array($req, $rolesArr);
+            if ($admin['role'] != 0) {
+                $positionModel = new PositionModel();
+                $res = $positionModel->getRoles($admin['role']);
+                if (empty($res)) {
+                    return false;
+                }
+                $rolesArr = explode(',', $res['rolesString']);
+                // ngược lại
+                if ($req == null) {
+                    $arr = explode('/', $_SERVER['PATH_INFO']);
+                    $adminReq =  $arr[2];
+                    $adminReq .= !empty($arr[3]) ? '-' . $arr[3] : '';
+                    return in_array($adminReq, $rolesArr);
+                } else {
+                    return in_array($req, $rolesArr);
+                }
+            }
+        }
+        return true;
+    }
+    public function checkUserValid()
+    {
+        if (!empty($_SESSION['user'])) {
+            $userModel = new UserModel();
+            $check = $userModel->getUserById($_SESSION['user']['userId']);
+            if (empty($check)) {
+                unset($_SESSION['user']);
+                if (!empty($_SESSION['cart'])) {
+                    unset($_SESSION['cart']);
+                }
+                if (!empty($_SESSION['cart-total-amount'])) {
+                    unset($_SESSION['cart-total-amount']);
+                }
+                if (!empty($_SESSION['cart-total-quantity'])) {
+                    unset($_SESSION['cart-total-quantity']);
+                }
+                if ($_SERVER['REQUEST_METHOD'] == "POST") {
+                    echo json_encode(['status' => 2]);
+                    die;
+                } else {
+                    header("Location: " . $_SERVER['PHP_SELF']);
+                }
+            }
+        }
+        return true;
+    }
+    public function checkAdminExistsAndRoleValid()
+    {
+        if (!empty($_SESSION['admin'])) {
+            $adminModel = new AdminModel();
+            $check = $adminModel->getAdminById($_SESSION['admin']['adminId']);
+            $check1 = $adminModel->getRoles($_SESSION['admin']['adminId']);
+            if (empty($check) || empty($check1)) {
+                unset($_SESSION['admin']);
+                if ($_SERVER['REQUEST_METHOD'] == "POST") {
+                    echo json_encode(['status' => 2]);
+                    die;
+                } else {
+                    header("Location: " . $_SERVER['PHP_SELF']);
+                }
             }
         }
         return true;
     }
     public function loadError()
-    {   
-        $arr = explode('/',$_SERVER['PATH_INFO']);    
-        if(!empty($arr[1]) && $arr[1] == 'admin'){
+    {
+        $arr = explode('/', $_SERVER['PATH_INFO']);
+        if (!empty($arr[1]) && $arr[1] == 'admin') {
             echo header("location: /admin/404");
             die;
         }
         echo header("location: /404");
     }
-    public function loadErrAuth(){
+    public function loadErrAuth()
+    {
         echo header("location: /admin/401");
     }
 }

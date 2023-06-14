@@ -12,7 +12,7 @@ class Home extends Controller
         $blogModel = new BlogModel();
         $this->data['subcontent']['controller'] = 'home';
         $this->data['subcontent']['trendingProducts'] =  $productModel->getTrendingProducts();
-        $this->data['subcontent']['newArrivalProducts'] =  $productModel->getNewArrivalProducts();
+        $this->data['subcontent']['newArrivalProducts'] =  $productModel->getNewArrivalProducts(5);
         $this->data['subcontent']['categoriesList'] =  $categoryModel->getCategoriesList();
         $this->data['subcontent']['brandsList'] =  $brandModel->getBrandsList();
         $this->data['subcontent']['servicesList'] =  $serviceModel->getServicesList();

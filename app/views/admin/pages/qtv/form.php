@@ -1,5 +1,6 @@
 <main id="main" class="main">
     <!-- Recent Sales -->
+    <a href="/admin/admin" class="btn btn-custom btn-primary mb-3" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
             <div class="card-body">
@@ -33,8 +34,11 @@
                                             <div class="form-group m-auto mt-2">
                                                 <label for="role" class="form-label">Chức vụ</label>
                                                 <select name="role" class="form-control" id="role">
-                                                    <option value="0" <?php if ($admin['role'] == 0) echo "selected" ?>>Nhân viên</option>
-                                                    <option value="1" <?php if ($admin['role'] == 1) echo "selected" ?>>Quản lý</option>
+                                                <?php 
+                                                    foreach ($positions as $key => $position) {
+                                                ?>
+                                                    <option value="<?=$position['id']?>" <?php if($admin['role'] == $position['id']) echo "selected" ?>><?=$position['job_title']?></option>
+                                                <?php }?>
                                                 </select>
                                                 <div class="err-msg role-err-msg"></div>
                                             </div>
@@ -45,14 +49,20 @@
                                         <div class="col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="password" class="form-label">Mật khẩu</label>
-                                                <input name="password" type="text" class="form-control" id="password" placeholder="Nhập mật khẩu..." spellcheck="false" autocomplete="off" />
+                                                <div class="password-field">
+                                                    <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                                    <input name="password" type="password" class="form-control" id="password" placeholder="Nhập mật khẩu..." spellcheck="false" autocomplete="off" />
+                                                </div>
                                                 <div class="err-msg password-err-msg"></div>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="cfpassword" class="form-label">Nhập lại mật khẩu</label>
-                                                <input name="cfpassword" type="text" class="form-control" id="cfpassword" placeholder="Nhập lại mật khẩu..." spellcheck="false" autocomplete="off" />
+                                                <div class="password-field">
+                                                    <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                                    <input name="cfpassword" type="password" class="form-control" id="cfpassword" placeholder="Nhập lại mật khẩu..." spellcheck="false" autocomplete="off" />
+                                                </div>
                                                 <div class="err-msg cfpassword-err-msg"></div>
                                             </div>
                                         </div>
@@ -61,7 +71,7 @@
                                         <div class="col-lg-6 col-md-6 col-6">
                                             <div class="form-group m-auto mt-2">
                                                 <label for="image" class="form-label">Hình ảnh</label>
-                                                <input name="image" type="file" class="form-control" id="image"/>
+                                                <input name="image" type="file" class="form-control" id="image" />
                                                 <div class="err-msg image-err-msg"></div>
                                             </div>
                                         </div>
@@ -74,7 +84,6 @@
                                         <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                             Chỉnh sửa
                                         </button>
-                                        <a href="/admin/admin" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
                                     </div>
                                 </form>
                             </div>
@@ -102,8 +111,11 @@
                                         <div class="form-group m-auto mt-2">
                                             <label for="role" class="form-label">Chức vụ</label>
                                             <select name="role" class="form-control" id="role">
-                                                <option value="0">Nhân viên</option>
-                                                <option value="1">Quản lý</option>
+                                                <?php 
+                                                    foreach ($positions as $key => $position) {
+                                                ?>
+                                                    <option value="<?=$position['id']?>"><?=$position['job_title']?></option>
+                                                <?php }?>
                                             </select>
                                             <div class="err-msg role-err-msg"></div>
                                         </div>
@@ -113,7 +125,10 @@
                                     <div class="col-6">
                                         <div class="form-group m-auto mt-2">
                                             <label for="password" class="form-label">Mật khẩu</label>
-                                            <input name="password" type="text" class="form-control" id="password" placeholder="Nhập mật khẩu..." spellcheck="false" autocomplete="off" />
+                                            <div class="password-field">
+                                                <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                                <input name="password" type="password" class="form-control" id="password" placeholder="Nhập mật khẩu..." spellcheck="false" autocomplete="off" />
+                                            </div>
                                             <div class="err-msg password-err-msg"></div>
                                         </div>
                                     </div>
@@ -121,7 +136,10 @@
                                     <div class="col-6">
                                         <div class="form-group m-auto mt-2">
                                             <label for="cfpassword" class="form-label">Nhập lại mật khẩu</label>
-                                            <input name="cfpassword" type="text" class="form-control" id="cfpassword" placeholder="Nhập lại mật khẩu..." spellcheck="false" autocomplete="off" />
+                                            <div class="password-field">
+                                                <i class="bi bi-eye-slash-fill toggle-password"></i>
+                                                <input name="cfpassword" type="password" class="form-control" id="cfpassword" placeholder="Nhập lại mật khẩu..." spellcheck="false" autocomplete="off" />
+                                            </div>
                                             <div class="err-msg cfpassword-err-msg"></div>
                                         </div>
                                     </div>
@@ -143,7 +161,7 @@
                                     <button class="btn btn-custom btn-success" style="min-width: 200px; padding: 6px 32px !important">
                                         Thêm nhân viên
                                     </button>
-                                    <a href="/admin/admin" class="btn btn-custom btn-primary" style="min-width: 200px; padding: 6px 32px !important">Quay về</a>
+                                    
                                 </div>
                             </form>
                         </div>
@@ -165,6 +183,70 @@
         fileReader.onloadend = function(e) {
             img.src = e.target.result
             img.style.display = 'block'
+        }
+    })
+
+    $('#admin-form').on('submit', function(e) {
+        e.preventDefault()
+        const action = $(this).attr('action')
+        let flag = true
+        $('.err-msg').html('')
+        const name = $(this).find('#name').val().trim()
+        if (!name || name.length < 2 || name.length > 50) {
+            $('.name-err-msg').html(`Nhập từ 2 đến 50 ký tự...`)
+            flag = false
+        }
+        if (!validateEmailAdress($('#email').val())) {
+            $('.email-err-msg').html(`Email không hợp lệ...`)
+            flag = false
+        }
+        if ($('#password').val().trim() !== '' || $('#cfpassword').val().trim() !== '') {
+            if ($('#password').val().trim().length < 6) {
+                $('.password-err-msg').html(`Mật khẩu tối thiểu 6 ký tự...`)
+                flag = false
+            }
+            if ($('#password').val().trim() != $('#cfpassword').val().trim()) {
+                $('.cfpassword-err-msg').html(`Mật khẩu nhập lại không khớp...`)
+                flag = false
+            }
+        }
+        if ($('#image')[0].files.lenght <= 0) {
+            $('.image-err-msg').html(`Vui lòng chọn hình ảnh...`)
+            flag = false
+        }
+        if (flag) {
+            var formData = new FormData();
+            const action = $(this).attr('action')
+            formData.append('name', name);
+            formData.append('image', $('#image')[0].files[0]);
+            formData.append('password', $('#password').val().trim());
+            formData.append('email', $('#email').val().trim());
+            formData.append('role', $('#role').val());
+            if ($(this).find('#new-password').length != 0) {
+                formData.append('newPassword', $('#new-password').val());
+            }
+            if (action.includes('edit')) {
+                formData.append('id', $('#id').val());
+            }
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = '/admin/admin'
+                    } else {
+                        if (JSON.parse(response).uploadErr) {
+                            $('.image-err-msg').html(JSON.parse(response).uploadErr)
+                        }
+                        if (JSON.parse(response).emailErr) {
+                            $('.email-err-msg').html(JSON.parse(response).emailErr)
+                        }
+                    }
+                },
+            });
         }
     })
 </script>

@@ -45,3 +45,47 @@
     </div>
     <!-- End Recent Sales -->
 </main>
+
+<script>
+    $('#changPass-form').on('submit', function(e) {
+        e.preventDefault();
+        let flag = true
+        const password = $('#password').val().trim()
+        const newpass = $('#newpass').val().trim()
+        const cfpass = $('#cfpass').val().trim()
+        const id = $('#id').val().trim()
+        if (id == '') {
+            flag = false
+        }
+        if (password == '') {
+            flag = false
+            $('.password-err-msg').html('Vui lòng nhập mật khẩu...')
+        }
+        if (newpass.length < 6) {
+            flag = false
+            $('.newpass-err-msg').html('Mật khẩu tối thiểu 6 ký tự...')
+        }
+        if (newpass != cfpass) {
+            flag = false
+            $('.cfpass-err-msg').html('Mật khẩu nhập lại không khớp...')
+        }
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/dashboard/changePassword',
+                data: {
+                    id,
+                    password,
+                    newpass
+                },
+                success: function(response) {
+                    if (response && JSON.parse(response).status == 1) {
+                        window.location = '/admin/dashboard/'
+                    } else {
+                        $('.password-err-msg').html(JSON.parse(response).errMsg)
+                    }
+                },
+            });
+        }
+    })
+</script>

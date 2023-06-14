@@ -1,4 +1,5 @@
-$(document).ready(function () {
+
+function initDataTable() {
   $(".datatable").DataTable({
     language: {
       sProcessing: "Đang xử lý...",
@@ -26,4 +27,5 @@ $(document).ready(function () {
       },
     ],
   });
-});
+}
+$(document).ready(initDataTable);

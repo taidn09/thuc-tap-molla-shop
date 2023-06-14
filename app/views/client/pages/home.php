@@ -77,7 +77,7 @@
 
             <ul class="nav nav-pills justify-content-center" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="trending-all-link" data-toggle="tab" href="#trending-all-tab" role="tab" aria-controls="trending-all-tab" aria-selected="true">All</a>
+                    <a class="nav-link active" id="trending-all-link" data-toggle="tab" href="#trending-all-tab" role="tab" aria-controls="trending-all-tab" aria-selected="true">Tất cả</a>
                 </li>
                 <?php
                 foreach ($categoriesList as $category) {
@@ -127,7 +127,7 @@
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                    <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" data-productid="<?= $product['productId'] ?>"><span>Thêm vào danh sách yêu thích</span></a>
                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>Xem nhanh</span></a> -->
                                 </div><!-- End .product-action-vertical -->
 
@@ -139,7 +139,7 @@
                             <div class="product-body">
                                 <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                 <div class="product-price">
-                                    <?= number_format($product['currentPrice']) ?>đ
+                                    <?= number_format($product['currentPrice']) ?>đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;"><?= number_format($product['originalPrice']) ?>đ</span>
                                 </div><!-- End .product-price -->
                                 <div class="ratings-container">
                                     <div class="ratings">
@@ -193,7 +193,7 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                            <a href="javascript:void(0)" class="btn-product-icon btn-wishlist btn-expandable" data-productid="<?= $product['productId'] ?>"><span>Thêm vào danh sách yêu thích</span></a>
                                             <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>quick view</span></a> -->
                                         </div><!-- End .product-action-vertical -->
 
@@ -205,7 +205,7 @@
                                     <div class="product-body">
                                         <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                            <?= number_format($product['currentPrice']) ?>đ
+                                            <?= number_format($product['currentPrice']) ?>đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;"><?= number_format($product['originalPrice']) ?>đ</span>
                                         </div><!-- End .product-price -->
                                         <div class="ratings-container">
                                             <div class="ratings">
@@ -235,7 +235,7 @@
                         <div class="deal-countdown" data-until="+10h"></div><!-- End .deal-countdown -->
                     </div><!-- End .deal-content -->
                     <div class="row deal-products">
-                        <div class="col-6 deal-product text-center">
+                        <div class="col-12 col-sm-6 col-md-6 deal-product text-center">
                             <figure class="product-media">
                                 <a href="product.html">
                                     <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/demos/demo-6/deal/product-1.jpg" alt="Product image" class="product-image">
@@ -252,7 +252,7 @@
                             </div><!-- End .product-body -->
                             <a href="/product" class="action">Mua sắm ngay</a>
                         </div>
-                        <div class="col-6 deal-product text-center">
+                        <div class="col-12 col-sm-6 col-md-6 deal-product text-center">
                             <figure class="product-media">
                                 <a href="product.html">
                                     <img src="<?php echo _WEB_ROOT; ?>/public/assets/images/demos/demo-6/deal/product-2.jpg" alt="Product image" class="product-image">
@@ -340,7 +340,7 @@
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="javascipt:void(0)" class="btn-product-icon btn-wishlist btn-expandable" onclick="addtoWishlist('<?= $product['productId'] ?>')"><span>Thêm vào danh sách yêu thích</span></a>
+                                    <a href="javascipt:void(0)" class="btn-product-icon btn-wishlist btn-expandable active" data-productid="<?= $product['productId'] ?>"><span>Thêm vào danh sách yêu thích</span></a>
                                     <!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview btn-expandable" title="quick view"><span>quick view</span></a> -->
                                 </div><!-- End .product-action-vertical -->
 
@@ -352,7 +352,7 @@
                             <div class="product-body">
                                 <h3 class="product-title"><a href="/product/detail/<?= $product['productId'] ?>"><?= $product['title'] ?></a></h3><!-- End .product-title -->
                                 <div class="product-price">
-                                    <?= number_format($product['currentPrice']) ?>đ
+                                    <?= number_format($product['currentPrice']) ?>đ <span class="thick-line-through" style="margin-left: 8px; font-size: 10px;"><?= number_format($product['originalPrice']) ?>đ</span>
                                 </div><!-- End .product-price -->
                                 <div class="ratings-container">
                                     <div class="ratings">

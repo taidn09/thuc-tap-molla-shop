@@ -35,7 +35,7 @@
                 <div class="col-12">
                     <h5>Danh sách sản phẩm</h5>
                     <p>Bạn có thể trả hàng và được hoàn tiền 100% trong vòng 3 ngày nếu như hàng bị lỗi...</p>
-                    
+
                     <table class="table table-bordered">
                         <tr>
                             <th class="p-2">Tên sản phẩm</th>
@@ -51,7 +51,7 @@
 
                         $productModel = new ProductModel();
                         foreach ($detail as $item) {
-                            $product = $productModel->getProductById($item['productId'],true);
+                            $product = $productModel->getProductById($item['productId'], true);
                             $option = $productModel->getOptionById($item['optionId']);
                         ?>
                             <tr>
@@ -70,7 +70,6 @@
                                     if ($numberOfDays <= 3 && $item['returned'] == 0) :
                                     ?>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<?= $item['optionId'] ?>">Trả hàng</button>
-                                        <!-- Modal -->
                                         <div class="modal fade" id="modal-<?= $item['optionId'] ?>" tabindex="-1" aria-labelledby="model-label-<?= $item['optionId'] ?>" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <form action="/" method="POST" class="modal-content return-form" enctype="multipart/form-data">
@@ -82,8 +81,8 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mx-4">
-                                                            <input type="hidden" name="orderId" readonly value="<?=$item['orderId']?>">
-                                                            <input type="hidden" name="optionId" readonly value="<?=$item['optionId']?>">
+                                                            <input type="hidden" name="orderId" readonly value="<?= $item['orderId'] ?>">
+                                                            <input type="hidden" name="optionId" readonly value="<?= $item['optionId'] ?>">
                                                             <div class="form-group">
                                                                 <label>Lý do trả hàng</label>
                                                                 <textarea id="reason-<?= $order['orderId'] ?>" name="reason" class="form-control" placeholder="Lí do trả hàng (cụ thể)..."></textarea>
@@ -103,11 +102,11 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    <?php endif;  ?>
-                                    <?php 
-                                        if($item['returned'] == 1){
-                                            echo "Đã trả hàng";
-                                        }
+                                    <?php endif; ?>
+                                    <?php
+                                    if ($item['returned'] == 1) {
+                                        echo "Đã trả hàng";
+                                    }
                                     ?>
                                 </td>
                             </tr>
@@ -120,7 +119,63 @@
             </div>
             <div class="text-center">
                 <a href="/account" class="btn btn-outline-primary">Trở về</a>
+                <?php if ($order['rated'] != 1) : ?>
+                    <a href="/account/review/<?= $order['orderId'] ?>" class="btn btn-outline-primary">Đánh giá</a>
+                <?php endif; ?>
             </div>
         </div>
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+<script>
+    // trả hàng
+    $('.return-form').on('submit', handleReturn)
+
+    function handleReturn(e) {
+        e.preventDefault()
+        let flag = true
+        const _this = $(this)
+        const td = _this.parents('td')
+        const reason = $(this).find('textarea[name="reason"]');
+        const images = $(this).find('input[type="file"]');
+        if (reason.val().trim() == '') {
+            flag = false
+            reason.siblings('.err-msg').html("Bạn chưa nhập lý do trả hàng...")
+        }
+        if (images[0].files.length <= 0) {
+            flag = false
+            images.siblings('.err-msg').html("Bạn chưa cung cấp hình ảnh...")
+        }
+        const formData = new FormData()
+        formData.append('orderId', _this.find('input[name="orderId"]').val());
+        formData.append('optionId', _this.find('input[name="optionId"]').val());
+        formData.append('image', _this.find('input[name="image"]')[0].files[0]);
+        formData.append('reason', _this.find('textarea[name="reason"]').val());
+        if (flag) {
+            $.ajax({
+                type: 'POST',
+                url: '/account/returns',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    checkUserValid(JSON.parse(response).status)
+                    if (response && JSON.parse(response).status == 1) {
+                        Swal.fire({
+                            ...successPopup,
+                            timer: false,
+                            showConfirmButton: true,
+                            title: 'Yêu cầu đã được xử lý...',
+                            willClose: () => {
+                                location.reload()
+                            }
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                location.reload()
+                            }
+                        })
+                    }
+                },
+            });
+        }
+    }
+</script>
