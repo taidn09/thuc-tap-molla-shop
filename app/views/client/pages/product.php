@@ -334,8 +334,8 @@
         $('.size-select option').addClass('d-none')
         $('.size-select option[data-color="' + color + '"]').removeClass('d-none')
         $('.size-select').val($('.size-select option').not('.d-none')[0].value)
-        let leftQty = $('.size-select option').not('.d-none').data('quantity');
-        $('.left-quantity').html(`Sản phẩm còn lại: ${leftQty}`)
+        let leftQty = $('.size-select option').not('.d-none').data('quantity'); 
+        $('.left-quantity').html(`Sản phẩm còn lại: ${Number(leftQty).toLocaleString()}`)
         $('#qty').attr('max', leftQty)
         if (leftQty == 0) {
             $('.product-details-action').html(`<div class="details-action-wrapper">

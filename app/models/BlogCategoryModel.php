@@ -27,6 +27,8 @@ class BlogCategoryModel
     }
     public function delete($id){
         $query = "DELETE FROM `blog_categories` WHERE id ='$id'";
+        $query2 = "UPDATE blogs SET blogCateId = 1 WHERE blogCateId = '$id'";
+        $this->db->exec($query2);
         return $this->db->exec($query);
     }
 }

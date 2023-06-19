@@ -28,7 +28,7 @@
                         </tr>
                         <tr>
                             <td class="p-2">Tổng thành tiền:</td>
-                            <td class="p-2"><?= $order['summary'] ?>đ</td>
+                            <td class="p-2"><?= number_format($order['summary']) ?>đ</td>
                         </tr>
                     </table>
                 </div>
